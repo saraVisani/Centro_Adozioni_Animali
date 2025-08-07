@@ -1,0 +1,22 @@
+#
+# https://help.github.com/articles/dealing-with-line-endings/
+#
+# Linux start script should use lf
+/gradlew        text eol=lf
+
+# Normalizza i file di testo (converti CRLF in LF in repo, CRLF in locale Windows)
+* text=auto
+
+# Forza LF (Unix style) per file specifici, es. script shell
+*.sh text eol=lf
+
+# Forza CRLF per file di Windows, es. file batch
+*.bat text eol=crlf
+
+# Forza LF per file di configurazione gradle
+*.gradle text eol=lf
+*.properties text eol=lf
+
+# Binary files should be left untouched
+*.jar           binary
+
