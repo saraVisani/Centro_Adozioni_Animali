@@ -6,8 +6,8 @@
  */
 
 plugins {
-    // Apply the application plugin to add support for building a CLI application in Java.
-    application
+    kotlin("jvm") version "1.9.10" 
+    id("nu.studer.jooq") version "9.0"
 }
 
 repositories {
@@ -23,6 +23,12 @@ dependencies {
 
     // This dependency is used by the application.
     implementation(libs.guava)
+
+    // JOOQ runtime
+    implementation("org.jooq:jooq:3.19.1")
+
+    // Driver MySQL per jOOQ Generator
+    jooqGenerator("mysql:mysql-connector-java:8.0.33")
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
@@ -31,6 +37,33 @@ java {
         languageVersion = JavaLanguageVersion.of(21)
     }
 }
+
+// jOOQ configuration per MySQL
+jooq {
+    version.set("3.19.1")
+    configurations {
+        create("main") {
+            generationTool {
+                jdbc {
+                    driver = "com.mysql.cj.jdbc.Driver"
+                    url = "jdbc:mysql://localhost:8080/Adozione_Animali"
+                }
+                generator {
+                    name = "org.jooq.codegen.DefaultGenerator"
+                    database {
+                        name = "org.jooq.meta.mysql.MySQLDatabase"
+                        inputSchema = "Adozione_Animali"
+                    }
+                    target {
+                        packageName = "com.tuo.pacchetto.jooq"
+                        directory = "build/generated-src/jooq/main"
+                    }
+                }
+            }
+        }
+    }
+}
+
 
 application {
     // Define the main class for the application.
@@ -41,3 +74,5 @@ tasks.named<Test>("test") {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
 }
+
+sourceSets["main"].java.srcDir("build/generated-src/jooq/main")
