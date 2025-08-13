@@ -27,6 +27,8 @@ dependencies {
     // JOOQ runtime
     implementation("org.jooq:jooq:3.19.1")
 
+    implementation("mysql:mysql-connector-java:8.0.33")
+
     // Driver MySQL per jOOQ Generator
     jooqGenerator("mysql:mysql-connector-java:8.0.33")
 }
@@ -46,7 +48,7 @@ jooq {
             generationTool {
                 jdbc {
                     driver = "com.mysql.cj.jdbc.Driver"
-                    url = "jdbc:mysql://localhost:8080/Adozione_Animali"
+                    url = "jdbc:mysql://localhost:3306/Adozione_Animali"
                 }
                 generator {
                     name = "org.jooq.codegen.DefaultGenerator"
@@ -55,7 +57,7 @@ jooq {
                         inputSchema = "Adozione_Animali"
                     }
                     target {
-                        packageName = "com.tuo.pacchetto.jooq"
+                        packageName = "jooq.generated"
                         directory = "build/generated-src/jooq/main"
                     }
                 }
@@ -67,7 +69,7 @@ jooq {
 
 application {
     // Define the main class for the application.
-    mainClass = "org.example.App"
+    mainClass = "it.unibo.adozione_animali.Start"
 }
 
 tasks.named<Test>("test") {
