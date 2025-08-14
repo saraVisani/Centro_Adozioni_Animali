@@ -5,31 +5,21 @@
  * For more details on building Java & JVM projects, please refer to https://docs.gradle.org/9.0.0/userguide/building_java_projects.html in the Gradle documentation.
  */
 
+import org.jooq.meta.kotlin.*
+
 plugins {
-    kotlin("jvm") version "1.9.10" 
-    id("nu.studer.jooq") version "9.0"
+    java
+    application
+
+    id("nu.studer.jooq") version "10.1.1"
 }
 
 repositories {
-    // Use Maven Central for resolving dependencies.
     mavenCentral()
 }
 
 dependencies {
-    // Use JUnit Jupiter for testing.
-    testImplementation(libs.junit.jupiter)
-
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-
-    // This dependency is used by the application.
-    implementation(libs.guava)
-
-    // JOOQ runtime
-    implementation("org.jooq:jooq:3.19.1")
-
     implementation("mysql:mysql-connector-java:8.0.33")
-
-    // Driver MySQL per jOOQ Generator
     jooqGenerator("mysql:mysql-connector-java:8.0.33")
 }
 
@@ -40,41 +30,53 @@ java {
     }
 }
 
-// jOOQ configuration per MySQL
 jooq {
-    version.set("3.19.1")
     configurations {
         create("main") {
-            generationTool {
+            jooqConfiguration {
+                logging = org.jooq.meta.jaxb.Logging.WARN
                 jdbc {
                     driver = "com.mysql.cj.jdbc.Driver"
-                    url = "jdbc:mysql://localhost:3306/Adozione_Animali"
+                    url = "jdbc:mysql://localhost:3306/adozione_animali?ssl=false"
+                    user = "root"
+                    password = ""
                 }
                 generator {
                     name = "org.jooq.codegen.DefaultGenerator"
                     database {
                         name = "org.jooq.meta.mysql.MySQLDatabase"
-                        inputSchema = "Adozione_Animali"
+                        inputSchema = "adozione_animali"
+                        isIncludeRoutines = true
+                        isIncludeUDTs = true
+                    }
+                    generate {
+                        isDeprecated = false
+                        isRecords = true
+                        isImmutablePojos = true
+                        isFluentSetters = true
                     }
                     target {
-                        packageName = "jooq.generated"
-                        directory = "build/generated-src/jooq/main"
+                        packageName = "nu.studer.sample"
+                        directory = "build/generated-src/jooq/main"  // default (can be omitted)
                     }
+                    strategy.name = "org.jooq.codegen.DefaultGeneratorStrategy"
                 }
             }
         }
     }
 }
 
+buildscript {
+    configurations["classpath"].resolutionStrategy.eachDependency {
+        if (requested.group.startsWith("org.jooq") && requested.name.startsWith("jooq")) {
+            useVersion("3.20.1")
+        }
+    }
+}
 
 application {
     // Define the main class for the application.
     mainClass = "it.unibo.adozione_animali.Start"
-}
-
-tasks.named<Test>("test") {
-    // Use JUnit Platform for unit tests.
-    useJUnitPlatform()
 }
 
 sourceSets["main"].java.srcDir("build/generated-src/jooq/main")
