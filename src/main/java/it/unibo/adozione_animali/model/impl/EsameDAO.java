@@ -9,6 +9,7 @@ import org.jooq.impl.DSL;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.logging.Logger;
 
 public class EsameDAO implements Esame {
@@ -18,11 +19,16 @@ public class EsameDAO implements Esame {
     @Override
     public void insertEsame(final int cod_fascicolo, final short numero_problema, final String paragrafo,
                             final LocalDate data_esame, final String cod_provincia, final String cod_citta,
-                            int numero, String cod_animale) {
+                            int numero, String cod_animale, List<String> cod_tipi_esame) {
         try (Connection conn = DBConfig.getConnection()) {
             DSLContext create = DSL.using(conn);
-            Routines.inserimentoEsame(create.configuration(), cod_fascicolo, numero_problema,
-                    paragrafo, data_esame, cod_provincia, cod_citta, numero, cod_animale);
+            final String paragrafo_esame = Routines.inserimentoEsame(create.configuration(), cod_fascicolo, numero_problema,
+                paragrafo, null, data_esame, cod_provincia, cod_citta, numero,
+                    cod_animale, cod_tipi_esame.getFirst());
+            cod_tipi_esame.removeFirst();
+            for (String cod_tipo_esame : cod_tipi_esame) {
+                Routines.inserimentoSpecifica(create.configuration(), cod_fascicolo, numero_problema, paragrafo_esame, cod_tipo_esame);
+            }
         } catch (SQLException e) {
             this.logger.severe("La connessione non ha funzionato");
         }
@@ -47,11 +53,7 @@ public class EsameDAO implements Esame {
     public void deleteEsame(int cod_fascicolo, short numero_problema, String paragrafo) {
         try (Connection conn = DBConfig.getConnection()) {
             DSLContext create = DSL.using(conn);
-            create.deleteFrom(Tables.ESAME)
-                    .where(Tables.ESAME.COD_FASCICOLO.eq(cod_fascicolo))
-                    .and(Tables.ESAME.NUMERO.eq(numero_problema))
-                    .and(Tables.ESAME.PARAGRAFO.eq(paragrafo))
-                    .execute();
+            Routines.rimozionePaginaFascicolo(create.configuration(), cod_fascicolo, numero_problema, paragrafo);
         } catch (SQLException e) {
             this.logger.severe("La connessione non ha funzionato");
         }

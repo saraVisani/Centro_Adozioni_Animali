@@ -1,6 +1,7 @@
 package it.unibo.adozione_animali.model.api;
 
 import java.time.LocalDate;
+import java.util.List;
 
 /**
  * Interface that represents the Esame table.
@@ -8,7 +9,7 @@ import java.time.LocalDate;
 public interface Esame {
 
     void insertEsame(int cod_fascicolo, short numero_problema, String paragrafo, LocalDate data_esame,
-                     String cod_provincia, String cod_citta, int numero, String cod_animale);
+                     String cod_provincia, String cod_citta, int numero, String cod_animale, List<String> cod_tipi_esame);
 
     void updateEsame(int cod_fascicolo, short numero_problema, String paragrafo, LocalDate data_esame);
 
