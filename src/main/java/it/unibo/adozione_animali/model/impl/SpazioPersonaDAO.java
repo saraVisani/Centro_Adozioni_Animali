@@ -10,11 +10,12 @@ import nu.studer.sample.Tables;
 import nu.studer.sample.routines.CambiaSpazioPersonale;
 import java.math.BigDecimal;
 import java.sql.Connection;
+import java.util.Optional;
 
 public class SpazioPersonaDAO implements SpazioPersona {
 
     @Override
-    public boolean insertSpazioPersona(int spazio, String persona, String provincia, String citta, int numero, java.util.Optional<Integer> spazioRimanente) {
+    public boolean insertSpazioPersona(int spazio, String persona, String provincia, String citta, int numero, Optional<Float> spazioRimanente) {
         try (Connection connection = DBConfig.getConnection()) {
             DSLContext ctx = DSL.using(connection, SQLDialect.MYSQL);
 
@@ -33,8 +34,8 @@ public class SpazioPersonaDAO implements SpazioPersona {
                 .set(Tables.SPAZIO_PERSONA.COD_CITTA_, citta)
                 .set(Tables.SPAZIO_PERSONA.NUMERO, numero)
                 .set(Tables.SPAZIO_PERSONA.SPAZIO_RIMANENTE,
-                    spazioRimanente.orElse(spazioRimDefault) != null
-                        ? BigDecimal.valueOf(spazioRimanente.orElse(spazioRimDefault))
+                    spazioRimanente.orElse(spazioRimDefault != null ? spazioRimDefault.floatValue() : null) != null
+                        ? BigDecimal.valueOf(spazioRimanente.orElse(spazioRimDefault != null ? spazioRimDefault.floatValue() : null))
                         : null);
 
             int righeInserite = query.execute();

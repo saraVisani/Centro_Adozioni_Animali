@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 public class SpazioDAO implements Spazio{
 
     @Override
-    public boolean insertSpazio(int spazio, String tipo, int dimensione) {
+    public boolean insertSpazio(int spazio, String tipo, float dimensione) {
         try (Connection conn = DBConfig.getConnection()){
             DSLContext ctx = DSL.using(conn, SQLDialect.MYSQL);
 
@@ -49,14 +49,14 @@ public class SpazioDAO implements Spazio{
     }
 
     @Override
-    public boolean updateSpazioDimensione(int spazio, int newDimensione) {
+    public boolean updateSpazioDimensione(int spazio, float newDimensione) {
         try (Connection conn = DBConfig.getConnection()) {
             DSLContext ctx = DSL.using(conn, SQLDialect.MYSQL);
 
             return ctx.transactionResult(configuration -> {
                 DSLContext tCtx = DSL.using(configuration);
 
-                // 1️⃣ Recupero dimensione attuale dello spazio
+                //Recupero dimensione attuale dello spazio
                 var spazioRecord = tCtx.select(Tables.SPAZIO.DIMENSIONE)
                     .from(Tables.SPAZIO)
                     .where(Tables.SPAZIO.ID_SPAZIO.eq(spazio))
@@ -67,9 +67,9 @@ public class SpazioDAO implements Spazio{
                 }
 
                 int oldDimensione = spazioRecord.get(Tables.SPAZIO.DIMENSIONE).intValue();
-                int differenza = newDimensione - oldDimensione;
+                float differenza = newDimensione - oldDimensione;
 
-                // 2️⃣ Aggiorno la dimensione dello spazio
+                //Aggiorno la dimensione dello spazio
                 int righeSpazio = tCtx.update(Tables.SPAZIO)
                     .set(Tables.SPAZIO.DIMENSIONE, BigDecimal.valueOf(newDimensione))
                     .where(Tables.SPAZIO.ID_SPAZIO.eq(spazio))
@@ -79,7 +79,7 @@ public class SpazioDAO implements Spazio{
                     throw new RuntimeException("Aggiornamento SPAZIO fallito, rollback");
                 }
 
-                // 3️⃣ Aggiorno lo spazio rimanente in tutte le relazioni SPAZIO_PERSONA
+                //Aggiorno lo spazio rimanente in tutte le relazioni SPAZIO_PERSONA
                 if (differenza != 0) {
                     tCtx.update(Tables.SPAZIO_PERSONA)
                         .set(Tables.SPAZIO_PERSONA.SPAZIO_RIMANENTE,
