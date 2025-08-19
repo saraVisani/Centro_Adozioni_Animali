@@ -7,12 +7,13 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 
 public class Start {
-        public static void main(String[] args) {
+
+    public static void main(String[] args) {
         try (Connection conn = DriverManager.getConnection(
                 "jdbc:mysql://localhost:3306/Adozione_Animali"
-            )) {
-            DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
+        )) {
 
+            DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
             // Solo per test iniziale o setup
             System.out.println("Persone presenti nel DB:");
             create.selectFrom(Persona.PERSONA)
