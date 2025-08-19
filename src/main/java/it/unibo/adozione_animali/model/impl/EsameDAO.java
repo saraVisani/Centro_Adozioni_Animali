@@ -3,17 +3,15 @@ package it.unibo.adozione_animali.model.impl;
 import it.unibo.adozione_animali.model.api.Esame;
 import nu.studer.sample.Routines;
 import nu.studer.sample.Tables;
-import nu.studer.sample.routines.InserimentoEsame;
 import org.jooq.DSLContext;
 import org.jooq.impl.DSL;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.logging.Logger;
 
-public class EsameDao implements Esame {
+public class EsameDAO implements Esame {
 
     final Logger logger = Logger.getLogger("EsameLogger");
 
