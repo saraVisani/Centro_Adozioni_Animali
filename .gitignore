@@ -21,3 +21,6 @@ build/
 
 # Ignore log files
 *.log
+
+# Not ignore
+!gradle/wrapper/gradle-wrapper.jar
