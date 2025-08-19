@@ -18,7 +18,7 @@ public class CentroDAO implements Centro{
     @Override
     public boolean insertCentro(String nome, int capienza, String provincia, String città, int numero,
             List<String> specie) {
-        try (Connection conn = DriverManager.getConnection(DBConfig.URL, DBConfig.USER, DBConfig.PASSWORD)) {
+        try (Connection conn = DBConfig.getConnection()) {
             DSLContext ctx = DSL.using(conn);
 
             // 1. Inserisci il centro
