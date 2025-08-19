@@ -14,11 +14,6 @@ public class Start {
         )) {
 
             DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
-            // Solo per test iniziale o setup
-            System.out.println("Persone presenti nel DB:");
-            create.selectFrom(Persona.PERSONA)
-                        .fetch()
-                        .forEach(System.out::println);
 
             // Da qui in poi, passa create a un service o controller
 
