@@ -7,12 +7,13 @@ public class MainMenu {
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("Gestione Centri Adozione");
-        frame.setSize(500, 400);
+        frame.setSize(620, 520);
+        frame.setMinimumSize(new Dimension(620, 520));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Pannello in alto con pulsante Home e menu
         JPanel topPanel = new JPanel();
-        topPanel.setLayout(new FlowLayout(FlowLayout.LEFT)); // allinea a sinistra
+        topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.X_AXIS)); // allinea a sinistra
 
         JButton homeButton = new JButton("Home");
         topPanel.add(homeButton);
@@ -26,6 +27,8 @@ public class MainMenu {
         JMenu razzaMenu = new JMenu("Razze");
         JMenu statisticheMenu = new JMenu("Statistiche");
 
+        JMenuItem centri = new JMenuItem("Centri");
+        JMenuItem spazi = new JMenuItem("Spazi");
         JMenuItem infoGenerali = new JMenuItem("Informazioni Generali Animali");
         JMenuItem ricercaAnimali = new JMenuItem("Ricerca Animali");
         JMenuItem aggiornaStatistiche = new JMenuItem("Aggiorna Statistiche");
@@ -52,6 +55,8 @@ public class MainMenu {
         personaleMenu.add(gestioneTurniTask);
         statisticheMenu.add(aggiornaStatistiche);
         statisticheMenu.add(ricercaStatistiche);
+        centroMenu.add(centri);
+        spazioMenu.add(spazi);
 
 
         JMenuBar menuBar = new JMenuBar();
@@ -104,15 +109,15 @@ public class MainMenu {
         cards.add(ricercaPanel, "ricerca");
         cards.add(aggiornaPanel, "aggiornamento");
         cards.add(fascicoloPanel, "fascicolo");
-        cards.add(gestioneCarPanel, "gestione");
-        cards.add(gestioneCompPanel, "gestione");
-        cards.add(gestioneRazzeSpecPanel, "gestione");
-        cards.add(gestioneRichPanel, "gestione");
-        cards.add(gestioneTurniPanel, "gestione");
-        cards.add(infoPersonalePanel, "info");
-        cards.add(infoRazzaPanel, "info");
-        cards.add(ricercaStatPanel, "ricerca");
-        cards.add(infoRichiedentiPanel, "info");
+        cards.add(gestioneCarPanel, "gestioneCa");
+        cards.add(gestioneCompPanel, "gestioneCo");
+        cards.add(gestioneRazzeSpecPanel, "gestioneRa");
+        cards.add(gestioneRichPanel, "gestioneR");
+        cards.add(gestioneTurniPanel, "gestioneT");
+        cards.add(infoPersonalePanel, "infoP");
+        cards.add(infoRazzaPanel, "infoRa");
+        cards.add(ricercaStatPanel, "ricercaS");
+        cards.add(infoRichiedentiPanel, "infoR");
         cards.add(centriPanel, "centri");
         cards.add(spaziPanel, "spazi");
 
@@ -133,27 +138,70 @@ public class MainMenu {
             cl.show(cards, "ricerca");
         });
 
-        gestioneComponenti;
+        gestioneComponenti.addActionListener(e -> {
+            CardLayout cl = (CardLayout) (cards.getLayout());
+            cl.show(cards, "gestioneCo");
+        });
 
-        gestioneCaratteristiche;
+        gestioneCaratteristiche.addActionListener(e -> {
+            CardLayout cl = (CardLayout) (cards.getLayout());
+            cl.show(cards, "gestioneCa");
+        });
 
-        fascicoloSanitario;
+        fascicoloSanitario.addActionListener(e -> {
+            CardLayout cl = (CardLayout) (cards.getLayout());
+            cl.show(cards, "fascicolo");
+        });
 
-        razzaInfo;
+        razzaInfo.addActionListener(e -> {
+            CardLayout cl = (CardLayout) (cards.getLayout());
+            cl.show(cards, "infoRa");
+        });
 
-        gestioneRazzeSpecifiche;
+        gestioneRazzeSpecifiche.addActionListener(e -> {
+            CardLayout cl = (CardLayout) (cards.getLayout());
+            cl.show(cards, "gestioneS");
+        });
 
-        richiedentiInfo;
+        richiedentiInfo.addActionListener(e -> {
+            CardLayout cl = (CardLayout) (cards.getLayout());
+            cl.show(cards, "infoR");
+        });
 
-        gestioneRichieste;
+        gestioneRichieste.addActionListener(e -> {
+            CardLayout cl = (CardLayout) (cards.getLayout());
+            cl.show(cards, "gestioneR");
+        });
 
-        personaleInfo;
+        personaleInfo.addActionListener(e -> {
+            CardLayout cl = (CardLayout) (cards.getLayout());
+            cl.show(cards, "infoP");
+        });
 
-        gestioneTurniTask;
+        gestioneTurniTask.addActionListener(e -> {
+            CardLayout cl = (CardLayout) (cards.getLayout());
+            cl.show(cards, "gestioneT");
+        });
 
-        aggiornaStatistiche;
+        aggiornaStatistiche.addActionListener(e -> {
+            CardLayout cl = (CardLayout) (cards.getLayout());
+            cl.show(cards, "aggiornamento");
+        });
 
-        ricercaStatistiche;
+        ricercaStatistiche.addActionListener(e -> {
+            CardLayout cl = (CardLayout) (cards.getLayout());
+            cl.show(cards, "ricercaS");
+        });
+
+        centri.addActionListener(e -> {
+            CardLayout cl = (CardLayout) (cards.getLayout());
+            cl.show(cards, "centri");
+        });
+
+        spazi.addActionListener(e -> {
+            CardLayout cl = (CardLayout) (cards.getLayout());
+            cl.show(cards, "spazi");
+        });
 
         frame.setLayout(new BorderLayout());
         frame.add(topPanel, BorderLayout.NORTH);
