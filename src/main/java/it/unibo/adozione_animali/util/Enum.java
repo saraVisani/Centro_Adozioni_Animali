@@ -71,6 +71,20 @@ public class Enum {
             }
             return null;
         }
+
+        public static Specie fromKey(String key) {
+            for (Specie s : Specie.values()) {
+                if (s.getKey().equalsIgnoreCase(key)) {
+                    return s;
+                }
+            }
+            return null;
+        }
+
+        public String getDisplayName() {
+            String lower = this.name().toLowerCase();
+            return Character.toUpperCase(lower.charAt(0)) + lower.substring(1);
+        }
     }
 
     public enum TipoSpazio{
@@ -191,22 +205,42 @@ public class Enum {
             this.descrizione = descrizione;
         }
 
+        /**
+         * Restituisce la descrizione leggibile dell'enum.
+         * @return la descrizione dell'enum
+         */
         public String getDescrizione() {
             return descrizione;
         }
 
-        /** Restituisce l'enum a partire dalla descrizione leggibile */
+        /**
+         * Restituisce l'enum corrispondente alla descrizione, o null se non esiste.
+         * @param descrizione la descrizione da cercare
+         * @return l'enum corrispondente alla descrizione, o null se non esiste
+         */
         public static NomeStatistica fromDescrizione(String descrizione) {
             if (descrizione == null) return null;
             return LOOKUP_DESCRIZIONE.get(descrizione.toLowerCase());
         }
 
-        /** Verifica se la descrizione corrisponde a una statistica valida */
-        public static boolean isValidDescrizione(String descrizione) {
-            return fromDescrizione(descrizione) != null;
+        /**
+         * Controlla se la stringa corrisponde a una descrizione valida dell'enum o
+         * a una chiave valida dell'enum.
+         * Se è valida, restituisce true, altrimenti false.
+         * @param input la descrizione da verificare
+         * @return true se è una descrizione valida, false altrimenti
+         */
+        public static boolean isValidDescrizione(String input) {
+            if (input == null) return false;
+            return fromDescrizione(input) != null || isValidKey(input);
         }
 
-        /** Verifica se la chiave (nome enum) è valida */
+        /**
+         * Controlla se la stringa corrisponde a una chiave valida dell'enum.
+         * Se è valida, restituisce true, altrimenti false.
+         * @param key la chiave da verificare
+         * @return
+         */
         public static boolean isValidKey(String key) {
             if (key == null) return false;
             try {
@@ -215,6 +249,35 @@ public class Enum {
             } catch (IllegalArgumentException e) {
                 return false;
             }
+        }
+
+        /**
+         * Restituisce la descrizione leggibile a partire da una chiave o da una descrizione.
+         * Se non è valida, restituisce null.
+         * @param input la chiave o la descrizione da verificare
+         * @return Se è una chiave valida, restituisce la descrizione corrispondente.
+         * Se è una descrizione valida, restituisce la stessa descrizione.
+         * Se non è valida, restituisce null.
+         */
+        public static String getDescrizioneFrom(String input) {
+            if (input == null) return null;
+
+            // 1️⃣ Controlla se è una chiave enum valida
+            try {
+                NomeStatistica n = NomeStatistica.valueOf(input.toUpperCase());
+                return n.getDescrizione();
+            } catch (IllegalArgumentException e) {
+                // non è una chiave valida, prosegui
+            }
+
+            // 2️⃣ Controlla se corrisponde alla descrizione leggibile
+            NomeStatistica n = fromDescrizione(input);
+            if (n != null) {
+                return n.getDescrizione();
+            }
+
+            // 3️⃣ Nessun match trovato
+            return null;
         }
     }
 
