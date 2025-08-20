@@ -13,8 +13,7 @@ import java.sql.Connection;
 
 public class DatoDAO implements Dato{
 
-    @Override
-    public boolean insertDato(String codice, String nome, String valore, String statistica, LocalDate data) {
+    protected boolean insertDato(String codice, String nome, String valore, String statistica, LocalDate data) {
         try (Connection conn = DBConfig.getConnection()) {
             DSLContext ctx = DSL.using(conn, SQLDialect.MYSQL);
 

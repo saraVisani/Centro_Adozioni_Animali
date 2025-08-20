@@ -13,8 +13,7 @@ import java.sql.Connection;
 
 public class StatisticaDAO implements Statistica{
 
-    @Override
-    public boolean insertStatistica(String codice, LocalDate data, String nome) {
+    protected boolean insertStatistica(String codice, LocalDate data, String nome) {
         try (Connection conn = DBConfig.getConnection()) {
             DSLContext ctx = DSL.using(conn, SQLDialect.MYSQL);
 
