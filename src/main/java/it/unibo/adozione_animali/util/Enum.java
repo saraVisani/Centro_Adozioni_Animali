@@ -220,9 +220,9 @@ public class Enum {
 
     public enum TipoLavori{
         PULIZIA("Pulizia"),
-        MANUTENZIONE("Manutenzione"),
-        CURA_ANIMALI("Cura Animali"),
-        ACCOGLIENZA("Accoglienza");
+        UFFICIO("Ufficio"),
+        TRATTAMENTO_MEDICO("Trattamento_Medico"),
+        ACCUDIMENTO("Accudimento");
 
         private final String descrizione;
 
