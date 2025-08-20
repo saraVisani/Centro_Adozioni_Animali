@@ -133,7 +133,27 @@ public class MainMenu {
             cl.show(cards, "ricerca");
         });
 
-        
+        gestioneComponenti;
+
+        gestioneCaratteristiche;
+
+        fascicoloSanitario;
+
+        razzaInfo;
+
+        gestioneRazzeSpecifiche;
+
+        richiedentiInfo;
+
+        gestioneRichieste;
+
+        personaleInfo;
+
+        gestioneTurniTask;
+
+        aggiornaStatistiche;
+
+        ricercaStatistiche;
 
         frame.setLayout(new BorderLayout());
         frame.add(topPanel, BorderLayout.NORTH);
