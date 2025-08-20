@@ -7,10 +7,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 
 import com.sun.net.httpserver.HttpServer;
-import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpHandler;
 
-import java.io.IOException;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.nio.file.Files;
@@ -35,23 +32,20 @@ public class Start {
 
             HttpServer server = HttpServer.create(new InetSocketAddress(8081), 0);
 
-            server.createContext("/", new HttpHandler() {
-                @Override
-                public void handle(HttpExchange exchange) throws IOException {
-                    byte[] response = Files.readAllBytes(Paths.get("view/index.html"));
+            server.createContext("/", exchange -> {
+                byte[] response = Files.readAllBytes(Paths.get("view/index.html"));
 
-                    exchange.sendResponseHeaders(200, response.length);
-                    OutputStream os = exchange.getResponseBody();
-                    os.write(response);
-                    os.close();
-                }
+                exchange.sendResponseHeaders(200, response.length);
+                OutputStream os = exchange.getResponseBody();
+                os.write(response);
+                os.close();
             });
 
             server.setExecutor(null);
             server.start();
 
             System.out.println("Server avviato su http://localhost:8081");
-            
+
             if (Desktop.isDesktopSupported()) {
                 Desktop.getDesktop().browse(new URI("http://localhost:8081"));
             } else {
