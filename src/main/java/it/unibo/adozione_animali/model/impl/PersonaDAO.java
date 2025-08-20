@@ -8,6 +8,7 @@ import org.jooq.impl.DSL;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.logging.Logger;
+import it.unibo.adozione_animali.util.DBConfig;
 
 public class PersonaDAO implements Persona {
 

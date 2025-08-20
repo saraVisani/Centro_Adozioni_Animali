@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.logging.Logger;
+import it.unibo.adozione_animali.util.DBConfig;
 
 public class PersonaleDAO implements Personale {
 

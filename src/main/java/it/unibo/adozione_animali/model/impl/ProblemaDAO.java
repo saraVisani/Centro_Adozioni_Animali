@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Logger;
+import it.unibo.adozione_animali.util.DBConfig;
 
 public class ProblemaDAO implements Problema {
 
