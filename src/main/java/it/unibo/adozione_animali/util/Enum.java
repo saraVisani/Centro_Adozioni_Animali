@@ -55,6 +55,12 @@ public class Enum {
             return this.name().substring(0, 2);
         }
 
+        // Controlla se la stringa corrisponde alla chiave
+        public boolean matchesKey(String key) {
+            if (key == null) return false;
+            return this.getKey().equalsIgnoreCase(key);
+        }
+
         // Controlla se la stringa corrisponde al nome completo dell'enum
         public boolean matchesName(String s) {
             if (s == null) return false;
