@@ -1,0 +1,101 @@
+/* Stile generale */
+body {
+  background-color: #cfefff; /* celeste chiaro */
+  color: black;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* Navbar */
+.navbar {
+  background-color: #004d00; /* verde scuro */
+  overflow: hidden;
+}
+
+/* Link principali e pulsante dropdown */
+.navbar a, .dropbtn {
+  float: left;
+  font-size: 16px;
+  color: white; /* scritte bianche */
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  background-color: inherit;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+/* Hover sui link principali e dropdown */
+.navbar a:hover,
+.dropdown:hover .dropbtn {
+  background-color: #006600; /* verde più chiaro */
+}
+
+/* Contenitore dropdown */
+.dropdown {
+  float: left;
+  overflow: hidden;
+}
+
+/* Dropdown menu */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #004d00; /* verde scuro */
+  min-width: 160px;
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+/* Link dentro il dropdown */
+.dropdown-content a {
+  float: none;
+  color: white;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+  font-weight: bold;
+}
+
+/* Hover sui link dropdown */
+.dropdown-content a:hover {
+  background-color: #006600;
+}
+
+/* Mostra dropdown al passaggio */
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/* Pulsanti */
+button {
+  background-color: #004d00;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  border-radius: 5px;
+}
+
+button:hover {
+  background-color: #006600;
+}
+
+/* Link normali */
+a {
+  font-weight: bold;
+  color: #66ff66; /* verde chiaro */
+  text-decoration: none;
+}
+
+a:visited {
+  color: white; /* arancione */
+}
+
+a:hover {
+  text-decoration: underline;
+}

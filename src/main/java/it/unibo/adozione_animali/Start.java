@@ -52,6 +52,34 @@ public class Start {
                 System.out.println("Impossibile aprire il browser automaticamente.");
             }
 
+            server.createContext("/static", exchange -> {
+                String path = exchange.getRequestURI().getPath().replace("/static/", "");
+                java.nio.file.Path filePath = Paths.get("view/static/" + path);
+
+                if (Files.exists(filePath)) {
+                    String contentType = "application/octet-stream";
+                    if (path.endsWith(".css")) contentType = "text/css";
+                    else if (path.endsWith(".js")) contentType = "application/javascript";
+                    else if (path.endsWith(".html")) contentType = "text/html";
+                    else if (path.endsWith(".png")) contentType = "image/png";
+                    else if (path.endsWith(".jpg") || path.endsWith(".jpeg")) contentType = "image/jpeg";
+                    else if (path.endsWith(".ico")) contentType = "image/x-icon";
+
+                    byte[] response = Files.readAllBytes(filePath);
+                    exchange.getResponseHeaders().add("Content-Type", contentType);
+                    exchange.sendResponseHeaders(200, response.length);
+                    try (OutputStream os = exchange.getResponseBody()) {
+                        os.write(response);
+                    }
+                } else {
+                    String error = "File non trovato: " + path;
+                    exchange.sendResponseHeaders(404, error.length());
+                    try (OutputStream os = exchange.getResponseBody()) {
+                        os.write(error.getBytes());
+                    }
+                }
+            });
+
         } catch (Exception e) {
             System.err.println("Errore nell'avvio del server: " + e.getMessage());
             e.printStackTrace();
