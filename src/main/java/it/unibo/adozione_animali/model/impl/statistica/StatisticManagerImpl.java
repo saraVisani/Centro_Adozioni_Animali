@@ -4,9 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import it.unibo.adozione_animali.model.api.statistica.ConcatDato;
-import it.unibo.adozione_animali.model.api.statistica.Dato;
 import it.unibo.adozione_animali.model.api.statistica.StatisticManager;
-import it.unibo.adozione_animali.model.api.statistica.Statistica;
 import it.unibo.adozione_animali.util.Enum.NomeStatistica;
 
 public class StatisticManagerImpl implements StatisticManager{
@@ -25,7 +23,7 @@ public class StatisticManagerImpl implements StatisticManager{
             if(data.getYear() < annoCorrente) {
                 return false;
             }
-            Statistica statisticaDAO = new StatisticaDAO();
+            StatisticaDAO statisticaDAO = new StatisticaDAO();
             return statisticaDAO.insertStatistica(codice, data, nome);
         } else {
             return false;
@@ -51,7 +49,7 @@ public class StatisticManagerImpl implements StatisticManager{
         }
 
         statistica = NomeStatistica.getDescrizioneFrom(statistica);
-        Dato datoDAO = new DatoDAO();
+        DatoDAO datoDAO = new DatoDAO();
         if (!datoDAO.insertDato(codice, realName, realValue, statistica, data)) {
             return false;
         }
