@@ -1,5 +1,7 @@
 package it.unibo.adozione_animali.model.api;
 
+import java.util.List;
+
 /**
  * Represents the Problema table in the database.
  */
@@ -9,7 +11,7 @@ public interface Problema {
                         String descrizione, String tipoCurabile, String inCura, String Area1, String Area2,
                         int rCodFascicolo, short rNumeroProblema, String rParagrafo, int eCodFascicolo,
                         short eNumeroProblema, String eParagrafo, String codProvincia, String codCitta,
-                        int numero, String codAnimale);
+                        int numero, String codAnimale, List<String> codSintomi);
 
     void updateProblemaInCura(int codFascicolo, short numeroProblema, String paragrafo, String statoCura,
                               String codProvincia, String codCitta, int numero, String codAnimale);

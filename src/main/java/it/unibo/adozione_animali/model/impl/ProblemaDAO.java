@@ -8,6 +8,7 @@ import org.jooq.impl.DSL;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.logging.Logger;
 
 public class ProblemaDAO implements Problema {
@@ -20,12 +21,18 @@ public class ProblemaDAO implements Problema {
                                final String inCura, final String Area1, final String Area2, final int rCodFascicolo,
                                final short rNumeroProblema, final String rParagrafo, final int eCodFascicolo,
                                final short eNumeroProblema, final String eParagrafo, final String codProvincia,
-                               final String codCitta, final int numero, final String codAnimale) {
+                               final String codCitta, final int numero, final String codAnimale,
+                               final List<String> codSintomi) {
         try (Connection conn = DBConfig.getConnection()) {
             DSLContext create = DSL.using(conn);
             Routines.inserimentoProblema(create.configuration(), codFascicolo, numeroProblema, paragrafo,
                     nome, descrizione, tipoCurabile, inCura, Area1, Area2, rCodFascicolo, rNumeroProblema, rParagrafo,
-                    eCodFascicolo, eNumeroProblema, eParagrafo, codProvincia, codCitta, numero, codAnimale);
+                    eCodFascicolo, eNumeroProblema, eParagrafo, codProvincia, codCitta, numero, codAnimale,
+                    codSintomi.getFirst());
+            codSintomi.removeFirst();
+            for (String codSintomo : codSintomi) {
+                Routines.inserimentoReferto(create.configuration(), codFascicolo, numeroProblema, paragrafo, codSintomo);
+            }
         } catch (SQLException e) {
             this.logger.severe("La connessione non ha funzionato");
         }
