@@ -14,10 +14,10 @@ import it.unibo.adozione_animali.util.DBConfig;
 
 public class RicoveroDAO implements Ricovero {
 
-    Logger logger = Logger.getLogger("loggerRicovero");
+    final Logger logger = Logger.getLogger("loggerRicovero");
 
     @Override
-    public void insertRicovero(final int codFascicolo, final short numeroProblema, final String paragrafo,
+    public void insertRicovero(final Integer codFascicolo, final Short numeroProblema, final String paragrafo,
                                final LocalDate dataInizioRicovero, final LocalDate dataFineRicovero,
                                final String nomeOspedale, final String codProvincia, final String codCitta,
                                final int numero, final String codAnimale) {

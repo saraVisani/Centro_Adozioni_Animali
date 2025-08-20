@@ -13,12 +13,12 @@ import it.unibo.adozione_animali.util.DBConfig;
 
 public class PersonaleDAO implements Personale {
 
-    Logger logger = Logger.getLogger("loggerPersonale");
+    final Logger logger = Logger.getLogger("loggerPersonale");
 
     @Override
     public void insertPersonale(final String CF, final byte tempoLavoro, final LocalDate dataAssunzioneDip,
                                 final LocalDate dataAssunzioneVol, final LocalDate dataFineLavoroDip,
-                                final LocalDate dataFineLavoroVol, final short stipendio,
+                                final LocalDate dataFineLavoroVol, final Short stipendio,
                                 final byte exVolontario, final byte exDipendente,
                                 final String codProvincia, final String codCitta, final int numero) {
         try (Connection conn = DBConfig.getConnection()) {

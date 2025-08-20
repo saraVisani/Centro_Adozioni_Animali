@@ -12,7 +12,7 @@ import it.unibo.adozione_animali.util.DBConfig;
 
 public class PersonaDAO implements Persona {
 
-    Logger logger = Logger.getLogger("loggerPersona");
+    final Logger logger = Logger.getLogger("loggerPersona");
 
     @Override
     public void insertPersona(final String CF, final String nome, final String cognome, final String email,

@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 
 public class TurnoLavorativoDAO implements TurnoLavorativo {
 
-    Logger logger = Logger.getLogger("loggerTurnoLavorativo");
+    final Logger logger = Logger.getLogger("loggerTurnoLavorativo");
 
     @Override
     public void insertTurnoLavorativo(byte numeroTurno, LocalDate dataTurno) {

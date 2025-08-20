@@ -8,10 +8,10 @@ import java.util.List;
  */
 public interface Esame {
 
-    void insertEsame(int cod_fascicolo, short numero_problema, String paragrafo, LocalDate data_esame,
-                     String cod_provincia, String cod_citta, int numero, String cod_animale, List<String> cod_tipi_esame);
+    void insertEsame(Integer codFascicolo, Short numeroProblema, String paragrafo, LocalDate dataEsame,
+                     String codProvincia, String codCitta, int numero, String codAnimale, List<String> codTipiEsame);
 
-    void updateEsame(int cod_fascicolo, short numero_problema, String paragrafo, LocalDate data_esame);
+    void updateEsame(int codFascicolo, short numeroProblema, String paragrafo, LocalDate dataEsame);
 
-    void deleteEsame(int cod_fascicolo, short numero_problema, String paragrafo);
+    void deleteEsame(int codFascicolo, short numeroProblema, String paragrafo);
 }

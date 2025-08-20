@@ -18,17 +18,17 @@ public class EsameDAO implements Esame {
     final Logger logger = Logger.getLogger("EsameLogger");
 
     @Override
-    public void insertEsame(final int cod_fascicolo, final short numero_problema, final String paragrafo,
-                            final LocalDate data_esame, final String cod_provincia, final String cod_citta,
-                            int numero, String cod_animale, List<String> cod_tipi_esame) {
+    public void insertEsame(final Integer codFascicolo, final Short numeroProblema, final String paragrafo,
+                            final LocalDate dataEsame, final String codProvincia, final String codCitta,
+                            int numero, String codAnimale, List<String> codTipiEsame) {
         try (Connection conn = DBConfig.getConnection()) {
             DSLContext create = DSL.using(conn);
-            final String paragrafo_esame = Routines.inserimentoEsame(create.configuration(), cod_fascicolo, numero_problema,
-                paragrafo, null, data_esame, cod_provincia, cod_citta, numero,
-                    cod_animale, cod_tipi_esame.getFirst());
-            cod_tipi_esame.removeFirst();
-            for (String cod_tipo_esame : cod_tipi_esame) {
-                Routines.inserimentoSpecifica(create.configuration(), cod_fascicolo, numero_problema, paragrafo_esame, cod_tipo_esame);
+            final String paragrafoEsame = Routines.inserimentoEsame(create.configuration(), codFascicolo, numeroProblema,
+                paragrafo, null, dataEsame, codProvincia, codCitta, numero,
+                    codAnimale, codTipiEsame.getFirst());
+            codTipiEsame.removeFirst();
+            for (String codTipoEsame : codTipiEsame) {
+                Routines.inserimentoSpecifica(create.configuration(), codFascicolo, numeroProblema, paragrafoEsame, codTipoEsame);
             }
         } catch (SQLException e) {
             this.logger.severe("La connessione non ha funzionato");
@@ -36,13 +36,13 @@ public class EsameDAO implements Esame {
     }
 
             @Override
-    public void updateEsame(int cod_fascicolo, short numero_problema, String paragrafo, LocalDate data_esame) {
+    public void updateEsame(int codFascicolo, short numeroProblema, String paragrafo, LocalDate dataEsame) {
             try (Connection conn = DBConfig.getConnection()) {
                 DSLContext create = DSL.using(conn);
                 create.update(Tables.ESAME)
-                        .set(Tables.ESAME.DATA_ESAME, data_esame)
-                        .where(Tables.ESAME.COD_FASCICOLO.eq(cod_fascicolo))
-                        .and(Tables.ESAME.NUMERO.eq(numero_problema))
+                        .set(Tables.ESAME.DATA_ESAME, dataEsame)
+                        .where(Tables.ESAME.COD_FASCICOLO.eq(codFascicolo))
+                        .and(Tables.ESAME.NUMERO.eq(numeroProblema))
                         .and(Tables.ESAME.PARAGRAFO.eq(paragrafo))
                         .execute();
             } catch (SQLException e) {
@@ -51,10 +51,10 @@ public class EsameDAO implements Esame {
     }
 
     @Override
-    public void deleteEsame(int cod_fascicolo, short numero_problema, String paragrafo) {
+    public void deleteEsame(int codFascicolo, short numeroProblema, String paragrafo) {
         try (Connection conn = DBConfig.getConnection()) {
             DSLContext create = DSL.using(conn);
-            Routines.rimozionePaginaFascicolo(create.configuration(), cod_fascicolo, numero_problema, paragrafo);
+            Routines.rimozionePaginaFascicolo(create.configuration(), codFascicolo, numeroProblema, paragrafo);
         } catch (SQLException e) {
             this.logger.severe("La connessione non ha funzionato");
         }

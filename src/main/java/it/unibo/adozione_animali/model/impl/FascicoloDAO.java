@@ -12,7 +12,7 @@ import it.unibo.adozione_animali.util.DBConfig;
 
 public class FascicoloDAO implements Fascicolo {
 
-    Logger logger = Logger.getLogger("loggerFascicolo");
+    final Logger logger = Logger.getLogger("loggerFascicolo");
 
     @Override
     public void deleteFascicolo(final int codFascicolo) {

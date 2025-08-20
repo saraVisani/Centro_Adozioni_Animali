@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 
 public class PaginaDAO implements Pagina {
 
-    Logger logger = Logger.getLogger("loggerPagina");
+    final Logger logger = Logger.getLogger("loggerPagina");
 
     @Override
     public void deletePaginaEffettiva(final int codFascicolo, final short numeroPagina) {
