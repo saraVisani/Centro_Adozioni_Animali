@@ -61,14 +61,14 @@ public class Enum {
             return this.getKey().equalsIgnoreCase(key);
         }
 
-        public static Specie matchesKeys(String key) {
-            if (key == null) return null;
-            for (Specie sp : values()) {       // scorre tutte le enum
-                if (sp.matchesKey(key)) {      // controlla la key di ciascuna
-                    return sp;
+        public static boolean matchesKeys(String key) {
+            if (key == null) return false;
+            for (Specie sp : values()) {
+                if (sp.matchesKey(key)) {
+                    return true;
                 }
             }
-            return null;
+            return false;
         }
 
         // Controlla se la stringa corrisponde al nome completo dell'enum
