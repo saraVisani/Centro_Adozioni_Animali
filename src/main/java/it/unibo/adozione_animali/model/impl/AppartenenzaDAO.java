@@ -2,7 +2,12 @@ package it.unibo.adozione_animali.model.impl;
 
 import it.unibo.adozione_animali.model.api.Appartenenza;
 import java.sql.Connection;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.jooq.DSLContext;
+import org.jooq.InsertSetMoreStep;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
 import nu.studer.sample.Tables;
@@ -10,19 +15,27 @@ import nu.studer.sample.Tables;
 public class AppartenenzaDAO implements Appartenenza {
 
     @Override
-    public boolean insertAppartenenza(String codice, String provincia, String città, int numero, String animale,
+    public boolean insertAppartenenza(List<String> codice, String provincia, String città, int numero, String animale,
             String tipo) {
         try (Connection conn = DBConfig.getConnection()) {
             DSLContext ctx = DSL.using(conn, SQLDialect.MYSQL);
-            int righeInserite = ctx.insertInto(Tables.APPARTENENZA)
-                .set(Tables.APPARTENENZA.CODICE, codice)
-                .set(Tables.APPARTENENZA.COD_PROVINCIA, provincia)
-                .set(Tables.APPARTENENZA.COD_CITTA_, città)
-                .set(Tables.APPARTENENZA.NUMERO, numero)
-                .set(Tables.APPARTENENZA.COD_ANIMALE, animale)
-                .set(Tables.APPARTENENZA.TIPO_CAR_PERSONALE, tipo)
-                .execute();
-            return righeInserite > 0;
+
+            List<InsertSetMoreStep<?>> insertQueries = new ArrayList<>();
+
+            for (String cod : codice) {
+                insertQueries.add(
+                    ctx.insertInto(Tables.APPARTENENZA)
+                    .set(Tables.APPARTENENZA.CODICE, cod)
+                    .set(Tables.APPARTENENZA.COD_PROVINCIA, provincia)
+                    .set(Tables.APPARTENENZA.COD_CITTA_, città)
+                    .set(Tables.APPARTENENZA.NUMERO, numero)
+                    .set(Tables.APPARTENENZA.COD_ANIMALE, animale)
+                    .set(Tables.APPARTENENZA.TIPO_CAR_PERSONALE, tipo)
+                );
+            }
+
+            int[] result = ctx.batch(insertQueries).execute();
+            return Arrays.stream(result).sum() > 0;
         } catch (Exception e) {
             e.printStackTrace();
             return false;

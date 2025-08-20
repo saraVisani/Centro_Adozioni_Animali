@@ -25,7 +25,7 @@ public class AbitanteDAO implements Abitante {
             aggiungiAbitante.setPIdspazio(spazio);
             aggiungiAbitante.setPCf(CF);
             aggiungiAbitante.setPCodspecie(specie);
-            aggiungiAbitante.setNome(nome);
+            aggiungiAbitante.setPNomerazza(nome);
 
             int righeInserite = aggiungiAbitante.execute(ctx.configuration());
 
@@ -65,11 +65,11 @@ public class AbitanteDAO implements Abitante {
             aggiungi.setPIdspazio(spazio);
             aggiungi.setPCf(CF);
             aggiungi.setPCodspecie(newSpecie);
-            aggiungi.setNome(newNome);
+            aggiungi.setPNomerazza(newNome);
 
             int righeInserite = aggiungi.execute(ctx.configuration());
             return righeInserite > 0;
-            
+
         } catch (Exception e) {
             e.printStackTrace();
             return false;

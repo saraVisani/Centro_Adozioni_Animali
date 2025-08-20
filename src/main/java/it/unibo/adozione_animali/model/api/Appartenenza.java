@@ -1,7 +1,9 @@
 package it.unibo.adozione_animali.model.api;
 
+import java.util.List;
+
 public interface Appartenenza {
-    boolean insertAppartenenza(String codice, String provincia, String città, int numero, String animale,
+    boolean insertAppartenenza(List<String> codice, String provincia, String città, int numero, String animale,
                                 String tipo);
 
     boolean changeCodiceAppartenenza(String codice, String provincia, String città, int numero, String animale,
