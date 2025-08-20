@@ -34,7 +34,8 @@ public class StatisticManagerImpl implements StatisticManager{
 
     @Override
     public boolean insertDato(String codice, List<String> nome, List<String> valore, String statistica, LocalDate data) {
-        if (codice == null || nome == null || nome.isEmpty() || valore == null || valore.isEmpty() || statistica == null || data == null) {
+        if (codice == null || nome == null || nome.isEmpty() || valore == null
+                || valore.isEmpty() || statistica == null || data == null) {
             return false;
         }
         String realName;
