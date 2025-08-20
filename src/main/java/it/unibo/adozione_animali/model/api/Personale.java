@@ -8,7 +8,7 @@ import java.time.LocalDate;
 public interface Personale{
 
     void insertPersonale(String CF, byte tempoLavoro, LocalDate dataAssunzioneDip, LocalDate dataAssunzioneVol,
-                         LocalDate dataFineLavoroDip, LocalDate dataFineLavoroVol, short stipendio,
+                         LocalDate dataFineLavoroDip, LocalDate dataFineLavoroVol, Short stipendio,
                          byte exVolontario, byte exDipendente, String codProvincia, String codCitta,
                          int numero);
 

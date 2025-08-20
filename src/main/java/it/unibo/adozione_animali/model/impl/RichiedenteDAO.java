@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 
 public class RichiedenteDAO implements Richiedente {
 
-    Logger logger = Logger.getLogger("loggerRichiedente");
+    final Logger logger = Logger.getLogger("loggerRichiedente");
 
 
     @Override

@@ -14,14 +14,14 @@ import it.unibo.adozione_animali.util.DBConfig;
 
 public class ProblemaDAO implements Problema {
 
-    Logger logger = Logger.getLogger("loggerProblema");
+    final Logger logger = Logger.getLogger("loggerProblema");
 
     @Override
-    public void insertProblema(final int codFascicolo, final short numeroProblema, final String paragrafo,
+    public void insertProblema(final Integer codFascicolo, final Short numeroProblema, final String paragrafo,
                                final String nome, final String descrizione, final String tipoCurabile,
-                               final String inCura, final String Area1, final String Area2, final int rCodFascicolo,
-                               final short rNumeroProblema, final String rParagrafo, final int eCodFascicolo,
-                               final short eNumeroProblema, final String eParagrafo, final String codProvincia,
+                               final String inCura, final String Area1, final String Area2, final Integer rCodFascicolo,
+                               final Short rNumeroProblema, final String rParagrafo, final Integer eCodFascicolo,
+                               final Short eNumeroProblema, final String eParagrafo, final String codProvincia,
                                final String codCitta, final int numero, final String codAnimale,
                                final List<String> codSintomi) {
         try (Connection conn = DBConfig.getConnection()) {

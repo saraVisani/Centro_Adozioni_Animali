@@ -7,10 +7,10 @@ import java.util.List;
  */
 public interface Problema {
 
-    void insertProblema(int codFascicolo, short numeroProblema, String paragrafo, String nome,
+    void insertProblema(Integer codFascicolo, Short numeroProblema, String paragrafo, String nome,
                         String descrizione, String tipoCurabile, String inCura, String Area1, String Area2,
-                        int rCodFascicolo, short rNumeroProblema, String rParagrafo, int eCodFascicolo,
-                        short eNumeroProblema, String eParagrafo, String codProvincia, String codCitta,
+                        Integer rCodFascicolo, Short rNumeroProblema, String rParagrafo, Integer eCodFascicolo,
+                        Short eNumeroProblema, String eParagrafo, String codProvincia, String codCitta,
                         int numero, String codAnimale, List<String> codSintomi);
 
     void updateProblemaInCura(int codFascicolo, short numeroProblema, String paragrafo, String statoCura,

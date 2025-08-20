@@ -1,0 +1,69 @@
+package it.unibo.adozione_animali.model.impl;
+
+
+import it.unibo.adozione_animali.model.api.Componente;
+import it.unibo.adozione_animali.util.DBConfig;
+import nu.studer.sample.Routines;
+import nu.studer.sample.Tables;
+import org.jooq.DSLContext;
+import org.jooq.impl.DSL;
+
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.logging.Logger;
+
+public class ComponenteDAO implements Componente {
+
+    final Logger logger = Logger.getLogger("loggerComponente");
+
+    @Override
+    public void insertComponente(final String codProvincia, final String codCitta, final int numero,
+                                 final String codAnimale, final String codSpecie, final String nomeRazza,
+                                 final int percentuale) {
+        try (Connection conn = DBConfig.getConnection()) {
+            DSLContext create = DSL.using(conn);
+            Routines.inserimentoNuovaComponente(create.configuration(), codProvincia, codCitta, numero, codAnimale,
+                    codSpecie, nomeRazza, percentuale);
+        } catch (SQLException e) {
+            this.logger.severe("La connessione non ha funzionato");
+        }
+    }
+
+    @Override
+    public void updatePercentualeComponente(final String codProvincia, final String codCitta, final int numero,
+                                            final String codAnimale, final String codSpecie, final String nomeRazza,
+                                            final int nuovaPercentuale) {
+        try (Connection conn = DBConfig.getConnection()) {
+            DSLContext create = DSL.using(conn);
+            create.update(Tables.COMPONENTE)
+                    .set(Tables.COMPONENTE.PERCENTUALE, (byte) nuovaPercentuale)
+                    .where(Tables.COMPONENTE.COD_PROVINCIA.eq(codProvincia))
+                    .and(Tables.COMPONENTE.COD_CITTA_.eq(codCitta))
+                    .and(Tables.COMPONENTE.NUMERO.eq(numero))
+                    .and(Tables.COMPONENTE.COD_ANIMALE.eq(codAnimale))
+                    .and(Tables.COMPONENTE.COD_SPECIE.eq(codSpecie))
+                    .and(Tables.COMPONENTE.NOME.eq(nomeRazza))
+                    .execute();
+        } catch (SQLException e) {
+            this.logger.severe("La connessione non ha funzionato");
+        }
+    }
+
+    @Override
+    public void deleteComponente(final String codProvincia, final String codCitta, final int numero,
+                                 final String codAnimale, final String codSpecie, final String nomeRazza) {
+        try (Connection conn = DBConfig.getConnection()) {
+            DSLContext create = DSL.using(conn);
+            create.deleteFrom(Tables.COMPONENTE)
+                    .where(Tables.COMPONENTE.COD_PROVINCIA.eq(codProvincia))
+                    .and(Tables.COMPONENTE.COD_CITTA_.eq(codCitta))
+                    .and(Tables.COMPONENTE.NUMERO.eq(numero))
+                    .and(Tables.COMPONENTE.COD_ANIMALE.eq(codAnimale))
+                    .and(Tables.COMPONENTE.COD_SPECIE.eq(codSpecie))
+                    .and(Tables.COMPONENTE.NOME.eq(nomeRazza))
+                    .execute();
+        } catch (SQLException e) {
+            this.logger.severe("La connessione non ha funzionato");
+        }
+    }
+}

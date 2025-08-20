@@ -1,11 +1,10 @@
 package it.unibo.adozione_animali.model.api;
 
+import java.time.LocalDate;
+
 /**
  * Represents the Richiedente table in the database.
  */
-
-import java.time.LocalDate;
-
 public interface Richiedente {
 
     void insertRichiedente(String CF, short numeroAbbandoni, LocalDate dataAbbandonoRecente, byte abuso);

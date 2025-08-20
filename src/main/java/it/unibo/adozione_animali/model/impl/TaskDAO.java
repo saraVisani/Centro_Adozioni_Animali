@@ -16,7 +16,7 @@ import it.unibo.adozione_animali.util.DBConfig;
 
 public class TaskDAO implements Task {
 
-    Logger logger = Logger.getLogger("loggerProblema");
+    final Logger logger = Logger.getLogger("loggerProblema");
 
     @Override
     public void insertTask(final String CF, final byte numeroTurno, final LocalDate dataTask, final String lavoro,
@@ -27,7 +27,8 @@ public class TaskDAO implements Task {
          */
         try (Connection conn = DBConfig.getConnection()) {
             DSLContext create = DSL.using(conn);
-            if (lavoro.equalsIgnoreCase("trattamento_medico") || lavoro.equalsIgnoreCase("accudimento")) {
+            if (lavoro.equalsIgnoreCase("trattamento_medico")
+                    || lavoro.equalsIgnoreCase("accudimento")) {
                 if (animali.isPresent() && animali.get().size() <= 10) {
                     final List<String> animale = animali.get().getFirst();
                     Routines.inserimentoTask(create.configuration(), CF, numeroTurno, dataTask, lavoro,
