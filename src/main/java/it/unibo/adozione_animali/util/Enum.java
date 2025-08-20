@@ -71,6 +71,20 @@ public class Enum {
             }
             return null;
         }
+
+        public static Specie fromKey(String key) {
+            for (Specie s : Specie.values()) {
+                if (s.getKey().equalsIgnoreCase(key)) {
+                    return s;
+                }
+            }
+            return null;
+        }
+
+        public String getDisplayName() {
+            String lower = this.name().toLowerCase();
+            return Character.toUpperCase(lower.charAt(0)) + lower.substring(1);
+        }
     }
 
     public enum TipoSpazio{
