@@ -6,6 +6,18 @@ import org.jooq.SQLDialect;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
+import com.sun.net.httpserver.HttpServer;
+import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpHandler;
+
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.InetSocketAddress;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.awt.Desktop;
+import java.net.URI;
+
 public class Start {
 
     public static void main(String[] args) {
@@ -15,10 +27,41 @@ public class Start {
 
             DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
 
-            // Da qui in poi, passa create a un service o controller
-
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        try {
+
+            HttpServer server = HttpServer.create(new InetSocketAddress(8081), 0);
+
+            server.createContext("/", new HttpHandler() {
+                @Override
+                public void handle(HttpExchange exchange) throws IOException {
+                    byte[] response = Files.readAllBytes(Paths.get("view/index.html"));
+
+                    exchange.sendResponseHeaders(200, response.length);
+                    OutputStream os = exchange.getResponseBody();
+                    os.write(response);
+                    os.close();
+                }
+            });
+
+            server.setExecutor(null);
+            server.start();
+
+            System.out.println("Server avviato su http://localhost:8081");
+            
+            if (Desktop.isDesktopSupported()) {
+                Desktop.getDesktop().browse(new URI("http://localhost:8081"));
+            } else {
+                System.out.println("Impossibile aprire il browser automaticamente.");
+            }
+
+        } catch (Exception e) {
+            System.err.println("Errore nell'avvio del server: " + e.getMessage());
+            e.printStackTrace();
+        }
+
     }
 }
