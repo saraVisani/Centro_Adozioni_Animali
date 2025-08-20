@@ -1,4 +1,4 @@
-package it.unibo.adozione_animali.model.impl;
+package it.unibo.adozione_animali.model.impl.indirizzo;
 
 import java.util.Optional;
 
@@ -7,9 +7,10 @@ import java.sql.Connection;
 import org.jooq.DSLContext;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
-import nu.studer.sample.Tables;
 
-import it.unibo.adozione_animali.model.api.Indirizzo;
+import it.unibo.adozione_animali.model.api.indirizzo.Indirizzo;
+import it.unibo.adozione_animali.util.DBConfig;
+import nu.studer.sample.Tables;
 
 public class IndirizzoDAO implements Indirizzo {
 

@@ -1,11 +1,12 @@
-package it.unibo.adozione_animali.model.impl;
-
-import it.unibo.adozione_animali.model.api.SpazioPersona;
+package it.unibo.adozione_animali.model.impl.spazio;
 
 import org.jooq.DSLContext;
 import org.jooq.Query;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
+
+import it.unibo.adozione_animali.model.api.spazio.SpazioPersona;
+import it.unibo.adozione_animali.util.DBConfig;
 import nu.studer.sample.Tables;
 import nu.studer.sample.routines.CambiaSpazioPersonale;
 import java.math.BigDecimal;

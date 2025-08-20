@@ -1,4 +1,4 @@
-package it.unibo.adozione_animali.model.impl;
+package it.unibo.adozione_animali.model.impl.animale;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -8,12 +8,14 @@ import org.jooq.DSLContext;
 import org.jooq.Query;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
+
+import it.unibo.adozione_animali.model.api.animale.Centro;
+import it.unibo.adozione_animali.util.DBConfig;
 import nu.studer.sample.Tables;
 import nu.studer.sample.routines.RiallocaSingoloAnimale;
 import nu.studer.sample.routines.RiallocaSingoloLavoratore;
 
 import java.sql.Connection;
-import it.unibo.adozione_animali.model.api.Centro;
 
 /**
  * Implementazione della gestione dei centri di adozione animali.

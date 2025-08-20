@@ -1,4 +1,4 @@
-package it.unibo.adozione_animali.model.impl;
+package it.unibo.adozione_animali.model.impl.animale;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
@@ -9,7 +9,8 @@ import org.jooq.DSLContext;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
 
-import it.unibo.adozione_animali.model.api.Animale;
+import it.unibo.adozione_animali.model.api.animale.Animale;
+import it.unibo.adozione_animali.util.DBConfig;
 import nu.studer.sample.Tables;
 
 public class AnimaleDAO implements Animale {

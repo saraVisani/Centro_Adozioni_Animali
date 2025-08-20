@@ -1,12 +1,13 @@
-package it.unibo.adozione_animali.model.impl;
-
-import it.unibo.adozione_animali.model.api.Provincia;
+package it.unibo.adozione_animali.model.impl.indirizzo;
 
 import java.sql.Connection;
 
 import org.jooq.DSLContext;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
+
+import it.unibo.adozione_animali.model.api.indirizzo.Provincia;
+import it.unibo.adozione_animali.util.DBConfig;
 import nu.studer.sample.Tables;
 
 public class ProvinciaDAO implements Provincia{

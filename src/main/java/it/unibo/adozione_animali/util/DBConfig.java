@@ -1,4 +1,4 @@
-package it.unibo.adozione_animali.model.impl;
+package it.unibo.adozione_animali.util;
 
 import java.sql.DriverManager;
 import java.sql.SQLException;

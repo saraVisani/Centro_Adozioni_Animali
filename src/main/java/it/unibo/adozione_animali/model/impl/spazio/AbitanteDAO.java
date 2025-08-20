@@ -1,4 +1,4 @@
-package it.unibo.adozione_animali.model.impl;
+package it.unibo.adozione_animali.model.impl.spazio;
 
 import java.sql.Connection;
 
@@ -6,7 +6,8 @@ import org.jooq.DSLContext;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
 
-import it.unibo.adozione_animali.model.api.Abitante;
+import it.unibo.adozione_animali.model.api.spazio.Abitante;
+import it.unibo.adozione_animali.util.DBConfig;
 import nu.studer.sample.routines.AggiungiAbitante;
 import nu.studer.sample.routines.RimuoviAbitante;
 import nu.studer.sample.routines.SpostaAbitante;
@@ -25,7 +26,7 @@ public class AbitanteDAO implements Abitante {
             aggiungiAbitante.setPIdspazio(spazio);
             aggiungiAbitante.setPCf(CF);
             aggiungiAbitante.setPCodspecie(specie);
-            aggiungiAbitante.setNome(nome);
+            aggiungiAbitante.setPNomerazza(nome);
 
             int righeInserite = aggiungiAbitante.execute(ctx.configuration());
 
@@ -65,11 +66,11 @@ public class AbitanteDAO implements Abitante {
             aggiungi.setPIdspazio(spazio);
             aggiungi.setPCf(CF);
             aggiungi.setPCodspecie(newSpecie);
-            aggiungi.setNome(newNome);
+            aggiungi.setPNomerazza(newNome);
 
             int righeInserite = aggiungi.execute(ctx.configuration());
             return righeInserite > 0;
-            
+
         } catch (Exception e) {
             e.printStackTrace();
             return false;

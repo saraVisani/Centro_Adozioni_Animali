@@ -1,11 +1,13 @@
-package it.unibo.adozione_animali.model.impl;
+package it.unibo.adozione_animali.model.impl.spazio;
 
 import java.sql.Connection;
 
-import it.unibo.adozione_animali.model.api.Spazio;
 import org.jooq.DSLContext;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
+
+import it.unibo.adozione_animali.model.api.spazio.Spazio;
+import it.unibo.adozione_animali.util.DBConfig;
 import nu.studer.sample.Tables;
 import java.math.BigDecimal;
 

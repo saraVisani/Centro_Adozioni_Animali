@@ -1,4 +1,4 @@
-package it.unibo.adozione_animali.model.api;
+package it.unibo.adozione_animali.model.api.spazio;
 
 import java.util.Optional;
 

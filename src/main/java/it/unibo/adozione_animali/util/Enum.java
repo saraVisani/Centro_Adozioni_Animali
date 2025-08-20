@@ -1,4 +1,4 @@
-package it.unibo.adozione_animali.model.api;
+package it.unibo.adozione_animali.util;
 
 public class Enum {
 
@@ -107,9 +107,6 @@ public class Enum {
             }
             return null;
         }
-
     }
-
-    
 }
 

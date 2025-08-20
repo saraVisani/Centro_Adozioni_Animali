@@ -1,4 +1,4 @@
-package it.unibo.adozione_animali.model.api;
+package it.unibo.adozione_animali.model.api.animale;
 
 import java.time.LocalDate;
 import java.util.Optional;
@@ -18,7 +18,7 @@ public interface Animale {
     boolean updateAnimaleAltezza(String provincia, String città, int numero, String animale, float newAltezza);
 
     boolean updateAnimalePeso(String provincia, String città, int numero, String animale, float newPeso);
-    
+
     boolean deleteAnimale(String provincia, String città, int numero, String animale);
 
 }

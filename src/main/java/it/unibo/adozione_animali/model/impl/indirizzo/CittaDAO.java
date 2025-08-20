@@ -1,13 +1,14 @@
-package it.unibo.adozione_animali.model.impl;
+package it.unibo.adozione_animali.model.impl.indirizzo;
 
 import java.sql.Connection;
 
 import org.jooq.DSLContext;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
-import nu.studer.sample.Tables;
 
-import it.unibo.adozione_animali.model.api.Citta;
+import it.unibo.adozione_animali.model.api.indirizzo.Citta;
+import it.unibo.adozione_animali.util.DBConfig;
+import nu.studer.sample.Tables;
 
 public class CittaDAO implements Citta {
 
@@ -79,7 +80,7 @@ public class CittaDAO implements Citta {
                 .execute();
 
             return righeCancellate > 0;
-            
+
         } catch (Exception e) {
             e.printStackTrace();
             return false;
