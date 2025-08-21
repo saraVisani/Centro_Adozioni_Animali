@@ -5,6 +5,7 @@ import java.awt.*;
 
 public class UpdateRichiestaPanel extends JPanel{
 
+    //TODO --> add action listener for buttons
     public UpdateRichiestaPanel() {
 
         setLayout(new BorderLayout());

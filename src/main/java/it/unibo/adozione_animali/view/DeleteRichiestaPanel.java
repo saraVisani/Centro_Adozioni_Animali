@@ -5,6 +5,7 @@ import java.awt.*;
 
 public class DeleteRichiestaPanel extends JPanel {
 
+    //TODO --> aggiungi listener per bottone
     public DeleteRichiestaPanel() {
         setLayout(new BorderLayout());
 
