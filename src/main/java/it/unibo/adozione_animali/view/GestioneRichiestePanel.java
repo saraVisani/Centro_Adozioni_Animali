@@ -29,7 +29,7 @@ public class GestioneRichiestePanel extends JPanel {
 
         JPanel selectPanel = new JPanel();
         JPanel insertPanel = new InserimentoRichiestaPanel();
-        JPanel deletePanel = new JPanel();
+        JPanel deletePanel = new DeleteRichiestaPanel();
         JPanel updatePanel = new UpdateRichiestaPanel();
 
         selectPanel.add(Box.createVerticalStrut(1));
