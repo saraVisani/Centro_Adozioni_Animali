@@ -7,7 +7,7 @@ import java.awt.*;
 public class GestioneRichiestePanel extends JPanel {
 
     JPanel cards;
-    JComboBox comboBox;
+    JComboBox<String> comboBox;
 
     public GestioneRichiestePanel() {
         setLayout(new BorderLayout());
@@ -50,7 +50,6 @@ public class GestioneRichiestePanel extends JPanel {
             cards.repaint();
         });
 
-        // Esempio: aggiungo comboBox in alto e le card al centro
         add(comboBox, BorderLayout.NORTH);
         add(cards, BorderLayout.CENTER);
 
