@@ -1,4 +1,4 @@
-package it.unibo.adozione_animali.view;
+package it.unibo.adozione_animali.view.animale;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -8,7 +8,6 @@ public class FascicoloPanel extends JPanel {
 
     JPanel cards;
     JComboBox<String> comboBox;
-    JScrollPane scroll;
 
     public FascicoloPanel() {
         setLayout(new BorderLayout());
