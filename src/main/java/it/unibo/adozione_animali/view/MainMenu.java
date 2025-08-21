@@ -79,8 +79,7 @@ public class MainMenu {
         ricercaPanel.add(new JLabel("Ricerca Animali"));
         JPanel aggiornaPanel = new JPanel();
         aggiornaPanel.add(new JLabel("Aggiorna Statistiche"));
-        JPanel fascicoloPanel = new JPanel();
-        fascicoloPanel.add(new JLabel("Fascicolo Sanitario"));
+        JPanel fascicoloPanel = new FascicoloPanel();
         JPanel gestioneCarPanel = new JPanel();
         gestioneCarPanel.add(new JLabel("Gestione Caratteristiche"));
         JPanel gestioneCompPanel = new JPanel();
