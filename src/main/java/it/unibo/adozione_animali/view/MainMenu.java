@@ -94,8 +94,7 @@ public class MainMenu {
         gestioneCompPanel.add(new JLabel("Gestione Componenti"));
         JPanel gestioneRazzeSpecPanel = new GestioneSpecifiche();
         gestioneRazzeSpecPanel.add(new JLabel("Gestione Specifiche di Razza"));
-        JPanel gestioneRichPanel = new GestioneRichieste();
-        gestioneRichPanel.add(new JLabel("Gestione Richieste"));
+        JPanel gestioneRichPanel = new GestioneRichiestePanel();
         JPanel gestioneTurniPanel = new GestioneTurni();
         gestioneTurniPanel.add(new JLabel("Gestione Turni e Task"));
         JPanel infoPersonalePanel = new PersonaleGenerali();
