@@ -5,6 +5,7 @@ import it.unibo.adozione_animali.util.DBConfig;
 import nu.studer.sample.Routines;
 import nu.studer.sample.Tables;
 import org.jooq.DSLContext;
+import org.jooq.Null;
 import org.jooq.impl.DSL;
 
 import java.sql.Connection;
@@ -58,6 +59,7 @@ public class RichiestaDAO implements Richiesta {
                     .and(Tables.RICHIESTA.NUMERO.eq(numeroAnimale))
                     .and(Tables.RICHIESTA.DATA_RICHIESTA.eq(dataRichiesta))
                     .and(Tables.RICHIESTA.CF.eq(CF))
+                    .and(Tables.RICHIESTA.DATA_CHIUSURA.isNull())
                     .execute();
         } catch (SQLException e) {
             this.logger.severe("La connessione non ha funzionato");
