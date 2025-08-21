@@ -90,8 +90,7 @@ public class MainMenu {
         JPanel fascicoloPanel = new FascicoloPanel();
         JPanel gestioneCarPanel = new GestioneCaratteristiche();
         gestioneCarPanel.add(new JLabel("Gestione Caratteristiche"));
-        JPanel gestioneCompPanel = new GestioneComponenti();
-        gestioneCompPanel.add(new JLabel("Gestione Componenti"));
+        JPanel gestioneCompPanel = new GestioneComponentiPanel();
         JPanel gestioneRazzeSpecPanel = new GestioneSpecifiche();
         gestioneRazzeSpecPanel.add(new JLabel("Gestione Specifiche di Razza"));
         JPanel gestioneRichPanel = new GestioneRichiestePanel();
