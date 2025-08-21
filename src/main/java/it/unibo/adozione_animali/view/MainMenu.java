@@ -1,6 +1,14 @@
 package it.unibo.adozione_animali.view;
 
 import javax.swing.*;
+
+import it.unibo.adozione_animali.view.animale.*;
+import it.unibo.adozione_animali.view.personale.*;
+import it.unibo.adozione_animali.view.pulsanti.*;
+import it.unibo.adozione_animali.view.razza.*;
+import it.unibo.adozione_animali.view.richiedenti.*;
+import it.unibo.adozione_animali.view.statistiche.*;
+
 import java.awt.*;
 
 public class MainMenu {
@@ -71,36 +79,36 @@ public class MainMenu {
 
         // Pannello centrale con CardLayout
         JPanel cards = new JPanel(new CardLayout());
-        JPanel homePanel = new JPanel();
+        JPanel homePanel = new Home();
         homePanel.add(new JLabel("Pagina Home"));
-        JPanel infoPanel = new JPanel();
+        JPanel infoPanel = new AnimaliGenerali();
         infoPanel.add(new JLabel("Informazioni Generali Animali"));
-        JPanel ricercaPanel = new JPanel();
+        JPanel ricercaPanel = new AnimaliRicerca();
         ricercaPanel.add(new JLabel("Ricerca Animali"));
-        JPanel aggiornaPanel = new JPanel();
+        JPanel aggiornaPanel = new StatisticheUpdate();
         aggiornaPanel.add(new JLabel("Aggiorna Statistiche"));
         JPanel fascicoloPanel = new FascicoloPanel();
-        JPanel gestioneCarPanel = new JPanel();
+        JPanel gestioneCarPanel = new GestioneCaratteristiche();
         gestioneCarPanel.add(new JLabel("Gestione Caratteristiche"));
-        JPanel gestioneCompPanel = new JPanel();
+        JPanel gestioneCompPanel = new GestioneComponenti();
         gestioneCompPanel.add(new JLabel("Gestione Componenti"));
-        JPanel gestioneRazzeSpecPanel = new JPanel();
+        JPanel gestioneRazzeSpecPanel = new GestioneSpecifiche();
         gestioneRazzeSpecPanel.add(new JLabel("Gestione Specifiche di Razza"));
-        JPanel gestioneRichPanel = new JPanel();
+        JPanel gestioneRichPanel = new GestioneRichieste();
         gestioneRichPanel.add(new JLabel("Gestione Richieste"));
-        JPanel gestioneTurniPanel = new JPanel();
+        JPanel gestioneTurniPanel = new GestioneTurni();
         gestioneTurniPanel.add(new JLabel("Gestione Turni e Task"));
-        JPanel infoPersonalePanel = new JPanel();
+        JPanel infoPersonalePanel = new PersonaleGenerali();
         infoPersonalePanel.add(new JLabel("Personale Informazioni Generali"));
-        JPanel infoRazzaPanel = new JPanel();
+        JPanel infoRazzaPanel = new RazzaGenerali();
         infoRazzaPanel.add(new JLabel("Informazioni Generali Razza"));
-        JPanel ricercaStatPanel = new JPanel();
+        JPanel ricercaStatPanel = new StatisticheRicerca();
         ricercaStatPanel.add(new JLabel("Ricerca Statistiche"));
-        JPanel infoRichiedentiPanel = new JPanel();
+        JPanel infoRichiedentiPanel = new RichiedentiGenerali();
         infoRichiedentiPanel.add(new JLabel("Informazioni Generali Richiedenti"));
-        JPanel centriPanel = new JPanel();
+        JPanel centriPanel = new Centri();
         centriPanel.add(new JLabel("Centri"));
-        JPanel spaziPanel = new JPanel();
+        JPanel spaziPanel = new Spazio();
         spaziPanel.add(new JLabel("Spazi"));
 
         cards.add(homePanel, "home");
