@@ -94,16 +94,13 @@ public class MainMenu {
         JPanel gestioneRazzeSpecPanel = new GestioneSpecifiche();
         gestioneRazzeSpecPanel.add(new JLabel("Gestione Specifiche di Razza"));
         JPanel gestioneRichPanel = new GestioneRichiestePanel();
-        JPanel gestioneTurniPanel = new GestioneTurni();
-        gestioneTurniPanel.add(new JLabel("Gestione Turni e Task"));
+        JPanel gestioneTurniPanel = new GestioneTurniTaskPanel();
         JPanel infoPersonalePanel = new PersonaleGenerali();
-        infoPersonalePanel.add(new JLabel("Personale Informazioni Generali"));
         JPanel infoRazzaPanel = new RazzaGenerali();
         infoRazzaPanel.add(new JLabel("Informazioni Generali Razza"));
         JPanel ricercaStatPanel = new StatisticheRicerca();
         ricercaStatPanel.add(new JLabel("Ricerca Statistiche"));
         JPanel infoRichiedentiPanel = new RichiedentiGenerali();
-        infoRichiedentiPanel.add(new JLabel("Informazioni Generali Richiedenti"));
         JPanel centriPanel = new Centri();
         centriPanel.add(new JLabel("Centri"));
         JPanel spaziPanel = new Spazio();

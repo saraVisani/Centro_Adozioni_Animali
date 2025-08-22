@@ -17,8 +17,6 @@ public interface Task {
 
     void updateNumeroTurno(String CF, byte numeroTurno, LocalDate dataTask, byte nuovoNumeroTurno);
 
-    void updateLavoro(String CF, byte numeroTurno, LocalDate dataTask, String lavoro);
-
     void deleteTask(String CF, byte numeroTurno, LocalDate dataTask);
 
 }

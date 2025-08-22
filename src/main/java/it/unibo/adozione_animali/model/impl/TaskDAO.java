@@ -90,20 +90,6 @@ public class TaskDAO implements Task {
         }
     }
 
-    @Override
-    public void updateLavoro(String CF, byte numeroTurno, LocalDate dataTask, String lavoro) {
-        try (Connection conn = DBConfig.getConnection()) {
-            DSLContext create = DSL.using(conn);
-            create.update(Tables.TASK)
-                    .set(Tables.TASK.LAVORO, lavoro)
-                    .where(Tables.TASK.CF.eq(CF))
-                    .and(Tables.TASK.NUMERO.eq(numeroTurno))
-                    .and(Tables.TASK.DATA_TASK.eq(dataTask))
-                    .execute();
-        } catch (SQLException e) {
-            this.logger.severe("La connessione non ha funzionato");
-        }
-    }
 
     @Override
     public void deleteTask(String CF, byte numeroTurno, LocalDate dataTask) {

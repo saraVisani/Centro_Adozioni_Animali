@@ -1,10 +1,5 @@
 package it.unibo.adozione_animali.view.animale;
 
-import it.unibo.adozione_animali.view.UpdateEsamePanel;
-import it.unibo.adozione_animali.view.UpdatePaginaPanel;
-import it.unibo.adozione_animali.view.UpdateProblemaPanel;
-import it.unibo.adozione_animali.view.UpdateRicoveroPanel;
-
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;

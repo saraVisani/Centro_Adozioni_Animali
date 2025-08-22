@@ -1,4 +1,4 @@
-package it.unibo.adozione_animali.view;
+package it.unibo.adozione_animali.view.animale;
 
 import javax.swing.*;
 import java.awt.*;
