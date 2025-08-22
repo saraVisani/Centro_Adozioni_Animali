@@ -1,7 +1,6 @@
 package it.unibo.adozione_animali.view;
 
 import javax.swing.*;
-import javax.swing.border.TitledBorder;
 import java.awt.*;
 
 public class UpdatePaginaPanel extends JPanel {
@@ -11,15 +10,6 @@ public class UpdatePaginaPanel extends JPanel {
 
     public UpdatePaginaPanel() {
         setLayout(new BorderLayout());
-        setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createTitledBorder(
-                        BorderFactory.createEtchedBorder(),
-                        "Gestione Componenti",
-                        TitledBorder.CENTER,
-                        TitledBorder.TOP
-                ),
-                BorderFactory.createEmptyBorder(25, 10, 10, 10)
-        ));
 
         cards = new JPanel(new CardLayout());
 
