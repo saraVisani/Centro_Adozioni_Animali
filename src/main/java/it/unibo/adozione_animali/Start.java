@@ -10,7 +10,9 @@ public class Start {
 
     public static void main(String[] args) {
         try (Connection conn = DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/Adozione_Animali"
+                "jdbc:mysql://localhost:3306/Adozione_Animali",
+                "root",
+                ""
         )) {
 
             DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
