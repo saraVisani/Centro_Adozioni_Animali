@@ -1,5 +1,10 @@
 package it.unibo.adozione_animali.view.animale;
 
+import it.unibo.adozione_animali.view.UpdateEsamePanel;
+import it.unibo.adozione_animali.view.UpdatePaginaPanel;
+import it.unibo.adozione_animali.view.UpdateProblemaPanel;
+import it.unibo.adozione_animali.view.UpdateRicoveroPanel;
+
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
@@ -505,10 +510,10 @@ public class FascicoloPanel extends JPanel {
         JTextField codFascicoloField4 = new JTextField(5);
         JLabel numeroPaginaLabel4 = new JLabel("Numero Pagina");
         JTextField numeroPaginaField4 = new JTextField(3);
-        JLabel paragrafoLabel4 = new JLabel("Paragrafo Pagina*");
+        JLabel paragrafoLabel4 = new JLabel("Paragrafo Pagina (opzionale)");
         JTextField paragrafoField4 = new JTextField();
         JLabel info = new JLabel("Se si desidera eliminare un'intera pagina, comprensiva" +
-                " dei relativi problemi, esami e ricoveri, allora non si inserisca il paragrafo (*)");
+                " dei relativi problemi, esami e ricoveri, allora non si inserisca il paragrafo");
         JButton cancella = new JButton("Elimina");
 
         deletePanel.add(info, BorderLayout.NORTH);
@@ -558,9 +563,9 @@ public class FascicoloPanel extends JPanel {
 
         JLabel codFascicoloLabel5 = new JLabel("Codice Fascicolo");
         JTextField codFascicoloField5 = new JTextField(5);
-        JLabel numeroPaginaLabel5 = new JLabel("Numero Pagina");
+        JLabel numeroPaginaLabel5 = new JLabel("Numero Pagina (opzionale)");
         JTextField numeroPaginaField5 = new JTextField(3);
-        JLabel paragrafoLabel5 = new JLabel("Paragrafo Pagina*");
+        JLabel paragrafoLabel5 = new JLabel("Paragrafo Pagina (opzionale)");
         JTextField paragrafoField5 = new JTextField();
         JLabel info2 = new JLabel("Se si desidera cercare più pagine o più paragrafi" +
                 " di una stessa pagina basta ignorare i campi di Numero Pagina e/o Paragrafo Pagina");
@@ -617,37 +622,7 @@ public class FascicoloPanel extends JPanel {
 ///   /////////////////////////
            //UPDATE PAGE
 
-        JPanel updatePanel = new JPanel();
-
-        JPanel cardUpdate = new JPanel(new CardLayout());
-        JPanel updatePanelGen = new JPanel(new BorderLayout());
-        updatePanelGen.add(cardUpdate, BorderLayout.CENTER);
-        JPanel problemUpdate = new JPanel();
-        JPanel examUpdate = new JPanel();
-        JPanel hospitalizationUpdate = new JPanel();
-
-
-        cardUpdate.add(problemUpdate, "Aggiorna Problema");
-        cardUpdate.add(examUpdate, "Aggiorna Esame");
-        cardUpdate.add(hospitalizationUpdate, "Aggiorna Ricovero");
-        ((CardLayout) cardUpdate.getLayout()).show(cardUpdate, "Aggiorna Problema");
-
-
-        String[] optionsUpdate = {"Aggiorna Problema", "Aggiorna Esame", "Aggiorna Ricovero"};
-        JComboBox<String> comboBoxUpdate = new JComboBox<>(optionsUpdate);
-        updatePanel.add(comboBoxUpdate, BorderLayout.NORTH);
-
-
-        comboBoxUpdate.addActionListener(e -> {
-            String selected = (String) comboBoxUpdate.getSelectedItem();
-            CardLayout cl = (CardLayout) cardUpdate.getLayout();
-            cl.show(cardUpdate, selected);
-            cardInsert.revalidate();
-            cardInsert.repaint();
-        });
-
-        /// ////
-        //UPDATE PROBLEMA
+        JPanel updatePanel = new UpdatePaginaPanel();
         
 
 /// ///////////////////////////
