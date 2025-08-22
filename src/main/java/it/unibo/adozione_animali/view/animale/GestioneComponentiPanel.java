@@ -1,9 +1,5 @@
 package it.unibo.adozione_animali.view.animale;
 
-import it.unibo.adozione_animali.view.DeleteRichiestaPanel;
-import it.unibo.adozione_animali.view.InserimentoRichiestaPanel;
-import it.unibo.adozione_animali.view.UpdateRichiestaPanel;
-
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
@@ -53,8 +49,7 @@ public class GestioneComponentiPanel extends JPanel {
             cards.revalidate();
             cards.repaint();
         });
-
-        // Esempio: aggiungo comboBox in alto e le card al centro
+        
         add(comboBox, BorderLayout.NORTH);
         add(cards, BorderLayout.CENTER);
     }
