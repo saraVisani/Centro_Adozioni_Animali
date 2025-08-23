@@ -9,7 +9,7 @@ import java.util.Optional;
  */
 public interface Task {
 
-    void insertTask(String CF, byte numeroTurno, LocalDate dataTask, String lavoro, Optional<List<List<String>>> animali);
+    void insertTask(String CF, byte numeroTurno, LocalDate dataTask, String lavoro, Optional<List<String>> animali);
 
     void updateCF(String CF, byte numeroTurno, LocalDate dataTask, String nuovoCF);
 

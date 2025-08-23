@@ -1,7 +1,11 @@
 package it.unibo.adozione_animali.view.animale;
 
+import it.unibo.adozione_animali.model.impl.ProblemaDAO;
+import org.jooq.exception.DataAccessException;
+
 import javax.swing.*;
 import java.awt.*;
+import java.sql.SQLException;
 
 public class UpdateProblemaPanel extends JPanel{
 
@@ -164,6 +168,42 @@ public class UpdateProblemaPanel extends JPanel{
 
         nonCurabileCheck.addActionListener(e -> {
             in_cura.setEditable(!nonCurabileCheck.isSelected());
+        });
+
+        update.addActionListener(e -> {
+            Integer codFas = Integer.parseInt(codFascicoloField.getText());
+            Short numPag = Short.parseShort(numeroPaginaField.getText());
+            String par = paragrafoField.getText();
+            ProblemaDAO prob = new ProblemaDAO();
+
+            try {
+                if (!problemName.getText().isEmpty()) {
+                    prob.updateProblemaNome(codFas, numPag, par, problemName.getText());
+                }
+                if (!description.getText().isEmpty()) {
+                    prob.updateProblemaDescrizione(codFas, numPag, par, description.getText());
+                }
+                if (!in_cura.getText().isEmpty()) {
+                    prob.updateProblemaInCura(codFas, numPag, par, in_cura.getText());
+                }
+                if (!r_page_num.getText().isEmpty() || !r_page_par.getText().isEmpty()) {
+                    prob.updateRiferimentoRicovero(codFas, numPag, par, codFas, Short.parseShort(r_page_num.getText()),
+                            r_page_par.getText());
+                }
+                if (!e_page_num.getText().isEmpty() || !e_page_par.getText().isEmpty()) {
+                    prob.updateRiferimentoEsame(codFas, numPag, par, codFas, Short.parseShort(e_page_num.getText()),
+                            e_page_par.getText());
+                }
+                JOptionPane.showMessageDialog(this, "L'aggiornamento è avvenuto correttamente");
+
+            } catch (DataAccessException data) {
+                Throwable cause = data.getCause();
+                if (cause instanceof SQLException) {
+                    JOptionPane.showMessageDialog(this, "Errore nell'inserimento. Ricontrollare che i campi siano stati riempiti correttamente");
+                }
+            } catch (Exception numb) {
+                JOptionPane.showMessageDialog(this, "Errore nell'inserimento. Ricontrollare che i campi siano stati riempiti correttamente");
+            }
         });
 
         add(updatePanel, BorderLayout.CENTER);

@@ -1,7 +1,13 @@
 package it.unibo.adozione_animali.view.personale;
 
+import it.unibo.adozione_animali.model.impl.PersonaDAO;
+import it.unibo.adozione_animali.model.impl.PersonaleDAO;
+import org.jooq.exception.DataAccessException;
+
 import javax.swing.*;
 import java.awt.*;
+import java.sql.SQLException;
+import java.time.LocalDate;
 
 public class InsertPersonalePanel extends JPanel {
 
@@ -184,5 +190,31 @@ public class InsertPersonalePanel extends JPanel {
         });
 
         add(insertPanel, BorderLayout.CENTER);
+
+        insert.addActionListener(e -> {
+            try {
+                new PersonaDAO().insertPersona(CFF.getText(), nomeF.getText(), cognomeF.getText(),
+                        emailF.getText(), passwordF.getText(), telefonoF.getText());
+                if (volontarioCheck.isSelected()) {
+                    new PersonaleDAO().insertPersonale(CFF.getText(), (byte) 0, null,
+                            LocalDate.parse(dataAssuVolF.getText()), null, null,
+                            null, (byte) 0, (byte) 0, codProvF.getText(),
+                            codCittaF.getText(), Integer.parseInt(numeroF.getText()));
+                } else {
+                    new PersonaleDAO().insertPersonale(CFF.getText(), (byte) 0, LocalDate.parse(dataAssunzioneDipendenteF.getText()),
+                            null, null, null, Short.parseShort(stipendioF.getText()),
+                            (byte) 0, (byte) 0, codProvF.getText(), codCittaF.getText(), Integer.parseInt(numeroF.getText()));
+                }
+                JOptionPane.showMessageDialog(this, "L'inserimento è avvenuto correttamente");
+            } catch (DataAccessException data) {
+                Throwable cause = data.getCause();
+                if (cause instanceof SQLException) {
+                    JOptionPane.showMessageDialog(this, "Errore nell'inserimento." +
+                            " Ricontrollare che i campi siano stati riempiti correttamente");
+                }
+            } catch (NumberFormatException numb) {
+                JOptionPane.showMessageDialog(this, "Errore nell'inserimento. Alcuni campi obbligatori non sono stati riempiti");
+            }
+        });
     }
 }

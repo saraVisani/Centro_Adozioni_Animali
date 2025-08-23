@@ -1,7 +1,16 @@
 package it.unibo.adozione_animali.view.personale;
 
+import it.unibo.adozione_animali.model.impl.TaskDAO;
+import org.jooq.exception.DataAccessException;
+
 import javax.swing.*;
 import java.awt.*;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
 public class InsertTaskPanel extends JPanel {
 
@@ -110,17 +119,44 @@ public class InsertTaskPanel extends JPanel {
         insertPanelGen.add(animaliF);
         insertPanelGen.add(aggiungi);
 
+        animaliL.setEnabled(false);
+        animaliF.setEditable(false);
+        animaliF.setEnabled(false);
         lavoroCheck.addActionListener(e -> {
             if (lavoroCheck.isSelected()){
-                animaliF.setEditable(false);
-                animaliF.setEnabled(false);
-            } else {
+                animaliL.setEnabled(true);
                 animaliF.setEditable(true);
                 animaliF.setEnabled(true);
+            } else {
+                animaliL.setEnabled(false);
+                animaliF.setEditable(false);
+                animaliF.setEnabled(false);
             }
 
         });
 
         add(insertScroll, BorderLayout.CENTER);
+        aggiungi.addActionListener(e -> {
+            Optional<List<String>> animaliList;
+            if (animaliF.getText().isEmpty()) {
+                animaliList = Optional.empty();
+            } else {
+                animaliList = Optional.of(new ArrayList<>(Arrays.asList(animaliF.getText().split(","))));
+            }
+            try {
+                new TaskDAO().insertTask(CFF.getText(), Byte.parseByte(numeroTurnoF.getText()),
+                        LocalDate.parse(dataF.getText()), lavoroF.getText(), animaliList);
+                JOptionPane.showMessageDialog(this, "L'inserimento è avvenuto correttamente");
+
+            } catch (DataAccessException data) {
+                Throwable cause = data.getCause();
+                if (cause instanceof SQLException) {
+                    JOptionPane.showMessageDialog(this, "Errore nell'inserimento." +
+                            " Ricontrollare che i campi siano stati riempiti correttamente");
+                }
+            } catch (NumberFormatException numb) {
+                JOptionPane.showMessageDialog(this, "Errore nell'inserimento. Alcuni campi obbligatori non sono stati riempiti");
+            }
+        });
     }
 }

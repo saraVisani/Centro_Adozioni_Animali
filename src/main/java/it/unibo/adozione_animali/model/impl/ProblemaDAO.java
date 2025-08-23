@@ -3,6 +3,8 @@ package it.unibo.adozione_animali.model.impl;
 import it.unibo.adozione_animali.model.api.Problema;
 import nu.studer.sample.Routines;
 import nu.studer.sample.Tables;
+import nu.studer.sample.routines.InserimentoProblema;
+import nu.studer.sample.tables.records.FascicoloSanitarioRecord;
 import org.jooq.DSLContext;
 import org.jooq.impl.DSL;
 
@@ -17,36 +19,81 @@ public class ProblemaDAO implements Problema {
     final Logger logger = Logger.getLogger("loggerProblema");
 
     @Override
-    public void insertProblema(final Integer codFascicolo, final Short numeroProblema, final String paragrafo,
+    public String insertProblema(final Integer codFascicolo, final Short numeroProblema, final String paragrafo,
                                final String nome, final String descrizione, final String tipoCurabile,
                                final String inCura, final String Area1, final String Area2, final Integer rCodFascicolo,
                                final Short rNumeroProblema, final String rParagrafo, final Integer eCodFascicolo,
                                final Short eNumeroProblema, final String eParagrafo, final String codProvincia,
-                               final String codCitta, final int numero, final String codAnimale,
+                               final String codCitta, final Integer numero, final String codAnimale,
                                final List<String> codSintomi) {
+
+        FascicoloSanitarioRecord fascicolo = null;
         try (Connection conn = DBConfig.getConnection()) {
             DSLContext create = DSL.using(conn);
-            Routines.inserimentoProblema(create.configuration(), codFascicolo, numeroProblema, paragrafo,
-                    nome, descrizione, tipoCurabile, inCura, Area1, Area2, rCodFascicolo, rNumeroProblema, rParagrafo,
-                    eCodFascicolo, eNumeroProblema, eParagrafo, codProvincia, codCitta, numero, codAnimale,
-                    codSintomi.getFirst());
+
+            InserimentoProblema routine = new InserimentoProblema();
+
+            routine.setCodFascicolo(codFascicolo);
+            routine.setNumero(numeroProblema);
+            routine.setParagrafo(paragrafo);
+            routine.setNome(nome);
+            routine.setDescrizione(descrizione);
+            routine.setTipoCurabile(tipoCurabile);
+            routine.setInCura(inCura);
+            routine.setArea1(Area1);
+            routine.setArea2(Area2);
+            routine.setRNumero(rNumeroProblema);
+            routine.setRParagrafo(rParagrafo);
+            routine.setENumero(eNumeroProblema);
+            routine.setEParagrafo(eParagrafo);
+            routine.setCodProvincia(codProvincia);
+            routine.setCodCitta_(codCitta);
+            routine.setCodAnimale(codAnimale);
+            routine.setCodSintomo(codSintomi.getFirst().trim());
+
+            routine.execute(create.configuration());
+
+            Integer codFascicoloAggiornato = routine.getCodFascicolo();
+            Short numeroAggiornato = routine.getNumero();
+            String paragrafoAggiornato = routine.getParagrafo();
+
             codSintomi.removeFirst();
-            for (String codSintomo : codSintomi) {
-                Routines.inserimentoReferto(create.configuration(), codFascicolo, numeroProblema, paragrafo, codSintomo);
+
+            if (codProvincia == null) {
+                fascicolo = create.selectFrom(Tables.FASCICOLO_SANITARIO)
+                        .where(Tables.FASCICOLO_SANITARIO.COD_FASCICOLO.eq(codFascicolo))
+                        .fetchOne();
+            } else {
+                fascicolo = create.selectFrom(Tables.FASCICOLO_SANITARIO)
+                        .where(Tables.FASCICOLO_SANITARIO.COD_PROVINCIA.eq(codProvincia))
+                        .and(Tables.FASCICOLO_SANITARIO.COD_CITTA_.eq(codCitta))
+                        .and(Tables.FASCICOLO_SANITARIO.NUMERO.eq(numero))
+                        .and(Tables.FASCICOLO_SANITARIO.COD_ANIMALE.eq(codAnimale))
+                        .fetchOne();
             }
+
+            for (String codSintomo : codSintomi) {
+                Routines.inserimentoReferto(create.configuration(), codFascicoloAggiornato, numeroAggiornato, paragrafoAggiornato,
+                        codSintomo.trim());
+            }
+
         } catch (SQLException e) {
             this.logger.severe("La connessione non ha funzionato");
         }
+        return String.valueOf(fascicolo.getCodFascicolo());
     }
 
     @Override
     public void updateProblemaInCura(final int codFascicolo, final short numeroProblema, final String paragrafo,
-                                     final String statoCura, final String codProvincia,
-                                     final String codCitta, final int numero, final String codAnimale) {
+                                     final String statoCura) {
         try (Connection conn = DBConfig.getConnection()) {
             DSLContext create = DSL.using(conn);
-            Routines.updateInCura(create.configuration(), codFascicolo, numeroProblema, paragrafo, statoCura,
-                    codProvincia, codCitta, numero, codAnimale);
+            FascicoloSanitarioRecord fascicolo = create.selectFrom(Tables.FASCICOLO_SANITARIO)
+                            .where(Tables.FASCICOLO_SANITARIO.COD_FASCICOLO.eq(codFascicolo))
+                            .fetchOne();
+            Routines.updateInCura(create.configuration(), codFascicolo, numeroProblema, paragrafo, statoCura.toUpperCase(),
+                    fascicolo.getCodProvincia(), fascicolo.getCodCitta_(), fascicolo.getNumero(),
+                    fascicolo.getCodAnimale());
         } catch (SQLException e) {
             this.logger.severe("La connessione non ha funzionato");
         }

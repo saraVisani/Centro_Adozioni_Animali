@@ -1,7 +1,12 @@
 package it.unibo.adozione_animali.view.animale;
 
+import it.unibo.adozione_animali.model.impl.RicoveroDAO;
+import org.jooq.exception.DataAccessException;
+
 import javax.swing.*;
 import java.awt.*;
+import java.sql.SQLException;
+import java.time.LocalDate;
 
 public class UpdateRicoveroPanel extends JPanel {
     
@@ -83,7 +88,24 @@ public class UpdateRicoveroPanel extends JPanel {
         updatePanelGen.add(data_ricovero);
         updatePanelGen.add(update);
 
+        update.addActionListener(e -> {
+            try {
+                Integer codFas = Integer.parseInt(codFascicoloField.getText());
+                Short numPag = Short.parseShort(numeroPaginaField.getText());
+                String par = paragrafoField.getText();
 
+                new RicoveroDAO().updateRicovero(codFas, numPag, par, LocalDate.parse(data_ricovero.getText()));
+                JOptionPane.showMessageDialog(this, "L'aggiornamento è avvenuto correttamente");
+
+            } catch (DataAccessException data) {
+                Throwable cause = data.getCause();
+                if (cause instanceof SQLException) {
+                    JOptionPane.showMessageDialog(this, "Errore nell'inserimento. Ricontrollare che i campi siano stati riempiti correttamente");
+                }
+            } catch (Exception numb) {
+                JOptionPane.showMessageDialog(this, "Errore nell'inserimento. Ricontrollare che i campi siano stati riempiti correttamente");
+            }
+        });
 
         add(updatePanel, BorderLayout.CENTER);
         

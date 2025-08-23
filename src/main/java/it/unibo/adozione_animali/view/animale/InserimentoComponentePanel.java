@@ -1,7 +1,11 @@
 package it.unibo.adozione_animali.view.animale;
 
+import it.unibo.adozione_animali.model.impl.ComponenteDAO;
+import org.jooq.exception.DataAccessException;
+
 import javax.swing.*;
 import java.awt.*;
+import java.sql.SQLException;
 
 public class InserimentoComponentePanel extends JPanel {
 
@@ -111,6 +115,21 @@ public class InserimentoComponentePanel extends JPanel {
         insertPanelGen.add(percentuale);
         insertPanelGen.add(aggiungi);
 
+        aggiungi.addActionListener(e -> {
+            try {
+                new ComponenteDAO().insertComponente(cod_prov.getText(), cod_citta.getText(),
+                        Integer.parseInt(numeroInd.getText()), codAnimale.getText(), cod_specie.getText(),
+                        nome_razza.getText(), Integer.parseInt(percentuale.getText()));
+                JOptionPane.showMessageDialog(this, "L'inserimento è avvenuto correttamente");
+            } catch (DataAccessException data) {
+                Throwable cause = data.getCause();
+                if (cause instanceof SQLException) {
+                    JOptionPane.showMessageDialog(this, "Errore nell'inserimento. Ricontrollare che i campi siano stati riempiti correttamente");
+                }
+            } catch (NumberFormatException numb) {
+                JOptionPane.showMessageDialog(this, "Errore nell'inserimento. Alcuni campi obbligatori non sono stati riempiti");
+            }
+        });
 
         add(insertScroll, BorderLayout.CENTER);
     }

@@ -9,7 +9,7 @@ import java.util.List;
 public interface Esame {
 
     void insertEsame(Integer codFascicolo, Short numeroProblema, String paragrafo, LocalDate dataEsame,
-                     String codProvincia, String codCitta, int numero, String codAnimale, List<String> codTipiEsame);
+                     List<String> codTipiEsame);
 
     void updateEsame(int codFascicolo, short numeroProblema, String paragrafo, LocalDate dataEsame);
 

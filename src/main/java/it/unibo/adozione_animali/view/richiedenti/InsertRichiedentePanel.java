@@ -1,7 +1,13 @@
 package it.unibo.adozione_animali.view.richiedenti;
 
+import it.unibo.adozione_animali.model.impl.PersonaDAO;
+import it.unibo.adozione_animali.model.impl.RichiedenteDAO;
+import org.jooq.exception.DataAccessException;
+
 import javax.swing.*;
 import java.awt.*;
+import java.sql.SQLException;
+import java.time.LocalDate;
 
 public class InsertRichiedentePanel extends JPanel {
 
@@ -132,7 +138,29 @@ public class InsertRichiedentePanel extends JPanel {
         insertPanelGen.add(checkAbuso);
         insertPanelGen.add(insert);
 
-
         add(insertPanel, BorderLayout.CENTER);
+
+        insert.addActionListener(e -> {
+            LocalDate dataA;
+            if (dataRecenteAbF.getText().isEmpty()) {
+                dataA = null;
+            } else {
+                dataA = LocalDate.parse(dataRecenteAbF.getText());
+            }
+            try {
+                new PersonaDAO().insertPersona(CFF.getText(), nomeF.getText(), cognomeF.getText(),
+                        emailF.getText(), passwordF.getText(), telefonoF.getText());
+                new RichiedenteDAO().insertRichiedente(CFF.getText(), Short.parseShort(numeroAbF.getText()), dataA,
+                        (byte) (checkAbuso.isSelected() ? 1 : 0));
+            }  catch (DataAccessException data) {
+                Throwable cause = data.getCause();
+                if (cause instanceof SQLException) {
+                    JOptionPane.showMessageDialog(this, "Errore nell'inserimento." +
+                            " Ricontrollare che i campi siano stati riempiti correttamente");
+                }
+            } catch (NumberFormatException numb) {
+            JOptionPane.showMessageDialog(this, "Errore nell'inserimento. Alcuni campi obbligatori non sono stati riempiti");
+        }
+        });
     }
 }

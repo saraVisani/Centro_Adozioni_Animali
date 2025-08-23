@@ -5,7 +5,7 @@ import java.time.LocalDate;
 public interface Ricovero {
 
     void insertRicovero(Integer codFascicolo, Short numeroProblema, String paragrafo, LocalDate dataInizioRicovero,
-                        LocalDate dataFineRicovero, String nomeOspedale, String codProvincia, String codCitta, int numero, String codAnimale);
+                        LocalDate dataFineRicovero, String nomeOspedale);
 
     void updateRicovero(int codFascicolo, short numeroProblema, String paragrafo, LocalDate dataFineRicovero);
 
