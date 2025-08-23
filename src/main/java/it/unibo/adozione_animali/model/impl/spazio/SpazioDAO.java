@@ -1,6 +1,8 @@
 package it.unibo.adozione_animali.model.impl.spazio;
 
 import java.sql.Connection;
+import java.util.Arrays;
+import java.util.List;
 
 import org.jooq.DSLContext;
 import org.jooq.SQLDialect;
@@ -8,6 +10,7 @@ import org.jooq.impl.DSL;
 
 import it.unibo.adozione_animali.model.api.spazio.Spazio;
 import it.unibo.adozione_animali.util.DBConfig;
+import it.unibo.adozione_animali.util.Enum.TipoSpazio;
 import nu.studer.sample.Tables;
 import java.math.BigDecimal;
 
@@ -113,6 +116,60 @@ public class SpazioDAO implements Spazio{
         } catch (Exception e) {
             e.printStackTrace();
             return false;
+        }
+    }
+
+    public List<String> getCodici() {
+        try (Connection conn = DBConfig.getConnection()) {
+            DSLContext ctx = DSL.using(conn, SQLDialect.MYSQL);
+
+            return ctx.select(Tables.SPAZIO.ID_SPAZIO)
+                    .from(Tables.SPAZIO)
+                    .orderBy(Tables.SPAZIO.ID_SPAZIO.asc())
+                    .fetchInto(String.class);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return List.of(); // ritorna lista vuota se errore
+        }
+    }
+
+    public List<String> getTipo(Integer codice) {
+        try (Connection conn = DBConfig.getConnection()) {
+            DSLContext ctx = DSL.using(conn, SQLDialect.MYSQL);
+
+            // Recupero il tipo associato allo spazio
+            String tipoAssociato = ctx.select(Tables.SPAZIO.TIPO_SPAZIO)
+                    .from(Tables.SPAZIO)
+                    .where(Tables.SPAZIO.ID_SPAZIO.eq(codice))
+                    .fetchOneInto(String.class);
+
+            if (tipoAssociato == null) {
+                // Se non c’è spazio con quel codice → restituisco tutti i tipi
+                return Arrays.stream(TipoSpazio.values())
+                            .map(Enum::name)
+                            .toList();
+            }
+
+            // Converto in enum
+            TipoSpazio tipoEnum = TipoSpazio.fromString(tipoAssociato);
+
+            if (tipoEnum == null) {
+                // Se nel DB c’è un valore non valido → restituisco tutti i tipi
+                return Arrays.stream(TipoSpazio.values())
+                            .map(Enum::name)
+                            .toList();
+            }
+
+            // Restituisco tutti i tipi eccetto quello già associato
+            return Arrays.stream(TipoSpazio.values())
+                        .filter(t -> t != tipoEnum)
+                        .map(Enum::name)
+                        .toList();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return List.of(); // lista vuota in caso di errore
         }
     }
 

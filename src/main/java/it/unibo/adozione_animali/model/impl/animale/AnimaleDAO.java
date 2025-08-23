@@ -3,6 +3,8 @@ package it.unibo.adozione_animali.model.impl.animale;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.time.LocalDate;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import org.jooq.DSLContext;
@@ -125,6 +127,27 @@ public class AnimaleDAO implements Animale {
         } catch (Exception e) {
             e.printStackTrace();
             return false; // Return false if there is an error
+        }
+    }
+
+    public List<String> getCodiciByNumero(String provincia, String citta, Integer numero) {
+        try (Connection conn = DBConfig.getConnection()) {
+            
+            if (provincia == null || citta == null || numero == null) {
+                return Collections.emptyList();
+            }
+
+            DSLContext ctx = DSL.using(conn, SQLDialect.MYSQL);
+            return ctx.select(Tables.ANIMALE.COD_ANIMALE)
+                .from(Tables.ANIMALE)
+                .where(Tables.ANIMALE.COD_PROVINCIA.eq(provincia)
+                    .and(Tables.ANIMALE.COD_CITTA_.eq(citta))
+                    .and(Tables.ANIMALE.NUMERO.eq(numero)))
+                .fetchInto(String.class);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Collections.emptyList();
         }
     }
 }

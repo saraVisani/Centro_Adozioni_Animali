@@ -1,5 +1,6 @@
 package it.unibo.adozione_animali.model.impl.indirizzo;
 
+import java.util.List;
 import java.util.Optional;
 
 import java.sql.Connection;
@@ -145,6 +146,21 @@ public class IndirizzoDAO implements Indirizzo {
         } catch (Exception e) {
             e.printStackTrace();
             return false;
+        }
+    }
+
+    public List<String> getNumeriByCitta(String provincia, String citta) {
+        try (Connection conn = DBConfig.getConnection()) {
+            DSLContext ctx = DSL.using(conn, SQLDialect.MYSQL);
+            return ctx.select(Tables.INDIRIZZO.NUMERO)
+                        .from(Tables.INDIRIZZO)
+                        .where(Tables.INDIRIZZO.COD_PROVINCIA.eq(provincia)
+                            .and(Tables.INDIRIZZO.COD_CITTA_.eq(citta)))
+                        .orderBy(Tables.INDIRIZZO.NUMERO.asc())
+                        .fetchInto(String.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return List.of(); // Return empty list if there is an error
         }
     }
 }
