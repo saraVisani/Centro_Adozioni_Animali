@@ -14,8 +14,10 @@ import it.unibo.adozione_animali.controller.impl.DeleteSpecieCentroController;
 import it.unibo.adozione_animali.controller.impl.InserimentoCaratteristicaController;
 import it.unibo.adozione_animali.controller.impl.InserimentoSpazioController;
 import it.unibo.adozione_animali.controller.impl.InserimentoSpecieCentroController;
+import it.unibo.adozione_animali.controller.impl.StatisticheRicercaController;
 import it.unibo.adozione_animali.controller.impl.UpdateCapienzaController;
 import it.unibo.adozione_animali.controller.impl.UpdateDimensioneSpazioController;
+import it.unibo.adozione_animali.controller.impl.UpdateStatisticaController;
 import it.unibo.adozione_animali.controller.impl.UpdateTipoDimensioneController;
 import it.unibo.adozione_animali.controller.impl.UpdateTipoSpazioController;
 import it.unibo.adozione_animali.model.impl.Model;
@@ -43,6 +45,8 @@ public class Start {
         view.getSpaziPanel().getUpdateDimensionePanel().setController(new UpdateDimensioneSpazioController(model, view.getSpaziPanel().getUpdateDimensionePanel()));
         view.getSpaziPanel().getUpdateTipoPanel().setController(new UpdateTipoSpazioController(model, view.getSpaziPanel().getUpdateTipoPanel()));
         view.getSpaziPanel().getUpdateTipoDimensionePanel().setController(new UpdateTipoDimensioneController(model, view.getSpaziPanel().getUpdateTipoDimensionePanel()));
+        new StatisticheRicercaController(view.getRicercaStatPanel());
+        view.getAggiornaPanel().setController(new UpdateStatisticaController(model, view.getAggiornaPanel()));
 
         try (Connection conn = DriverManager.getConnection(
                 "jdbc:mysql://localhost:3306/Adozione_Animali",
