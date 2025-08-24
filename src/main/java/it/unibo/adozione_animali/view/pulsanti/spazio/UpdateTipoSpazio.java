@@ -1,19 +1,21 @@
-package it.unibo.adozione_animali.view.statistiche;
+package it.unibo.adozione_animali.view.pulsanti.spazio;
 
 import java.awt.*;
 import java.util.List;
 import javax.swing.*;
 
-import it.unibo.adozione_animali.controller.impl.UpdateStatisticaController;
+import it.unibo.adozione_animali.controller.impl.UpdateTipoSpazioController;
 import it.unibo.adozione_animali.util.ColorUtils;
 import it.unibo.adozione_animali.util.ItemSelezionabile;
 
-public class StatisticheUpdate extends JPanel {
-    private JComboBox<ItemSelezionabile> tipo;
-    private JButton inserisciBtn;
-    private UpdateStatisticaController controller;
+public class UpdateTipoSpazio extends JPanel {
 
-    public StatisticheUpdate() {
+    private JComboBox<ItemSelezionabile> tipo;
+    private JComboBox<ItemSelezionabile> codSpazio;
+    private JButton inserisciBtn;
+    private UpdateTipoSpazioController controller;
+
+    public UpdateTipoSpazio() {
         setBackground(ColorUtils.fromHex("6B82FF"));
         setLayout(new BorderLayout(10, 10));
 
@@ -29,7 +31,7 @@ public class StatisticheUpdate extends JPanel {
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
         // Header
-        String[] headers = { "Nome Statistica"};
+        String[] headers = { "Codice Spazio", "Tipo"};
         gbc.gridy = 0;
         for (int i = 0; i < headers.length; i++) {
             gbc.gridx = i;
@@ -39,7 +41,7 @@ public class StatisticheUpdate extends JPanel {
             tablePanel.add(lbl, gbc);
         }
 
-        inserisciBtn = new JButton("Request");
+        inserisciBtn = new JButton("Inserisci");
         inserisciBtn.setEnabled(false);
 
         // Una sola riga di selezione
@@ -47,15 +49,25 @@ public class StatisticheUpdate extends JPanel {
 
         // Provincia
         gbc.gridx = 0;
+        codSpazio = new JComboBox<>();
+        tablePanel.add(codSpazio, gbc);
+
+        // Città
+        gbc.gridx = 1;
         tipo = new JComboBox<>();
+        tipo.setEnabled(false);
         tablePanel.add(tipo, gbc);
 
         // Listener combo che chiamano il controller
-        tipo.addActionListener(e -> aggiornaStatoPulsante());
+        tipo.addActionListener(e -> {
+            if (controller != null) controller.codiceSelected(getCodice());
+            aggiornaStatoPulsante();});
 
         // JTextField nome
+        codSpazio.addActionListener(e -> aggiornaStatoPulsante());
+
         inserisciBtn.addActionListener(e -> {
-            if (controller != null) controller.salvaRequest();
+            if (controller != null) controller.salvaAggiornamento();
         });
 
         add(new JScrollPane(tablePanel), BorderLayout.CENTER);
@@ -63,13 +75,18 @@ public class StatisticheUpdate extends JPanel {
     }
 
     // --- Metodi per collegare il controller ---
-    public void setController(UpdateStatisticaController controller) {
+    public void setController(UpdateTipoSpazioController controller) {
         this.controller = controller;
     }
 
     // --- Metodi pubblici per aggiornare i dati delle combo ---
     public void setTipo(List<String> valori) {
         tipo.setModel(new DefaultComboBoxModel<>(valori.toArray(new ItemSelezionabile[0])));
+        tipo.setEnabled(true);
+    }
+
+    public void setCodice(List<String> valori) {
+        codSpazio.setModel(new DefaultComboBoxModel<>(valori.toArray(new ItemSelezionabile[0])));
     }
 
     // --- Getters per valori selezionati ---
@@ -77,11 +94,22 @@ public class StatisticheUpdate extends JPanel {
         return (String) tipo.getSelectedItem();
     }
 
-    private void aggiornaStatoPulsante() {
-        inserisciBtn.setEnabled(getTipo() != null);
+    public Integer getCodice() {
+        try {
+            return Integer.parseInt((String)codSpazio.getSelectedItem());
+        } catch (NumberFormatException e) {
+            return null; // oppure 0 se preferisci
+        }
     }
 
-    public void showEsito(boolean esito, String text) {
+    private void aggiornaStatoPulsante() {
+        boolean completo = getTipo() != null
+                && getCodice() != null;
+
+        inserisciBtn.setEnabled(completo);
+    }
+
+    public void showEsito(boolean esito) {
         if (esito) {
             JOptionPane.showMessageDialog(
                 this,
@@ -98,4 +126,5 @@ public class StatisticheUpdate extends JPanel {
             );
         }
     }
+
 }

@@ -10,6 +10,7 @@ import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
 
 import it.unibo.adozione_animali.model.api.animale.Centro;
+import it.unibo.adozione_animali.model.impl.indirizzo.IndirizzoDAO;
 import it.unibo.adozione_animali.util.DBConfig;
 import nu.studer.sample.Tables;
 import nu.studer.sample.routines.RiallocaSingoloAnimale;
@@ -36,6 +37,10 @@ public class CentroDAO implements Centro{
             boolean atLeastOneTipologiaInserted = false;
 
             try {
+                if(!new IndirizzoDAO().insertIndirizzo(provincia, città, numero, provincia, null)){
+                    conn.rollback(); // rollback totale perché l'inserimento di indirizzo è fallito
+                    return false;
+                }
                 // 1. Inserisci il centro
                 ctx.insertInto(Tables.CENTRO)
                 .set(Tables.CENTRO.NOME, nome)

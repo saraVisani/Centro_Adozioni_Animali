@@ -1,6 +1,7 @@
 package it.unibo.adozione_animali.model.impl.indirizzo;
 
 import java.sql.Connection;
+import java.util.List;
 
 import org.jooq.DSLContext;
 import org.jooq.SQLDialect;
@@ -8,6 +9,7 @@ import org.jooq.impl.DSL;
 
 import it.unibo.adozione_animali.model.api.indirizzo.Citta;
 import it.unibo.adozione_animali.util.DBConfig;
+import it.unibo.adozione_animali.util.ItemSelezionabile;
 import nu.studer.sample.Tables;
 
 public class CittaDAO implements Citta {
@@ -84,6 +86,23 @@ public class CittaDAO implements Citta {
         } catch (Exception e) {
             e.printStackTrace();
             return false;
+        }
+    }
+
+    public List<ItemSelezionabile> getCittaByProvincia(String provincia) {
+        try (Connection conn = DBConfig.getConnection()) {
+            DSLContext ctx = DSL.using(conn, SQLDialect.MYSQL);
+            return ctx.select(Tables.CITTA_.COD_CITTA_, Tables.CITTA_.NOME)
+                        .from(Tables.CITTA_)
+                        .where(Tables.CITTA_.COD_PROVINCIA.eq(provincia))
+                        .orderBy(Tables.CITTA_.NOME.asc())
+                        .fetch(record -> new ItemSelezionabile(
+                            record.get(Tables.CITTA_.COD_CITTA_),
+                            record.get(Tables.CITTA_.NOME)
+                        ));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return List.of(); // Return empty list if there is an error
         }
     }
 

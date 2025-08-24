@@ -1,19 +1,20 @@
-package it.unibo.adozione_animali.view.statistiche;
+package it.unibo.adozione_animali.view.pulsanti.spazio;
 
 import java.awt.*;
 import java.util.List;
 import javax.swing.*;
 
-import it.unibo.adozione_animali.controller.impl.UpdateStatisticaController;
+import it.unibo.adozione_animali.controller.impl.CancellaSpazioController;
 import it.unibo.adozione_animali.util.ColorUtils;
 import it.unibo.adozione_animali.util.ItemSelezionabile;
 
-public class StatisticheUpdate extends JPanel {
-    private JComboBox<ItemSelezionabile> tipo;
-    private JButton inserisciBtn;
-    private UpdateStatisticaController controller;
+public class DeleteSpazio extends JPanel{
 
-    public StatisticheUpdate() {
+    private JComboBox<ItemSelezionabile> codSpazio;
+    private JButton inserisciBtn;
+    private CancellaSpazioController controller;
+
+    public DeleteSpazio() {
         setBackground(ColorUtils.fromHex("6B82FF"));
         setLayout(new BorderLayout(10, 10));
 
@@ -29,7 +30,7 @@ public class StatisticheUpdate extends JPanel {
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
         // Header
-        String[] headers = { "Nome Statistica"};
+        String[] headers = { "Codice Spazio"};
         gbc.gridy = 0;
         for (int i = 0; i < headers.length; i++) {
             gbc.gridx = i;
@@ -39,7 +40,7 @@ public class StatisticheUpdate extends JPanel {
             tablePanel.add(lbl, gbc);
         }
 
-        inserisciBtn = new JButton("Request");
+        inserisciBtn = new JButton("Inserisci");
         inserisciBtn.setEnabled(false);
 
         // Una sola riga di selezione
@@ -47,15 +48,14 @@ public class StatisticheUpdate extends JPanel {
 
         // Provincia
         gbc.gridx = 0;
-        tipo = new JComboBox<>();
-        tablePanel.add(tipo, gbc);
+        codSpazio = new JComboBox<>();
+        tablePanel.add(codSpazio, gbc);
 
         // Listener combo che chiamano il controller
-        tipo.addActionListener(e -> aggiornaStatoPulsante());
+        codSpazio.addActionListener(e -> aggiornaStatoPulsante());
 
-        // JTextField nome
         inserisciBtn.addActionListener(e -> {
-            if (controller != null) controller.salvaRequest();
+            if (controller != null) controller.salvaCancellazione();
         });
 
         add(new JScrollPane(tablePanel), BorderLayout.CENTER);
@@ -63,25 +63,30 @@ public class StatisticheUpdate extends JPanel {
     }
 
     // --- Metodi per collegare il controller ---
-    public void setController(UpdateStatisticaController controller) {
+    public void setController(CancellaSpazioController controller) {
         this.controller = controller;
     }
 
     // --- Metodi pubblici per aggiornare i dati delle combo ---
-    public void setTipo(List<String> valori) {
-        tipo.setModel(new DefaultComboBoxModel<>(valori.toArray(new ItemSelezionabile[0])));
+    public void setCodici(List<String> valori) {
+        codSpazio.setModel(new DefaultComboBoxModel<>(valori.toArray(new ItemSelezionabile[0])));
     }
 
     // --- Getters per valori selezionati ---
-    public String getTipo() {
-        return (String) tipo.getSelectedItem();
+    public Integer getCodice() {
+        try {
+            return Integer.parseInt((String)codSpazio.getSelectedItem());
+        } catch (NumberFormatException e) {
+            return null; // oppure 0 se preferisci
+        }
     }
 
     private void aggiornaStatoPulsante() {
-        inserisciBtn.setEnabled(getTipo() != null);
+        boolean completo =  getCodice() != null;
+        inserisciBtn.setEnabled(completo);
     }
 
-    public void showEsito(boolean esito, String text) {
+    public void showEsito(boolean esito) {
         if (esito) {
             JOptionPane.showMessageDialog(
                 this,

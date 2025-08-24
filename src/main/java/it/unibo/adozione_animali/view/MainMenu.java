@@ -13,6 +13,23 @@ import java.awt.*;
 
 public class MainMenu {
 
+    private Home homePanel;
+    private AnimaliGenerali infoPanel;
+    private AnimaliRicerca ricercaPanel;
+    private StatisticheUpdate aggiornaPanel;
+    private FascicoloPanel fascicoloPanel;
+    private GestioneCaratteristiche gestioneCarPanel;
+    private GestioneComponentiPanel gestioneCompPanel;
+    private GestioneSpecifiche gestioneRazzeSpecPanel;
+    private GestioneRichiestePanel gestioneRichPanel;
+    private GestioneTurniTaskPanel gestioneTurniPanel;
+    private PersonaleGenerali infoPersonalePanel;
+    private RazzaGenerali infoRazzaPanel;
+    private StatisticheRicerca ricercaStatPanel;
+    private RichiedentiGenerali infoRichiedentiPanel;
+    private Centri centriPanel;
+    private Spazio spaziPanel;
+
     public void startMenu() {
         JFrame frame = new JFrame("Gestione Centri Adozione");
         frame.setSize(620, 520);
@@ -79,32 +96,22 @@ public class MainMenu {
 
         // Pannello centrale con CardLayout
         JPanel cards = new JPanel(new CardLayout());
-        JPanel homePanel = new Home();
-        homePanel.add(new JLabel("Pagina Home"));
-        JPanel infoPanel = new AnimaliGenerali();
-        infoPanel.add(new JLabel("Informazioni Generali Animali"));
-        JPanel ricercaPanel = new AnimaliRicerca();
-        ricercaPanel.add(new JLabel("Ricerca Animali"));
-        JPanel aggiornaPanel = new StatisticheUpdate();
-        aggiornaPanel.add(new JLabel("Aggiorna Statistiche"));
-        JPanel fascicoloPanel = new FascicoloPanel();
-        JPanel gestioneCarPanel = new GestioneCaratteristiche();
-        gestioneCarPanel.add(new JLabel("Gestione Caratteristiche"));
-        JPanel gestioneCompPanel = new GestioneComponentiPanel();
-        JPanel gestioneRazzeSpecPanel = new GestioneSpecifiche();
-        gestioneRazzeSpecPanel.add(new JLabel("Gestione Specifiche di Razza"));
-        JPanel gestioneRichPanel = new GestioneRichiestePanel();
-        JPanel gestioneTurniPanel = new GestioneTurniTaskPanel();
-        JPanel infoPersonalePanel = new PersonaleGenerali();
-        JPanel infoRazzaPanel = new RazzaGenerali();
-        infoRazzaPanel.add(new JLabel("Informazioni Generali Razza"));
-        JPanel ricercaStatPanel = new StatisticheRicerca();
-        ricercaStatPanel.add(new JLabel("Ricerca Statistiche"));
-        JPanel infoRichiedentiPanel = new RichiedentiGenerali();
-        JPanel centriPanel = new Centri();
-        centriPanel.add(new JLabel("Centri"));
-        JPanel spaziPanel = new Spazio();
-        spaziPanel.add(new JLabel("Spazi"));
+        homePanel = new Home();
+        infoPanel = new AnimaliGenerali();
+        ricercaPanel = new AnimaliRicerca();
+        aggiornaPanel = new StatisticheUpdate();
+        fascicoloPanel = new FascicoloPanel();
+        gestioneCarPanel = new GestioneCaratteristiche();
+        gestioneCompPanel = new GestioneComponentiPanel();
+        gestioneRazzeSpecPanel = new GestioneSpecifiche();
+        gestioneRichPanel = new GestioneRichiestePanel();
+        gestioneTurniPanel = new GestioneTurniTaskPanel();
+        infoPersonalePanel = new PersonaleGenerali();
+        infoRazzaPanel = new RazzaGenerali();
+        ricercaStatPanel = new StatisticheRicerca();
+        infoRichiedentiPanel = new RichiedentiGenerali();
+        centriPanel = new Centri();
+        spaziPanel = new Spazio();
 
         cards.add(homePanel, "home");
         cards.add(infoPanel, "info");
@@ -210,6 +217,70 @@ public class MainMenu {
         frame.add(cards, BorderLayout.CENTER);
 
         frame.setVisible(true);
+    }
+
+    public Home getHomePanel() {
+        return homePanel;
+    }
+
+    public AnimaliGenerali getInfoPanel() {
+        return infoPanel;
+    }
+
+    public AnimaliRicerca getRicercaPanel() {
+        return ricercaPanel;
+    }
+
+    public StatisticheUpdate getAggiornaPanel() {
+        return aggiornaPanel;
+    }
+
+    public FascicoloPanel getFascicoloPanel() {
+        return fascicoloPanel;
+    }
+
+    public GestioneCaratteristiche getGestioneCarPanel() {
+        return gestioneCarPanel;
+    }
+
+    public GestioneComponentiPanel getGestioneCompPanel() {
+        return gestioneCompPanel;
+    }
+
+    public GestioneSpecifiche getGestioneRazzeSpecPanel() {
+        return gestioneRazzeSpecPanel;
+    }
+
+    public GestioneRichiestePanel getGestioneRichPanel() {
+        return gestioneRichPanel;
+    }
+
+    public GestioneTurniTaskPanel getGestioneTurniPanel() {
+        return gestioneTurniPanel;
+    }
+
+    public PersonaleGenerali getInfoPersonalePanel() {
+        return infoPersonalePanel;
+    }
+
+    public RazzaGenerali getInfoRazzaPanel() {
+        return infoRazzaPanel;
+    }
+
+    public StatisticheRicerca getRicercaStatPanel() {
+        return ricercaStatPanel;
+    }
+
+    public RichiedentiGenerali getInfoRichiedentiPanel() {
+        return infoRichiedentiPanel;
+    }
+
+    public Centri getCentriPanel() {
+        return centriPanel;
+    }
+
+    public Spazio getSpaziPanel() {
+        return spaziPanel;
     }
 
 }
