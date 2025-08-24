@@ -8,6 +8,7 @@ import org.jooq.DSLContext;
 import org.jooq.Null;
 import org.jooq.impl.DSL;
 
+import javax.swing.*;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -69,15 +70,19 @@ public class RichiestaDAO implements Richiesta {
     @Override
     public void deleteRichiesta(final String codProvinciaAnimale, final String codCittaAnimale, final int numeroAnimale,
                                 final String codAnimale, final LocalDate dataRichiesta, final String CF) {
+        System.out.println("Sono entrato");
         try (Connection conn = DBConfig.getConnection()) {
             DSLContext create = DSL.using(conn);
-            create.deleteFrom(Tables.RICHIESTA)
+            int righeEliminate = create.deleteFrom(Tables.RICHIESTA)
                     .where(Tables.RICHIESTA.COD_PROVINCIA.eq(codProvinciaAnimale))
                     .and(Tables.RICHIESTA.COD_CITTA_.eq(codCittaAnimale))
                     .and(Tables.RICHIESTA.NUMERO.eq(numeroAnimale))
                     .and(Tables.RICHIESTA.DATA_RICHIESTA.eq(dataRichiesta))
                     .and(Tables.RICHIESTA.CF.eq(CF))
                     .execute();
+            if (righeEliminate == 0) {
+                throw new IllegalStateException("Non esiste la richiesta indicata");
+            }
         } catch (SQLException e) {
             this.logger.severe("La connessione non ha funzionato");
         }

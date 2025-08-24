@@ -1,7 +1,12 @@
 package it.unibo.adozione_animali.view.personale;
 
+import it.unibo.adozione_animali.model.impl.TaskDAO;
+import org.jooq.exception.DataAccessException;
+
 import javax.swing.*;
 import java.awt.*;
+import java.sql.SQLException;
+import java.time.LocalDate;
 
 public class UpdateTaskPanel extends JPanel {
 
@@ -100,6 +105,34 @@ public class UpdateTaskPanel extends JPanel {
         insertPanelGen.add(CFFNew);
         insertPanelGen.add(aggiorna);
 
+        aggiorna.addActionListener(e -> {
+            try {
+                TaskDAO task = new TaskDAO();
+                if (!numeroTurnoFNew.getText().isEmpty()) {
+                    task.updateNumeroTurno(CFF.getText(), (byte) Integer.parseInt(numeroTurnoF.getText()),
+                            LocalDate.parse(dataF.getText()), (byte) Integer.parseInt(numeroTurnoFNew.getText()));
+                }
+                if (!dataFNew.getText().isEmpty()) {
+                    task.updateData(CFF.getText(), (byte) Integer.parseInt(numeroTurnoF.getText()),
+                            LocalDate.parse(dataF.getText()), LocalDate.parse(dataFNew.getText()));
+                }
+                if (!dataFNew.getText().isEmpty()) {
+                    task.updateCF(CFF.getText(), (byte) Integer.parseInt(numeroTurnoF.getText()),
+                            LocalDate.parse(dataF.getText()), CFFNew.getText());
+                }
+                JOptionPane.showMessageDialog(this, "L'aggiornamento è avvenuto correttamente");
+            } catch (DataAccessException data) {
+                Throwable cause = data.getCause();
+                if (cause instanceof SQLException) {
+                    JOptionPane.showMessageDialog(this, "Errore nell'inserimento." +
+                            " Ricontrollare che i campi siano stati riempiti correttamente");
+                    JOptionPane.showMessageDialog(this,cause + "\n" + data);
+                }
+            } catch (NumberFormatException numb) {
+                JOptionPane.showMessageDialog(this, "Errore nell'inserimento. Alcuni campi obbligatori non sono stati riempiti");
+                JOptionPane.showMessageDialog(this,numb);
+            }
+        });
 
         add(insertScroll, BorderLayout.CENTER);
     }

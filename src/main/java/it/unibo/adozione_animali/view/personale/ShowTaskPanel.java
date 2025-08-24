@@ -1,7 +1,13 @@
 package it.unibo.adozione_animali.view.personale;
 
+import it.unibo.adozione_animali.model.impl.TaskDAO;
+import nu.studer.sample.tables.records.TaskRecord;
+
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.time.LocalDate;
+import java.util.List;
 
 public class ShowTaskPanel extends JPanel {
 
@@ -26,7 +32,7 @@ public class ShowTaskPanel extends JPanel {
         JButton search = new JButton("Cerca");
 
 
-        searchPanel.add(searchPanelMore, BorderLayout.CENTER);
+        searchPanel.add(searchPanelMore, BorderLayout.NORTH);
         searchPanelMore.add(searchPanelGen, BorderLayout.NORTH);
 
         GroupLayout searchLayout = new GroupLayout(searchPanelGen);
@@ -62,15 +68,35 @@ public class ShowTaskPanel extends JPanel {
                         .addComponent(dataF))
                 .addComponent(search)
         );
+        //TODO--> cambia il borderlayout con il box nel pannello che contiene quello della tabella e i pulsanti
+        JPanel tablePanel = new JPanel();
+        JTable table = new JTable();
+        //JScrollPane tableScroll = new JScrollPane(tablePanel);
+        //tableScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        //tableScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        searchPanel.add(tablePanel, BorderLayout.SOUTH);
+        JScrollPane scrollPane = new JScrollPane(table);
+        scrollPane.setSize(600, 100);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        tablePanel.add(scrollPane);
 
         search.addActionListener(e -> {
-            JPanel tablePanel = new JPanel();
-            JTable table = new JTable();
-            tablePanel.add(table);
-            JScrollPane tableScroll = new JScrollPane(tablePanel);
-            tableScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-            tableScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-            searchPanel.add(tableScroll, BorderLayout.CENTER);
+            //TODO --> mettere try catch
+            String[] columns = { "Codice Fiscale", "Data", "Numero Turno", "Lavoro"};
+            DefaultTableModel model = new DefaultTableModel(columns, 0);
+            table.setModel(model);
+            List<TaskRecord> tasks = new TaskDAO().getTasks(codProvF.getText(), codCittaF.getText(),
+                    Integer.parseInt(numeroF.getText()), LocalDate.parse(dataF.getText()));
+            tasks.forEach(task -> {
+                Object[] row = {
+                        task.getCf(),
+                        task.getDataTask(),
+                        task.getNumero(),
+                        task.getLavoro()
+                };
+                model.addRow(row);
+            });
             searchPanel.revalidate();
             searchPanel.repaint();
         });

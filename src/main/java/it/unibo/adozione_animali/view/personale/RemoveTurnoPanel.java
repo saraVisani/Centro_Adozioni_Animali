@@ -1,7 +1,12 @@
 package it.unibo.adozione_animali.view.personale;
 
+import it.unibo.adozione_animali.model.impl.TurnoLavorativoDAO;
+import org.jooq.exception.DataAccessException;
+
 import javax.swing.*;
 import java.awt.*;
+import java.sql.SQLException;
+import java.time.LocalDate;
 
 public class RemoveTurnoPanel extends JPanel {
 
@@ -60,6 +65,23 @@ public class RemoveTurnoPanel extends JPanel {
         removePanelGen.add(dataF);
         removePanelGen.add(cancella);
 
+        cancella.addActionListener(e -> {
+            try {
+                new TurnoLavorativoDAO().deleteTurnoLavorativo((byte) Integer.parseInt(numeroTurnoF.getText()),
+                        LocalDate.parse(dataF.getText()));
+                JOptionPane.showMessageDialog(this, "L'eliminazione è avvenuta correttamente");
+            } catch (DataAccessException data) {
+                Throwable cause = data.getCause();
+                if (cause instanceof SQLException) {
+                    JOptionPane.showMessageDialog(this, "Errore nell'inserimento." +
+                            " Ricontrollare che i campi siano stati riempiti correttamente");
+                    JOptionPane.showMessageDialog(this,cause + "\n" + data);
+                }
+            } catch (NumberFormatException numb) {
+                JOptionPane.showMessageDialog(this, "Errore nell'inserimento. Alcuni campi obbligatori non sono stati riempiti");
+                JOptionPane.showMessageDialog(this,numb);
+            }
+        });
 
         add(removeScroll, BorderLayout.CENTER);
     }

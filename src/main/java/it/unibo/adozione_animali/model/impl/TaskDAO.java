@@ -4,7 +4,9 @@ import it.unibo.adozione_animali.model.api.Task;
 import nu.studer.sample.Routines;
 import nu.studer.sample.Tables;
 import nu.studer.sample.tables.records.PersonaleRecord;
+import nu.studer.sample.tables.records.TaskRecord;
 import org.jooq.DSLContext;
+import static org.jooq.impl.DSL.*;
 import org.jooq.impl.DSL;
 
 import java.sql.Connection;
@@ -61,7 +63,7 @@ public class TaskDAO implements Task {
                 }
             } else {
                 this.logger.severe("Non esiste il CF inserito fra quelli dei lavoratori");
-                throw new SQLException();
+                throw new IllegalArgumentException();
             }
         } catch (SQLException e) {
             this.logger.severe("La connessione non ha funzionato");
@@ -72,6 +74,16 @@ public class TaskDAO implements Task {
     public void updateCF(String CF, byte numeroTurno, LocalDate dataTask, String nuovoCF) {
         try (Connection conn = DBConfig.getConnection()) {
             DSLContext create = DSL.using(conn);
+
+            Boolean check = create.fetchExists(
+                    create.selectFrom(Tables.PERSONALE)
+                            .where(Tables.PERSONALE.CF.eq(CF))
+            );
+
+            if (!check) {
+                throw new IllegalArgumentException();
+            }
+
             create.update(Tables.TASK)
                     .set(Tables.TASK.CF, nuovoCF)
                     .where(Tables.TASK.CF.eq(CF))
@@ -87,6 +99,7 @@ public class TaskDAO implements Task {
     public void updateData(String CF, byte numeroTurno, LocalDate dataTask, LocalDate nuovaData) {
         try (Connection conn = DBConfig.getConnection()) {
             DSLContext create = DSL.using(conn);
+
             create.update(Tables.TASK)
                     .set(Tables.TASK.DATA_TASK, nuovaData)
                     .where(Tables.TASK.CF.eq(CF))
@@ -126,5 +139,33 @@ public class TaskDAO implements Task {
         } catch (SQLException e) {
             this.logger.severe("La connessione non ha funzionato");
         }
+    }
+
+    public List<TaskRecord> getTasks(String codProv, String codCit, Integer num, LocalDate date) {
+
+        List<TaskRecord> tasks = null;
+
+        try (Connection conn = DBConfig.getConnection()) {
+            DSLContext create = DSL.using(conn);
+
+            tasks = create.selectFrom(Tables.TASK)
+                    .where(Tables.TASK.DATA_TASK.eq(date))
+                    .fetch();
+
+            tasks.stream().filter(task -> create.fetchExists(
+                    create.select()
+                            .from(Tables.TASK)
+                            .join(Tables.PERSONALE)
+                            .on(Tables.PERSONALE.CF.eq(Tables.TASK.CF))
+                            .where(Tables.PERSONALE.COD_PROVINCIA.eq(codProv))
+                            .and(Tables.PERSONALE.COD_CITTA_.eq(codCit))
+                            .and(Tables.PERSONALE.NUMERO.eq(num))
+            )).toList();
+
+
+        } catch (SQLException e) {
+            this.logger.severe("La connessione non ha funzionato");
+        }
+        return tasks;
     }
 }

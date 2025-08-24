@@ -144,6 +144,14 @@ public class InsertTaskPanel extends JPanel {
                 animaliList = Optional.of(new ArrayList<>(Arrays.asList(animaliF.getText().split(","))));
             }
             try {
+                String lavoroFin = lavoroF.getText().trim().replace(" ", "_");
+                if (lavoroCheck.isSelected() && !(lavoroFin.equalsIgnoreCase("trattamento_medico") ||
+                        lavoroFin.equalsIgnoreCase("accudimento"))) {
+                    throw new IllegalArgumentException();
+                } else if (!lavoroCheck.isSelected() && !(lavoroFin.equalsIgnoreCase("ufficio") ||
+                        !(lavoroFin.equalsIgnoreCase("pulizia")))){
+                    throw new IllegalArgumentException();
+                }
                 new TaskDAO().insertTask(CFF.getText(), Byte.parseByte(numeroTurnoF.getText()),
                         LocalDate.parse(dataF.getText()), lavoroF.getText(), animaliList);
                 JOptionPane.showMessageDialog(this, "L'inserimento è avvenuto correttamente");
@@ -153,8 +161,10 @@ public class InsertTaskPanel extends JPanel {
                 if (cause instanceof SQLException) {
                     JOptionPane.showMessageDialog(this, "Errore nell'inserimento." +
                             " Ricontrollare che i campi siano stati riempiti correttamente");
+                    JOptionPane.showMessageDialog(this,cause + "\n" + data);
                 }
-            } catch (NumberFormatException numb) {
+            } catch (Exception numb) {
+                JOptionPane.showMessageDialog(this,numb);
                 JOptionPane.showMessageDialog(this, "Errore nell'inserimento. Alcuni campi obbligatori non sono stati riempiti");
             }
         });
