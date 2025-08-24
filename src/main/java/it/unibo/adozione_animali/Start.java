@@ -29,6 +29,18 @@ public class Start {
 
     public static void main(String[] args) {
 
+        try (Connection conn = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/Adozione_Animali",
+                "root",
+                ""
+        )) {
+
+            DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         Model model = new Model();
         MainMenu view = new MainMenu();
         view.getGestioneCarPanel().getInserimentoView().setController(new InserimentoCaratteristicaController(model, view.getGestioneCarPanel().getInserimentoView()));
@@ -47,20 +59,6 @@ public class Start {
         view.getSpaziPanel().getUpdateTipoDimensionePanel().setController(new UpdateTipoDimensioneController(model, view.getSpaziPanel().getUpdateTipoDimensionePanel()));
         new StatisticheRicercaController(view.getRicercaStatPanel());
         view.getAggiornaPanel().setController(new UpdateStatisticaController(model, view.getAggiornaPanel()));
-
-        try (Connection conn = DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/Adozione_Animali",
-                "root",
-                ""
-        )) {
-
-            DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        new MainMenu().startMenu();
 
     }
 }

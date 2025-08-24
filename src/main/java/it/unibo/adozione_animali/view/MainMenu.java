@@ -30,7 +30,7 @@ public class MainMenu {
     private Centri centriPanel;
     private Spazio spaziPanel;
 
-    public void startMenu() {
+    public MainMenu() {
         JFrame frame = new JFrame("Gestione Centri Adozione");
         frame.setSize(620, 520);
         frame.setMinimumSize(new Dimension(620, 520));
