@@ -1,5 +1,6 @@
 package it.unibo.adozione_animali;
 
+import it.unibo.adozione_animali.view.MainMenu;
 import org.jooq.DSLContext;
 import org.jooq.impl.DSL;
 import org.jooq.SQLDialect;
@@ -20,6 +21,8 @@ public class Start {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        new MainMenu().startMenu();
 
     }
 }

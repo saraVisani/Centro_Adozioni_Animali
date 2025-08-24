@@ -13,7 +13,7 @@ import java.awt.*;
 
 public class MainMenu {
 
-    public static void main(String[] args) {
+    public void startMenu() {
         JFrame frame = new JFrame("Gestione Centri Adozione");
         frame.setSize(620, 520);
         frame.setMinimumSize(new Dimension(620, 520));
