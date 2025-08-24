@@ -32,6 +32,11 @@ public class AnimaliRicerca extends JPanel {
         gbc.insets = new Insets(5, 5, 5, 5);
         gbc.anchor = GridBagConstraints.WEST;
 
+        provinciaBox = new JComboBox<>();
+        cittaBox = new JComboBox<>();
+        numeroBox = new JComboBox<>();
+        codiceBox = new JComboBox<>();
+
         // Nome
         gbc.gridx = 0;
         gbc.gridy = 0;

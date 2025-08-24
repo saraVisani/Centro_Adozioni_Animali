@@ -48,7 +48,7 @@ public class AnimaleDAO implements Animale {
                 .set(Tables.ANIMALE.COD_CITTA_CENTRO, cit_centro.orElse(null))
                 .set(Tables.ANIMALE.NUMERO_CENTRO, num_centro.orElse(null))
                 .set(Tables.ANIMALE.STATO_ATTUALE, statoAttuale.orElse(null))
-                .set(Tables.ANIMALE.IDONEITA_ANIMALE, (byte) (idonieta ? 1 : 0))
+                .set(Tables.ANIMALE.IDONIETA_ANIMALE, (byte) (idonieta ? 1 : 0))
                 .set(Tables.ANIMALE.PESO, BigDecimal.valueOf(peso))
                 .set(Tables.ANIMALE.ALTEZZA, BigDecimal.valueOf(altezza))
                 .execute();
@@ -132,7 +132,7 @@ public class AnimaleDAO implements Animale {
 
     public List<String> getCodiciByNumero(String provincia, String citta, Integer numero) {
         try (Connection conn = DBConfig.getConnection()) {
-            
+
             if (provincia == null || citta == null || numero == null) {
                 return Collections.emptyList();
             }
