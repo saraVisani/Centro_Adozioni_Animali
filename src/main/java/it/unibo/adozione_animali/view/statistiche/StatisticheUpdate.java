@@ -1,7 +1,101 @@
 package it.unibo.adozione_animali.view.statistiche;
 
-import javax.swing.JPanel;
+import java.awt.*;
+import java.util.List;
+import javax.swing.*;
+
+import it.unibo.adozione_animali.controller.impl.UpdateStatisticaController;
+import it.unibo.adozione_animali.util.ColorUtils;
+import it.unibo.adozione_animali.util.ItemSelezionabile;
 
 public class StatisticheUpdate extends JPanel {
+    private JComboBox<ItemSelezionabile> tipo;
+    private JButton inserisciBtn;
+    private UpdateStatisticaController controller;
 
+    public StatisticheUpdate() {
+        setBackground(ColorUtils.fromHex("6B82FF"));
+        setLayout(new BorderLayout(10, 10));
+
+        JLabel title = new JLabel("Inserimento Caratteristiche");
+        title.setFont(new Font("Arial", Font.BOLD, 18));
+        title.setHorizontalAlignment(SwingConstants.CENTER);
+        add(title, BorderLayout.NORTH);
+
+        JPanel tablePanel = new JPanel(new GridBagLayout());
+        tablePanel.setBackground(ColorUtils.fromHex("6B82FF"));
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+
+        // Header
+        String[] headers = { "Nome Statistica"};
+        gbc.gridy = 0;
+        for (int i = 0; i < headers.length; i++) {
+            gbc.gridx = i;
+            JLabel lbl = new JLabel(headers[i]);
+            lbl.setForeground(Color.WHITE);
+            lbl.setFont(new Font("Arial", Font.BOLD, 14));
+            tablePanel.add(lbl, gbc);
+        }
+
+        inserisciBtn = new JButton("Request");
+        inserisciBtn.setEnabled(false);
+
+        // Una sola riga di selezione
+        gbc.gridy = 1;
+
+        // Provincia
+        gbc.gridx = 0;
+        tipo = new JComboBox<>();
+        tablePanel.add(tipo, gbc);
+
+        // Listener combo che chiamano il controller
+        tipo.addActionListener(e -> aggiornaStatoPulsante());
+
+        // JTextField nome
+        inserisciBtn.addActionListener(e -> {
+            if (controller != null) controller.salvaRequest();
+        });
+
+        add(new JScrollPane(tablePanel), BorderLayout.CENTER);
+        add(inserisciBtn, BorderLayout.SOUTH);
+    }
+
+    // --- Metodi per collegare il controller ---
+    public void setController(UpdateStatisticaController controller) {
+        this.controller = controller;
+    }
+
+    // --- Metodi pubblici per aggiornare i dati delle combo ---
+    public void setTipo(List<String> valori) {
+        tipo.setModel(new DefaultComboBoxModel<>(valori.toArray(new ItemSelezionabile[0])));
+    }
+
+    // --- Getters per valori selezionati ---
+    public String getTipo() {
+        return (String) tipo.getSelectedItem();
+    }
+
+    private void aggiornaStatoPulsante() {
+        inserisciBtn.setEnabled(getTipo() != null);
+    }
+
+    public void showEsito(boolean esito, String text) {
+        if (esito) {
+            JOptionPane.showMessageDialog(
+                this,
+                "Operazione completata con successo!",
+                "Successo",
+                JOptionPane.INFORMATION_MESSAGE
+            );
+        } else {
+            JOptionPane.showMessageDialog(
+                this,
+                "Si è verificato un errore durante l'operazione.",
+                "Errore",
+                JOptionPane.ERROR_MESSAGE
+            );
+        }
+    }
 }

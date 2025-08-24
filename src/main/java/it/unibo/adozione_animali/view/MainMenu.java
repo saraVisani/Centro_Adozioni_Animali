@@ -97,31 +97,21 @@ public class MainMenu {
         // Pannello centrale con CardLayout
         JPanel cards = new JPanel(new CardLayout());
         homePanel = new Home();
-        homePanel.add(new JLabel("Pagina Home"));
         infoPanel = new AnimaliGenerali();
-        infoPanel.add(new JLabel("Informazioni Generali Animali"));
         ricercaPanel = new AnimaliRicerca();
-        ricercaPanel.add(new JLabel("Ricerca Animali"));
         aggiornaPanel = new StatisticheUpdate();
-        aggiornaPanel.add(new JLabel("Aggiorna Statistiche"));
         fascicoloPanel = new FascicoloPanel();
         gestioneCarPanel = new GestioneCaratteristiche();
-        gestioneCarPanel.add(new JLabel("Gestione Caratteristiche"));
         gestioneCompPanel = new GestioneComponentiPanel();
         gestioneRazzeSpecPanel = new GestioneSpecifiche();
-        gestioneRazzeSpecPanel.add(new JLabel("Gestione Specifiche di Razza"));
         gestioneRichPanel = new GestioneRichiestePanel();
         gestioneTurniPanel = new GestioneTurniTaskPanel();
         infoPersonalePanel = new PersonaleGenerali();
         infoRazzaPanel = new RazzaGenerali();
-        infoRazzaPanel.add(new JLabel("Informazioni Generali Razza"));
         ricercaStatPanel = new StatisticheRicerca();
-        ricercaStatPanel.add(new JLabel("Ricerca Statistiche"));
         infoRichiedentiPanel = new RichiedentiGenerali();
         centriPanel = new Centri();
-        centriPanel.add(new JLabel("Centri"));
         spaziPanel = new Spazio();
-        spaziPanel.add(new JLabel("Spazi"));
 
         cards.add(homePanel, "home");
         cards.add(infoPanel, "info");

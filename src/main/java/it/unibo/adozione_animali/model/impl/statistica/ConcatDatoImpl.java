@@ -53,24 +53,28 @@ public class ConcatDatoImpl implements ConcatDato {
                 return displayName + "\tNumero Animali Tot: " + val + "\tPercentuale: " + perc + "%";
 
             case PERCENTUALE_STRANIERI_AUTOCTONI_PER_CENTRO:
+                if (valori.size() >= 2) {
+                    return "Stranieri percentuale: " + valori.get(0) + "%, " +
+                        "Autoctoni percentuale: " + valori.get(1) + "%";
+                } else {
+                    return "Dati incompleti";
+                }
+
+
             case PERCENTUALE_PURA_METICCIO_PER_CENTRO:
-                StringBuilder dato = new StringBuilder();
-                for (int i = 0; i < valori.size(); i += 2) {
-                    String nome = valori.get(i);
-                    String percen = valori.get(i + 1);
-                    dato.append(nome)
-                        .append("\tPercentuale: ")
-                        .append(percen)
-                        .append("%, \t");
+                if (valori.size() >= 2) {
+                    return "Puri percentuale: " + valori.get(0) + "%, " +
+                        "Meticci percentuale: " + valori.get(1) + "%";
+                } else {
+                    return "Dati incompleti";
                 }
-                // rimuovo l'ultima virgola e tab
-                if (dato.length() > 0) {
-                    dato.setLength(dato.length() - 3);
-                }
-                return dato.toString();
 
             case PERCENTUALE_DISABILI_PER_CENTRO:
+                return "Disabili percentuale: " + valori.get(0) + "%";
+
             case PERCENTUALE_CRONICI_PER_CENTRO:
+                return "Cronici percentuale: " + valori.get(0) + "%";
+
             case PERCENTUALE_ANIMALI_MALATI_SANI:
             case PERCENTUALE_CURABILI_NON_CURABILI:
             case PERCENTUALE_PERSONALE_FISSO_VOLONTARIO:
@@ -139,6 +143,7 @@ public class ConcatDatoImpl implements ConcatDato {
                 case PERCENTUALE_PURA_METICCIO_ADOTTATI:
                 case PERCENTUALE_DISABILI_PER_CENTRO:
                 case PERCENTUALE_CRONICI_PER_CENTRO:
+                case PERCENTUALE_STRANIERI_AUTOCTONI_PER_CENTRO:
                 case PERCENTUALE_PURA_METICCIO_PER_CENTRO:
                     return nome.get(0);
 

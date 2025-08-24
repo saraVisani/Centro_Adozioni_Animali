@@ -50,4 +50,20 @@ public class DatoDAO implements Dato{
         }
     }
 
+    public boolean deleteDatoPerStatistica(String codice, LocalDate data) {
+        try (Connection conn = DBConfig.getConnection()) {
+            DSLContext ctx = DSL.using(conn, SQLDialect.MYSQL);
+
+            int righeCancellate = ctx.deleteFrom(Tables.DATO)
+                .where(Tables.DATO.COD_STATISTICA.eq(codice)
+                    .and(Tables.DATO.DATA_STATISTICA.eq(data)))
+                .execute();
+
+            return righeCancellate > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 }
