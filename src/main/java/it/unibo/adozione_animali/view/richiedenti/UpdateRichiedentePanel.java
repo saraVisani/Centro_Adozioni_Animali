@@ -1,7 +1,13 @@
 package it.unibo.adozione_animali.view.richiedenti;
 
+import it.unibo.adozione_animali.model.impl.PersonaDAO;
+import it.unibo.adozione_animali.model.impl.RichiedenteDAO;
+import org.jooq.exception.DataAccessException;
+
 import javax.swing.*;
 import java.awt.*;
+import java.sql.SQLException;
+import java.time.LocalDate;
 
 public class UpdateRichiedentePanel extends JPanel {
 
@@ -85,7 +91,37 @@ public class UpdateRichiedentePanel extends JPanel {
                         .addComponent(aggiorna)
         );
 
+        aggiorna.addActionListener(e -> {
+            try {
+                PersonaDAO persona = new PersonaDAO();
+                RichiedenteDAO richiedente = new RichiedenteDAO();
+                if(CFF.getText().isEmpty()) {
+                    throw new IllegalArgumentException("Il codice fiscele è obbligatorio");
+                }
+                if (!emailF.getText().isEmpty()) {
+                    persona.updateEmail(CFF.getText(), emailF.getText());
+                }
+                if (!passwordF.getText().isEmpty()) {
+                    persona.updatePassword(CFF.getText(), passwordF.getText());
+                }
+                if (!telefonoF.getText().isEmpty()) {
+                    persona.updateTelefono(CFF.getText(), telefonoF.getText());
+                }
+                if (!dataRecenteAbF.getText().isEmpty()) {
+                    richiedente.updateAbbandoni(CFF.getText(), LocalDate.parse(dataRecenteAbF.getText()));
+                }
+                richiedente.updateAbuso(CFF.getText(), checkAbuso.isSelected());
 
+                JOptionPane.showMessageDialog(this, "L'aggiornamento è avvenuto correttamente");
+            }  catch (DataAccessException data) {
+                Throwable cause = data.getCause();
+                if (cause instanceof SQLException) {
+                    JOptionPane.showMessageDialog(this, "Errore nell'inserimento. Ricontrollare che i campi siano stati riempiti correttamente");
+                }
+            } catch (Exception numb) {
+                JOptionPane.showMessageDialog(this, "Errore nell'inserimento. Ricontrollare che i campi siano stati riempiti correttamente");
+            }
+        });
         add(updateScroll, BorderLayout.CENTER);
     }
 }

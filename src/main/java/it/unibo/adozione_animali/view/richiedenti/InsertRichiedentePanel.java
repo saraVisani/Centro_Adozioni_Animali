@@ -152,6 +152,7 @@ public class InsertRichiedentePanel extends JPanel {
                         emailF.getText(), passwordF.getText(), telefonoF.getText());
                 new RichiedenteDAO().insertRichiedente(CFF.getText(), Short.parseShort(numeroAbF.getText()), dataA,
                         (byte) (checkAbuso.isSelected() ? 1 : 0));
+                JOptionPane.showMessageDialog(this, "L'inserimento è avvenuto correttamente");
             }  catch (DataAccessException data) {
                 Throwable cause = data.getCause();
                 if (cause instanceof SQLException) {
@@ -159,8 +160,9 @@ public class InsertRichiedentePanel extends JPanel {
                             " Ricontrollare che i campi siano stati riempiti correttamente");
                 }
             } catch (NumberFormatException numb) {
-            JOptionPane.showMessageDialog(this, "Errore nell'inserimento. Alcuni campi obbligatori non sono stati riempiti");
-        }
+            JOptionPane.showMessageDialog(this, "Errore nell'inserimento." +
+                    " Ricontrollare che i campi siano stati riempiti correttamente");
+            }
         });
     }
 }

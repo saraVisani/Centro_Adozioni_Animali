@@ -1,7 +1,12 @@
 package it.unibo.adozione_animali.view.richiedenti;
 
+import it.unibo.adozione_animali.model.impl.RichiedenteDAO;
+import it.unibo.adozione_animali.model.impl.RichiestaDAO;
+import org.jooq.exception.DataAccessException;
+
 import javax.swing.*;
 import java.awt.*;
+import java.sql.SQLException;
 
 public class RemoveRichiedentePanel extends JPanel {
 
@@ -50,6 +55,19 @@ public class RemoveRichiedentePanel extends JPanel {
         removePanelGen.add(CFF);
         removePanelGen.add(cancella);
 
+        cancella.addActionListener(e -> {
+            try {
+                new RichiedenteDAO().deleteRichiedente(CFF.getText());
+                JOptionPane.showMessageDialog(this, "L'eliminazione è avvenuta correttamente");
+            }  catch (DataAccessException data) {
+                Throwable cause = data.getCause();
+                if (cause instanceof SQLException) {
+                    JOptionPane.showMessageDialog(this, "Errore nell'inserimento. Ricontrollare che i campi siano stati riempiti correttamente");
+                }
+            } catch (Exception numb) {
+                JOptionPane.showMessageDialog(this, "Errore nell'inserimento. Ricontrollare che i campi siano stati riempiti correttamente");
+            }
+        });
 
         add(removeScroll, BorderLayout.CENTER);
     }
