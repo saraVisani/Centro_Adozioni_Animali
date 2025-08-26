@@ -32,8 +32,8 @@ public class MainMenu {
 
     public MainMenu() {
         JFrame frame = new JFrame("Gestione Centri Adozione");
-        frame.setSize(620, 520);
-        frame.setMinimumSize(new Dimension(620, 520));
+        frame.setSize(900, 700);
+        frame.setMinimumSize(new Dimension(900, 700));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Pannello in alto con pulsante Home e menu
