@@ -107,6 +107,11 @@ public class UpdateTaskPanel extends JPanel {
 
         aggiorna.addActionListener(e -> {
             try {
+
+                if (numeroTurnoF.getText().isEmpty() || CFF.getText().isEmpty() || dataF.getText().isEmpty()) {
+                    throw new IllegalArgumentException();
+                }
+
                 TaskDAO task = new TaskDAO();
                 if (!numeroTurnoFNew.getText().isEmpty()) {
                     task.updateNumeroTurno(CFF.getText(), (byte) Integer.parseInt(numeroTurnoF.getText()),
@@ -116,7 +121,7 @@ public class UpdateTaskPanel extends JPanel {
                     task.updateData(CFF.getText(), (byte) Integer.parseInt(numeroTurnoF.getText()),
                             LocalDate.parse(dataF.getText()), LocalDate.parse(dataFNew.getText()));
                 }
-                if (!dataFNew.getText().isEmpty()) {
+                if (!CFFNew.getText().isEmpty()) {
                     task.updateCF(CFF.getText(), (byte) Integer.parseInt(numeroTurnoF.getText()),
                             LocalDate.parse(dataF.getText()), CFFNew.getText());
                 }
@@ -128,8 +133,9 @@ public class UpdateTaskPanel extends JPanel {
                             " Ricontrollare che i campi siano stati riempiti correttamente");
                     JOptionPane.showMessageDialog(this,cause + "\n" + data);
                 }
-            } catch (NumberFormatException numb) {
-                JOptionPane.showMessageDialog(this, "Errore nell'inserimento. Alcuni campi obbligatori non sono stati riempiti");
+            } catch (Exception numb) {
+                JOptionPane.showMessageDialog(this, "Errore nell'inserimento." +
+                        " Ricontrollare che i campi siano stati riempiti correttamente");
                 JOptionPane.showMessageDialog(this,numb);
             }
         });

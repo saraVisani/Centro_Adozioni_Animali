@@ -147,10 +147,10 @@ public class InsertTaskPanel extends JPanel {
                 String lavoroFin = lavoroF.getText().trim().replace(" ", "_");
                 if (lavoroCheck.isSelected() && !(lavoroFin.equalsIgnoreCase("trattamento_medico") ||
                         lavoroFin.equalsIgnoreCase("accudimento"))) {
-                    throw new IllegalArgumentException();
+                    throw new IllegalArgumentException("Si può solo inserire accudimento o trattamento medico");
                 } else if (!lavoroCheck.isSelected() && !(lavoroFin.equalsIgnoreCase("ufficio") ||
                         !(lavoroFin.equalsIgnoreCase("pulizia")))){
-                    throw new IllegalArgumentException();
+                    throw new IllegalArgumentException("Si può solo inserire pulizia o ufficio");
                 }
                 new TaskDAO().insertTask(CFF.getText(), Byte.parseByte(numeroTurnoF.getText()),
                         LocalDate.parse(dataF.getText()), lavoroF.getText(), animaliList);
@@ -161,10 +161,8 @@ public class InsertTaskPanel extends JPanel {
                 if (cause instanceof SQLException) {
                     JOptionPane.showMessageDialog(this, "Errore nell'inserimento." +
                             " Ricontrollare che i campi siano stati riempiti correttamente");
-                    JOptionPane.showMessageDialog(this,cause + "\n" + data);
                 }
             } catch (Exception numb) {
-                JOptionPane.showMessageDialog(this,numb);
                 JOptionPane.showMessageDialog(this, "Errore nell'inserimento. Alcuni campi obbligatori non sono stati riempiti");
             }
         });

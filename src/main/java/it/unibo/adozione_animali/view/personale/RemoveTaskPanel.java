@@ -1,7 +1,12 @@
 package it.unibo.adozione_animali.view.personale;
 
+import it.unibo.adozione_animali.model.impl.TaskDAO;
+import org.jooq.exception.DataAccessException;
+
 import javax.swing.*;
 import java.awt.*;
+import java.sql.SQLException;
+import java.time.LocalDate;
 
 public class RemoveTaskPanel extends JPanel {
 
@@ -69,6 +74,23 @@ public class RemoveTaskPanel extends JPanel {
         removePanelGen.add(CFF);
         removePanelGen.add(cancella);
 
+
+        cancella.addActionListener(e -> {
+            try {
+                new TaskDAO().deleteTask(CFF.getText(), (byte) Integer.parseInt(numeroTurnoF.getText()),
+                        LocalDate.parse(dataF.getText()));
+                JOptionPane.showMessageDialog(this, "L'eliminazione è avvenuta correttamente");
+            }  catch (DataAccessException data) {
+                Throwable cause = data.getCause();
+                if (cause instanceof SQLException) {
+                    JOptionPane.showMessageDialog(this, "Errore nell'inserimento." +
+                            " Ricontrollare che i campi siano stati riempiti correttamente");
+                }
+            } catch (Exception numb) {
+                JOptionPane.showMessageDialog(this, "Errore nell'inserimento." +
+                        " Ricontrollare che i campi siano stati riempiti correttamente");
+            }
+        });
 
         add(removeScroll, BorderLayout.CENTER);
     }
