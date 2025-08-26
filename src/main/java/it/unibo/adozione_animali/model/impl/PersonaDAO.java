@@ -36,6 +36,9 @@ public class PersonaDAO implements Persona {
     public void updateEmail(final String CF, final String email) {
         try (Connection conn = DBConfig.getConnection()) {
             DSLContext create = DSL.using(conn);
+
+            checkCFExistence(CF);
+
             create.update(Tables.PERSONA)
                     .set(Tables.PERSONA.EMAIL, email)
                     .where(Tables.PERSONA.CF.eq(CF))
@@ -49,6 +52,9 @@ public class PersonaDAO implements Persona {
     public void updateTelefono(final String CF, final String telefono) {
         try (Connection conn = DBConfig.getConnection()) {
             DSLContext create = DSL.using(conn);
+
+            checkCFExistence(CF);
+
             create.update(Tables.PERSONA)
                     .set(Tables.PERSONA.N_TELEFONO, telefono)
                     .where(Tables.PERSONA.CF.eq(CF))
@@ -62,6 +68,9 @@ public class PersonaDAO implements Persona {
     public void updatePassword(final String CF, final String password) {
         try (Connection conn = DBConfig.getConnection()) {
             DSLContext create = DSL.using(conn);
+
+            checkCFExistence(CF);
+
             create.update(Tables.PERSONA)
                     .set(Tables.PERSONA.PASSWORD_PERSONA, password)
                     .where(Tables.PERSONA.CF.eq(CF))
@@ -75,9 +84,30 @@ public class PersonaDAO implements Persona {
     public void deletePersona(final String CF) {
         try (Connection conn = DBConfig.getConnection()) {
             DSLContext create = DSL.using(conn);
+
+            checkCFExistence(CF);
+
             create.deleteFrom(Tables.PERSONA)
                     .where(Tables.PERSONA.CF.eq(CF))
                     .execute();
+        } catch (SQLException e) {
+            this.logger.severe("La connessione non ha funzionato");
+        }
+    }
+
+    private void checkCFExistence(String CF) {
+        try (Connection conn = DBConfig.getConnection()) {
+            DSLContext create = DSL.using(conn);
+
+            boolean exists = create.fetchExists(
+                    create.selectFrom(Tables.PERSONA)
+                            .where(Tables.PERSONA.CF.eq(CF))
+            );
+
+            if (!exists) {
+                throw new IllegalArgumentException("Il codice fiscale fornito non è corretto");
+            }
+
         } catch (SQLException e) {
             this.logger.severe("La connessione non ha funzionato");
         }
