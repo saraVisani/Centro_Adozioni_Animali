@@ -13,16 +13,18 @@ public class TurnoPanel extends JPanel {
 
         cards = new JPanel(new CardLayout());
 
-        String[] options = {"Inserisci Turno", "Rimuovi Turno"};
+        String[] options = {"Visualizza tutti i turni", "Inserisci Turno", "Rimuovi Turno"};
         comboBox = new JComboBox<>(options);
 
+        JPanel showPanel = new ShowTurniLavorativi();
         JPanel insertPanel = new InsertTurnoPanel();
         JPanel removePanel = new RemoveTurnoPanel();
 
+        cards.add(showPanel, "Visualizza tutti i turni");
         cards.add(insertPanel, "Inserisci Turno");
         cards.add(removePanel, "Rimuovi Turno");
 
-        ((CardLayout) cards.getLayout()).show(cards, "Inserisci Turno");
+        ((CardLayout) cards.getLayout()).show(cards, "Visualizza tutti i turni");
 
         // Listener sulla comboBox
         comboBox.addActionListener(e -> {

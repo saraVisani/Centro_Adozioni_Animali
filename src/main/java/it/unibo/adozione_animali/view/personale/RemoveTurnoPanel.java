@@ -70,16 +70,10 @@ public class RemoveTurnoPanel extends JPanel {
                 new TurnoLavorativoDAO().deleteTurnoLavorativo((byte) Integer.parseInt(numeroTurnoF.getText()),
                         LocalDate.parse(dataF.getText()));
                 JOptionPane.showMessageDialog(this, "L'eliminazione è avvenuta correttamente");
-            } catch (DataAccessException data) {
-                Throwable cause = data.getCause();
-                if (cause instanceof SQLException) {
-                    JOptionPane.showMessageDialog(this, "Errore nell'inserimento." +
-                            " Ricontrollare che i campi siano stati riempiti correttamente");
-                    JOptionPane.showMessageDialog(this,cause + "\n" + data);
-                }
+
             } catch (NumberFormatException numb) {
-                JOptionPane.showMessageDialog(this, "Errore nell'inserimento. Alcuni campi obbligatori non sono stati riempiti");
-                JOptionPane.showMessageDialog(this,numb);
+                JOptionPane.showMessageDialog(this, "Errore nell'inserimento." +
+                        " Ricontrollare che i campi siano stati riempiti correttamente");
             }
         });
 
