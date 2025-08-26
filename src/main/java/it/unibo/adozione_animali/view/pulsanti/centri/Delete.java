@@ -68,12 +68,22 @@ public class Delete extends JPanel{
 
         // Listener combo che chiamano il controller
         provinciaBox.addActionListener(e -> {
-            if (controller != null) controller.provinciaSelezionata((String) provinciaBox.getSelectedItem());
+            if (controller != null) {
+                ItemSelezionabile selected = (ItemSelezionabile) provinciaBox.getSelectedItem();
+                controller.provinciaSelezionata(selected != null ? selected.getCodice() : null);
+            }
             aggiornaStatoPulsante();
         });
 
         cittaBox.addActionListener(e -> {
-            if (controller != null) controller.cittaSelezionata((String) provinciaBox.getSelectedItem(), (String) cittaBox.getSelectedItem());
+            if (controller != null) {
+                ItemSelezionabile provincia = (ItemSelezionabile) provinciaBox.getSelectedItem();
+                ItemSelezionabile citta = (ItemSelezionabile) cittaBox.getSelectedItem();
+                controller.cittaSelezionata(
+                    provincia != null ? provincia.getCodice() : null,
+                    citta != null ? citta.getCodice() : null
+                );
+            }
             aggiornaStatoPulsante();
         });
 
@@ -108,11 +118,13 @@ public class Delete extends JPanel{
 
     // --- Getters per valori selezionati ---
     public String getProvinciaSelezionata() {
-        return (String) provinciaBox.getSelectedItem();
+        ItemSelezionabile selected = (ItemSelezionabile) provinciaBox.getSelectedItem();
+        return selected != null ? selected.getCodice() : null;
     }
 
     public String getCittaSelezionata() {
-        return (String) cittaBox.getSelectedItem();
+        ItemSelezionabile selected = (ItemSelezionabile) cittaBox.getSelectedItem();
+        return selected != null ? selected.getCodice() : null;
     }
 
     public String getNumeroSelezionato() {

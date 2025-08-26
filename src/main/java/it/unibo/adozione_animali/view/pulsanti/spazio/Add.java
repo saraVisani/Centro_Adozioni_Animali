@@ -94,13 +94,14 @@ public class Add extends JPanel {
     }
 
     // --- Metodi pubblici per aggiornare i dati delle combo ---
-    public void setTipo(List<String> valori) {
+    public void setTipo(List<ItemSelezionabile> valori) {
         tipo.setModel(new DefaultComboBoxModel<>(valori.toArray(new ItemSelezionabile[0])));
     }
 
     // --- Getters per valori selezionati ---
     public String getTipo() {
-        return (String) tipo.getSelectedItem();
+        ItemSelezionabile selected = (ItemSelezionabile) tipo.getSelectedItem();
+        return selected != null ? selected.getCodice() : null;
     }
 
     public Integer getCodice() {

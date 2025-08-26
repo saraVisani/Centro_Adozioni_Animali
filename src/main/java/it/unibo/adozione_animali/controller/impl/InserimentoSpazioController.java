@@ -4,6 +4,7 @@ import java.util.List;
 
 import it.unibo.adozione_animali.model.impl.Model;
 import it.unibo.adozione_animali.util.Enum.TipoSpazio;
+import it.unibo.adozione_animali.util.ItemSelezionabile;
 import it.unibo.adozione_animali.view.pulsanti.spazio.Add;
 
 public class InserimentoSpazioController {
@@ -14,7 +15,11 @@ public class InserimentoSpazioController {
     public InserimentoSpazioController(Model model, Add view){
         this.model = model;
         this.view = view;
-        this.view.setTipo(List.of(TipoSpazio.ESTERNO.name(), TipoSpazio.GABBIA.name(), TipoSpazio.INTERNO.name()));
+        this.view.setTipo(List.of(
+            new ItemSelezionabile(TipoSpazio.ESTERNO.name(), "Esterno"),
+            new ItemSelezionabile(TipoSpazio.GABBIA.name(), "Gabbia"),
+            new ItemSelezionabile(TipoSpazio.INTERNO.name(), "Interno")
+        ));
     }
 
     public void salvaInserimento() {

@@ -11,7 +11,7 @@ import it.unibo.adozione_animali.util.ItemSelezionabile;
 public class UpdateTipoSpazio extends JPanel {
 
     private JComboBox<ItemSelezionabile> tipo;
-    private JComboBox<ItemSelezionabile> codSpazio;
+    private JComboBox<String> codSpazio;
     private JButton inserisciBtn;
     private UpdateTipoSpazioController controller;
 
@@ -80,13 +80,13 @@ public class UpdateTipoSpazio extends JPanel {
     }
 
     // --- Metodi pubblici per aggiornare i dati delle combo ---
-    public void setTipo(List<String> valori) {
+    public void setTipo(List<ItemSelezionabile> valori) {
         tipo.setModel(new DefaultComboBoxModel<>(valori.toArray(new ItemSelezionabile[0])));
         tipo.setEnabled(true);
     }
 
     public void setCodice(List<String> valori) {
-        codSpazio.setModel(new DefaultComboBoxModel<>(valori.toArray(new ItemSelezionabile[0])));
+        codSpazio.setModel(new DefaultComboBoxModel<>(valori.toArray(new String[0])));
     }
 
     // --- Getters per valori selezionati ---

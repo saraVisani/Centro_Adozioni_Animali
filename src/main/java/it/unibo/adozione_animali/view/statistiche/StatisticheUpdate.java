@@ -6,10 +6,9 @@ import javax.swing.*;
 
 import it.unibo.adozione_animali.controller.impl.UpdateStatisticaController;
 import it.unibo.adozione_animali.util.ColorUtils;
-import it.unibo.adozione_animali.util.ItemSelezionabile;
 
 public class StatisticheUpdate extends JPanel {
-    private JComboBox<ItemSelezionabile> tipo;
+    private JComboBox<String> tipo;
     private JButton inserisciBtn;
     private UpdateStatisticaController controller;
 
@@ -69,7 +68,7 @@ public class StatisticheUpdate extends JPanel {
 
     // --- Metodi pubblici per aggiornare i dati delle combo ---
     public void setTipo(List<String> valori) {
-        tipo.setModel(new DefaultComboBoxModel<>(valori.toArray(new ItemSelezionabile[0])));
+        tipo.setModel(new DefaultComboBoxModel<>(valori.toArray(new String[0])));
     }
 
     // --- Getters per valori selezionati ---

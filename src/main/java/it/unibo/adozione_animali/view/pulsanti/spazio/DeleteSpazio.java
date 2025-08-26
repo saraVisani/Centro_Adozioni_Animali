@@ -6,11 +6,10 @@ import javax.swing.*;
 
 import it.unibo.adozione_animali.controller.impl.CancellaSpazioController;
 import it.unibo.adozione_animali.util.ColorUtils;
-import it.unibo.adozione_animali.util.ItemSelezionabile;
 
 public class DeleteSpazio extends JPanel{
 
-    private JComboBox<ItemSelezionabile> codSpazio;
+    private JComboBox<String> codSpazio;
     private JButton inserisciBtn;
     private CancellaSpazioController controller;
 
@@ -69,15 +68,16 @@ public class DeleteSpazio extends JPanel{
 
     // --- Metodi pubblici per aggiornare i dati delle combo ---
     public void setCodici(List<String> valori) {
-        codSpazio.setModel(new DefaultComboBoxModel<>(valori.toArray(new ItemSelezionabile[0])));
+        codSpazio.setModel(new DefaultComboBoxModel<>(valori.toArray(new String[0])));
     }
 
     // --- Getters per valori selezionati ---
     public Integer getCodice() {
+        String selected = (String) codSpazio.getSelectedItem();
         try {
-            return Integer.parseInt((String)codSpazio.getSelectedItem());
+            return selected != null ? Integer.parseInt(selected) : null;
         } catch (NumberFormatException e) {
-            return null; // oppure 0 se preferisci
+            return null;
         }
     }
 
