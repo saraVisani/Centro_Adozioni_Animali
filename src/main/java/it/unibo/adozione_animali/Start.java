@@ -21,19 +21,15 @@ import it.unibo.adozione_animali.controller.impl.UpdateStatisticaController;
 import it.unibo.adozione_animali.controller.impl.UpdateTipoDimensioneController;
 import it.unibo.adozione_animali.controller.impl.UpdateTipoSpazioController;
 import it.unibo.adozione_animali.model.impl.Model;
+import it.unibo.adozione_animali.util.DBConfig;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 
 public class Start {
 
     public static void main(String[] args) {
 
-        try (Connection conn = DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/Adozione_Animali",
-                "root",
-                ""
-        )) {
+        try (Connection conn = DBConfig.getConnection()) {
 
             DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
 

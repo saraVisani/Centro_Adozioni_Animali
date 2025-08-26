@@ -12,7 +12,7 @@ public class UpdateTipoDimensione extends JPanel {
 
     private JComboBox<ItemSelezionabile> tipo;
     private JTextField dimensione;
-    private JComboBox<ItemSelezionabile> codSpazio;
+    private JComboBox<String> codSpazio;
     private JButton inserisciBtn;
     private UpdateTipoDimensioneController controller;
 
@@ -53,7 +53,7 @@ public class UpdateTipoDimensione extends JPanel {
         codSpazio = new JComboBox<>();
         tablePanel.add(codSpazio, gbc);
 
-        // Città
+
         gbc.gridx = 1;
         tipo = new JComboBox<>();
         tipo.setEnabled(false);
@@ -67,7 +67,6 @@ public class UpdateTipoDimensione extends JPanel {
         // Listener combo che chiamano il controller
         tipo.addActionListener(e -> aggiornaStatoPulsante());
 
-        // JTextField nome
         codSpazio.addActionListener(e ->{
             if (controller != null) controller.codiceSelected(getCodice());
             aggiornaStatoPulsante();});
@@ -93,13 +92,13 @@ public class UpdateTipoDimensione extends JPanel {
     }
 
     // --- Metodi pubblici per aggiornare i dati delle combo ---
-    public void setTipo(List<String> valori) {
+    public void setTipo(List<ItemSelezionabile> valori) {
         tipo.setModel(new DefaultComboBoxModel<>(valori.toArray(new ItemSelezionabile[0])));
         tipo.setEnabled(true);
     }
 
     public void setCodice(List<String> valori) {
-        codSpazio.setModel(new DefaultComboBoxModel<>(valori.toArray(new ItemSelezionabile[0])));
+        codSpazio.setModel(new DefaultComboBoxModel<>(valori.toArray(new String[0])));
     }
 
     // --- Getters per valori selezionati ---

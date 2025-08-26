@@ -1,6 +1,7 @@
 package it.unibo.adozione_animali.controller.impl;
 
 import it.unibo.adozione_animali.model.impl.Model;
+import it.unibo.adozione_animali.util.ItemSelezionabile;
 import it.unibo.adozione_animali.view.pulsanti.spazio.UpdateTipoDimensione;
 
 public class UpdateTipoDimensioneController {
@@ -14,7 +15,11 @@ public class UpdateTipoDimensioneController {
     }
 
     public void codiceSelected(Integer codice) {
-        view.setTipo(this.model.getSpazioDAO().getTipo(codice));
+            view.setTipo(
+            this.model.getSpazioDAO().getTipo(codice).stream()
+                .map(t -> new ItemSelezionabile(t, t)) // codice=descrizione
+                .toList()
+        );
     }
 
     public void salvaAggiornamento() {

@@ -6,11 +6,10 @@ import javax.swing.*;
 
 import it.unibo.adozione_animali.controller.impl.UpdateDimensioneSpazioController;
 import it.unibo.adozione_animali.util.ColorUtils;
-import it.unibo.adozione_animali.util.ItemSelezionabile;
 
 public class UpdateDimensione extends JPanel {
 
-    private JComboBox<ItemSelezionabile> codSpazio;
+    private JComboBox<String> codSpazio;
     private JTextField dimensione;
     private JButton inserisciBtn;
     private UpdateDimensioneSpazioController controller;
@@ -82,7 +81,7 @@ public class UpdateDimensione extends JPanel {
 
     // --- Metodi pubblici per aggiornare i dati delle combo ---
     public void setCodici(List<String> valori) {
-        codSpazio.setModel(new DefaultComboBoxModel<>(valori.toArray(new ItemSelezionabile[0])));
+        codSpazio.setModel(new DefaultComboBoxModel<>(valori.toArray(new String[0])));
     }
 
     // --- Getters per valori selezionati ---
