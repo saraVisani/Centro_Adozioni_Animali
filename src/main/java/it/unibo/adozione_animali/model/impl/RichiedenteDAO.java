@@ -5,11 +5,13 @@ import it.unibo.adozione_animali.util.DBConfig;
 import nu.studer.sample.Routines;
 import nu.studer.sample.Tables;
 import org.jooq.DSLContext;
+import org.jooq.Record;
 import org.jooq.impl.DSL;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.logging.Logger;
 
 public class RichiedenteDAO implements Richiedente {
@@ -36,6 +38,9 @@ public class RichiedenteDAO implements Richiedente {
     public void updateAbbandoni(String CF, LocalDate nuovaDataAbbandono) {
         try (Connection conn = DBConfig.getConnection()) {
             DSLContext create = DSL.using(conn);
+
+            checkCFExistence(CF);
+
             Routines.updateAbbandono(create.configuration(), CF, nuovaDataAbbandono);
         } catch (SQLException e) {
             this.logger.severe("La connessione non ha funzionato");
@@ -46,6 +51,9 @@ public class RichiedenteDAO implements Richiedente {
     public void updateAbuso(String CF, boolean abuso) {
         try (Connection conn = DBConfig.getConnection()) {
             DSLContext create = DSL.using(conn);
+
+            checkCFExistence(CF);
+
             final byte b = (byte) (abuso ? 1 : 0);
             Routines.updateAbuso(create.configuration(), CF, b);
         } catch (SQLException e) {
@@ -57,11 +65,63 @@ public class RichiedenteDAO implements Richiedente {
     public void deleteRichiedente(String CF) {
         try (Connection conn = DBConfig.getConnection()) {
             DSLContext create = DSL.using(conn);
+
+            checkCFExistence(CF);
+
             create.deleteFrom(Tables.RICHIEDENTE)
                     .where(Tables.RICHIEDENTE.CF.eq(CF))
                     .execute();
+
+            boolean worker = create.fetchExists(
+                    create.selectFrom(Tables.PERSONALE)
+                            .where(Tables.PERSONALE.CF.eq(CF))
+            );
+
+            if (!worker) {
+                new PersonaDAO().deletePersona(CF);
+            }
+
         } catch (SQLException e) {
             this.logger.severe("La connessione non ha funzionato");
         }
+    }
+
+    public void checkCFExistence(String CF) {
+        try (Connection conn = DBConfig.getConnection()) {
+            DSLContext create = DSL.using(conn);
+
+            boolean exists = create.fetchExists(
+                    create.selectFrom(Tables.RICHIEDENTE)
+                            .where(Tables.RICHIEDENTE.CF.eq(CF))
+            );
+
+            if (!exists) {
+                throw new IllegalArgumentException("Il codice fiscale fornito non è corretto");
+            }
+
+        } catch (SQLException e) {
+            this.logger.severe("La connessione non ha funzionato");
+        }
+    }
+
+    public List<Record> getRichiedenti() {
+        List<Record> richiedenti = null;
+        try (Connection conn = DBConfig.getConnection()) {
+            DSLContext create = DSL.using(conn);
+
+            richiedenti = create.select()
+                    .from(Tables.RICHIEDENTE)
+                    .join(Tables.PERSONA)
+                    .on(Tables.RICHIEDENTE.CF.eq(Tables.PERSONA.CF))
+                    .orderBy(Tables.PERSONA.COGNOME.asc(),
+                            Tables.PERSONA.NOME.asc())
+                    .fetch()
+                    .stream()
+                    .toList();
+
+        } catch (SQLException e) {
+            this.logger.severe("La connessione non ha funzionato");
+        }
+        return richiedenti;
     }
 }
