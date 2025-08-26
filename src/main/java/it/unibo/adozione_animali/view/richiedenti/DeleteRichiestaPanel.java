@@ -10,7 +10,7 @@ import java.time.LocalDate;
 
 public class DeleteRichiestaPanel extends JPanel {
 
-    //TODO --> aggiungi listener per bottone
+
     public DeleteRichiestaPanel() {
         setLayout(new BorderLayout());
 

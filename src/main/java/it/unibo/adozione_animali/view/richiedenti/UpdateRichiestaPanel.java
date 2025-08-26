@@ -136,11 +136,9 @@ public class UpdateRichiestaPanel extends JPanel{
                 Throwable cause = data.getCause();
                 if (cause instanceof SQLException) {
                     JOptionPane.showMessageDialog(this, "Errore nell'inserimento. Ricontrollare che i campi siano stati riempiti correttamente");
-                    JOptionPane.showMessageDialog(this,cause + "\n" + data);
                 }
             } catch (Exception numb) {
                 JOptionPane.showMessageDialog(this, "Errore nell'inserimento. Ricontrollare che i campi siano stati riempiti correttamente");
-                JOptionPane.showMessageDialog(this,numb);
             }
         });
         rifiuta.addActionListener(e -> {
@@ -153,11 +151,9 @@ public class UpdateRichiestaPanel extends JPanel{
                 Throwable cause = data.getCause();
                 if (cause instanceof SQLException) {
                     JOptionPane.showMessageDialog(this, "Errore nell'inserimento. Ricontrollare che i campi siano stati riempiti correttamente");
-                    JOptionPane.showMessageDialog(this,cause + "\n" + data);
                 }
             } catch (Exception numb) {
                 JOptionPane.showMessageDialog(this, "Errore nell'inserimento. Ricontrollare che i campi siano stati riempiti correttamente");
-                JOptionPane.showMessageDialog(this,numb);
             }
         });
         add(updateScroll, BorderLayout.CENTER);

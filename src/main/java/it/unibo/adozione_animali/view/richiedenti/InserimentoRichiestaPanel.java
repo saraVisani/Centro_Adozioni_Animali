@@ -135,6 +135,7 @@ public class InserimentoRichiestaPanel extends JPanel {
                 new RichiestaDAO().insertRichiesta(cod_prov.getText(), cod_citta.getText(),
                         Integer.parseInt(numeroInd.getText()), codAnimale.getText(), CF_ric.getText(),
                         cod_prov_ric.getText(), cod_citta_ric.getText(), Integer.parseInt(numeroInd_ric.getText()));
+                JOptionPane.showMessageDialog(this, "L'inserimento è avvenuto correttamente");
             }  catch (DataAccessException data) {
                 Throwable cause = data.getCause();
                 if (cause instanceof SQLException) {

@@ -24,13 +24,14 @@ public class GestioneRichiestePanel extends JPanel {
         cards = new JPanel(new CardLayout());
 
         String[] options = {"--Seleziona--", "Inserisci Richiesta", "Rimuovi Richiesta",
-                 "Aggiorna Richiesta"};
+                 "Aggiorna Richiesta", "Visualizza Richieste di un Centro"};
         comboBox = new JComboBox<>(options);
 
         JPanel selectPanel = new JPanel();
         JPanel insertPanel = new InserimentoRichiestaPanel();
         JPanel deletePanel = new DeleteRichiestaPanel();
         JPanel updatePanel = new UpdateRichiestaPanel();
+        JPanel showPanel = new ShowRichieste();
 
         selectPanel.add(Box.createVerticalStrut(1));
 
@@ -38,6 +39,7 @@ public class GestioneRichiestePanel extends JPanel {
         cards.add(deletePanel, "Rimuovi Richiesta");
         cards.add(selectPanel, "--Seleziona--");
         cards.add(updatePanel, "Aggiorna Richiesta");
+        cards.add(showPanel, "Visualizza Richieste di un Centro");
 
         ((CardLayout) cards.getLayout()).show(cards, "--Seleziona--");
 
