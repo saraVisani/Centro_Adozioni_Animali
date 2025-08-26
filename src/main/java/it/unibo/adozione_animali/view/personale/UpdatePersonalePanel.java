@@ -1,7 +1,13 @@
 package it.unibo.adozione_animali.view.personale;
 
+import it.unibo.adozione_animali.model.impl.PersonaDAO;
+import it.unibo.adozione_animali.model.impl.PersonaleDAO;
+import org.jooq.exception.DataAccessException;
+
 import javax.swing.*;
 import java.awt.*;
+import java.sql.SQLException;
+import java.time.LocalDate;
 
 public class UpdatePersonalePanel extends JPanel {
 
@@ -9,9 +15,10 @@ public class UpdatePersonalePanel extends JPanel {
         setLayout(new BorderLayout());
 
         JPanel updatePanel = new JPanel(new BorderLayout());
+        JPanel updatePanelMore = new JPanel(new BorderLayout());
         JPanel updatePanelGen = new JPanel();
-        updatePanel.add(updatePanelGen, BorderLayout.NORTH);
-        updatePanel.add(new JPanel(), BorderLayout.CENTER);
+        updatePanelMore.add(updatePanelGen, BorderLayout.NORTH);
+        updatePanelMore.add(new JPanel(), BorderLayout.CENTER);
         GroupLayout updateLayout = new GroupLayout(updatePanelGen);
         updatePanelGen.setLayout(updateLayout);
         JScrollPane updateScroll = new JScrollPane(updatePanel);
@@ -31,7 +38,7 @@ public class UpdatePersonalePanel extends JPanel {
         JTextField dataFineDipF = new JTextField();
         JTextField dataFineVolF = new JTextField();
         JTextField stipendioF = new JTextField();
-        JLabel CFL = new JLabel("Numero Turno");
+        JLabel CFL = new JLabel("Codice Fiscale");
         JLabel tempoLavoroL = new JLabel("Tempo di lavoro (anni)");
         JLabel dataAssuDipL = new JLabel("Data Assunzione Dipendente (aaaa-mm-dd)");
         JLabel dataAssuVolL = new JLabel("Data Assunzione Volontario (aaaa-mm-dd)");
@@ -117,6 +124,104 @@ public class UpdatePersonalePanel extends JPanel {
                         .addComponent(aggiorna)
         );
 
+        JCheckBox volontarioCheck = new JCheckBox();
+        JLabel volontario = new JLabel("Update delle informazioni di un volontario");
+        JPanel checkPanel = new JPanel();
+        GroupLayout checkLayout = new GroupLayout(checkPanel);
+        checkLayout.setAutoCreateGaps(true);
+        checkLayout.setAutoCreateContainerGaps(true);
+
+        checkPanel.add(volontarioCheck);
+        checkPanel.add(volontario);
+        checkPanel.setLayout(checkLayout);
+        checkLayout.setHorizontalGroup(checkLayout.createSequentialGroup()
+                .addComponent(volontario)
+                .addComponent(volontarioCheck));
+        checkLayout.setVerticalGroup(checkLayout.createSequentialGroup()
+                .addGroup(checkLayout.createParallelGroup()
+                        .addComponent(volontario)
+                        .addComponent(volontarioCheck)));
+
+        updatePanel.add(updatePanelMore, BorderLayout.CENTER);
+        updatePanel.add(checkPanel, BorderLayout.NORTH);
+
+        dataAssuDipF.setEditable(false);
+        dataAssuDipL.setEnabled(false);
+        dataFineVolF.setEditable(false);
+        dataFineVolL.setEnabled(false);
+
+        volontarioCheck.addActionListener(e -> {
+            if (volontarioCheck.isSelected()) {
+                dataAssuVolF.setEditable(false);
+                dataAssuVolL.setEnabled(false);
+                dataFineDipF.setEditable(false);
+                dataFineDipL.setEnabled(false);
+                stipendioF.setEditable(false);
+                stipendioL.setEnabled(false);
+                dataAssuDipF.setEditable(true);
+                dataAssuDipL.setEnabled(true);
+                dataFineVolF.setEditable(true);
+                dataFineVolL.setEnabled(true);
+            } else {
+                dataAssuVolF.setEditable(true);
+                dataAssuVolL.setEnabled(true);
+                dataFineDipF.setEditable(true);
+                dataFineDipL.setEnabled(true);
+                stipendioF.setEditable(true);
+                stipendioL.setEnabled(true);
+                dataAssuDipF.setEditable(false);
+                dataAssuDipL.setEnabled(false);
+                dataFineVolF.setEditable(false);
+                dataFineVolL.setEnabled(false);
+            }
+        });
+
+        aggiorna.addActionListener(e -> {
+            try {
+                if (CFF.getText().isEmpty()) {
+                    throw new IllegalArgumentException("Il codice fiscale deve essere inserito");
+                }
+                PersonaDAO persona = new PersonaDAO();
+                PersonaleDAO personale = new PersonaleDAO();
+                if (!emailF.getText().isEmpty()) {
+                    persona.updateEmail(CFF.getText(), emailF.getText());
+                }
+                if (!passwordF.getText().isEmpty()) {
+                    persona.updatePassword(CFF.getText(), passwordF.getText());
+                }
+                if (!telefonoF.getText().isEmpty()) {
+                    persona.updateTelefono(CFF.getText(), telefonoF.getText());
+                }
+                if (!dataAssuDipF.getText().isEmpty()) {
+                    personale.updateDataAssunzioneDip(CFF.getText(), LocalDate.parse(dataAssuDipF.getText()));
+                }
+                if (!dataAssuVolF.getText().isEmpty()) {
+                    personale.updateDataAssunzioneVol(CFF.getText(), LocalDate.parse(dataAssuVolF.getText()));
+                }
+                if (!dataFineDipF.getText().isEmpty()) {
+                    personale.updateDataFineLavoroDip(CFF.getText(), LocalDate.parse(dataFineDipF.getText()));
+                }
+                if (!dataFineVolF.getText().isEmpty()) {
+                    personale.updateDataFineLavoroVol(CFF.getText(), LocalDate.parse(dataFineVolF.getText()));
+                }
+                if (!tempoLavoro.getText().isEmpty()) {
+                    personale.updateTempoLavoro(CFF.getText(), (byte) Integer.parseInt(tempoLavoro.getText()));
+                }
+                if (!stipendioF.getText().isEmpty()) {
+                    personale.updateStipendio(CFF.getText(), Short.parseShort(stipendioF.getText()));
+                }
+
+                JOptionPane.showMessageDialog(this, "L'aggiornamento è avvenuto correttamente");
+            }  catch (DataAccessException data) {
+                Throwable cause = data.getCause();
+                if (cause instanceof SQLException) {
+                    JOptionPane.showMessageDialog(this, "Errore nell'inserimento. Ricontrollare che i campi siano stati riempiti correttamente");
+                }
+            } catch (Exception numb) {
+                JOptionPane.showMessageDialog(this, "Errore nell'inserimento. Ricontrollare che i campi siano stati riempiti correttamente");
+            }
+
+        });
 
         add(updateScroll, BorderLayout.CENTER);
     }
