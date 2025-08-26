@@ -2,15 +2,15 @@ package it.unibo.adozione_animali.model.impl;
 
 import it.unibo.adozione_animali.model.api.Razza;
 import it.unibo.adozione_animali.util.DBConfig;
-import it.unibo.adozione_animali.util.Enum;
 import nu.studer.sample.Tables;
 import org.jooq.DSLContext;
+import org.jooq.Record2;
 import org.jooq.impl.DSL;
-import org.jooq.impl.QOM;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.logging.Logger;
 
 public class RazzaDAO implements Razza {
@@ -24,33 +24,30 @@ public class RazzaDAO implements Razza {
                             final Integer IDSpazio2) {
         try (Connection conn = DBConfig.getConnection()) {
             DSLContext create = DSL.using(conn);
-            if (checkSpecie(codSpecie)) {
-                if (checkSpazio(IDSpazio1)) {
-                    if (IDSpazio2 == null || checkSpazio(IDSpazio2) ) {
-                        create.insertInto(Tables.RAZZA)
-                                .set(Tables.RAZZA.COD_SPECIE, codSpecie)
-                                .set(Tables.RAZZA.NOME, nomeRazza)
-                                .set(Tables.RAZZA.DESCRIZIONE, descrizione)
-                                .set(Tables.RAZZA.ORIGINE, origine)
-                                .set(Tables.RAZZA.LIGNAGGIO, lignaggio)
-                                .set(Tables.RAZZA.PESO_MAX, pesoMax)
-                                .set(Tables.RAZZA.PESO_MIN, pesoMin)
-                                .set(Tables.RAZZA.ALT_MAX, altezzaMax)
-                                .set(Tables.RAZZA.ALT_MIN, altezzaMin)
-                                .set(Tables.RAZZA.ID_SPAZIO1, IDSpazio1)
-                                .set(Tables.RAZZA.ID_SPAZIO2, IDSpazio2)
-                                .execute();
-                    } else {
-                        this.logger.severe("Il secondo spazio inserito non rientra in nessun tipo di spazio presente");
-                    }
-                } else {
-                    this.logger.severe("Il primo spazio inserito non rientra in nessun tipo di spazio presente");
-                }
-            } else {
-                this.logger.severe("Nessun tipo di specie equivale a quella inserita");
+            checkSpecie(codSpecie);
+            checkOrigin(origine);
+            checkLineage(lignaggio);
+            checkSpazio(IDSpazio1);
+            if (IDSpazio2 != null) {
+                checkSpazio(IDSpazio2);
             }
+            create.insertInto(Tables.RAZZA)
+                    .set(Tables.RAZZA.COD_SPECIE, codSpecie)
+                    .set(Tables.RAZZA.NOME, nomeRazza)
+                    .set(Tables.RAZZA.DESCRIZIONE, descrizione)
+                    .set(Tables.RAZZA.ORIGINE, origine)
+                    .set(Tables.RAZZA.LIGNAGGIO, lignaggio)
+                    .set(Tables.RAZZA.PESO_MAX, pesoMax)
+                    .set(Tables.RAZZA.PESO_MIN, pesoMin)
+                    .set(Tables.RAZZA.ALT_MAX, altezzaMax)
+                    .set(Tables.RAZZA.ALT_MIN, altezzaMin)
+                    .set(Tables.RAZZA.ID_SPAZIO1, IDSpazio1)
+                    .set(Tables.RAZZA.ID_SPAZIO2, IDSpazio2)
+                    .execute();
+
         } catch (SQLException e) {
             this.logger.severe("La connessione non ha funzionato");
+            throw new IllegalArgumentException();
         }
     }
 
@@ -58,6 +55,10 @@ public class RazzaDAO implements Razza {
     public void deleteRazza(final String codSpecie, final String nomeRazza) {
         try (Connection conn = DBConfig.getConnection()) {
             DSLContext create = DSL.using(conn);
+
+            this.checkSpecie(codSpecie);
+            this.checkRazza(codSpecie, nomeRazza);
+
             create.deleteFrom(Tables.RAZZA)
                     .where(Tables.RAZZA.COD_SPECIE.eq(codSpecie))
                     .and(Tables.RAZZA.NOME.eq(nomeRazza))
@@ -67,11 +68,121 @@ public class RazzaDAO implements Razza {
         }
     }
 
-    private boolean checkSpecie(final String codSpecie) {
-        return Enum.Specie.matchesKeys(codSpecie);
+    public List<Record2<String, String>> getRaces(String codProv, String codCit, Integer num) {
+        List<Record2<String, String>> races = null;
+        try (Connection conn = DBConfig.getConnection()) {
+            DSLContext create = DSL.using(conn);
+
+            this.checkCentroExistance(codProv, codCit, num);
+
+            races = create.select(Tables.RAZZA.NOME, Tables.RAZZA.COD_SPECIE)
+                    .from(Tables.RAZZA)
+                    .join(Tables.ANIMALE)
+                    .on(Tables.RAZZA.NOME.eq(Tables.ANIMALE.NOME_RAZZA))
+                    .where(Tables.ANIMALE.COD_PROVINCIA.eq(codProv))
+                    .and(Tables.ANIMALE.COD_CITTA_.eq(codCit))
+                    .and(Tables.ANIMALE.NUMERO.eq(num))
+                    .orderBy(Tables.RAZZA.COD_SPECIE.asc(),
+                            Tables.RAZZA.NOME.asc())
+                    .fetch()
+                    .stream()
+                    .distinct()
+                    .toList();
+
+        } catch (SQLException e) {
+            this.logger.severe("La connessione non ha funzionato");
+        }
+        return races;
     }
 
-    private boolean checkSpazio(final int IDSpazio) {
-        return Enum.TipoSpazio.matches(String.valueOf(IDSpazio));
+    private void checkSpecie(final String codSpecie) {
+        try (Connection conn = DBConfig.getConnection()) {
+            DSLContext create = DSL.using(conn);
+
+            boolean exists = create.fetchExists(
+                    create.selectFrom(Tables.SPECIE)
+                            .where(Tables.SPECIE.COD_SPECIE.eq(codSpecie))
+            );
+
+            if (!exists) {
+                throw new IllegalArgumentException("La specie indicata non esiste");
+            }
+
+        } catch (SQLException e) {
+            this.logger.severe("La connessione non ha funzionato");
+        }
     }
+
+    private void checkSpazio(final int IDSpazio) {
+        try (Connection conn = DBConfig.getConnection()) {
+            DSLContext create = DSL.using(conn);
+
+            boolean exists = create.fetchExists(
+                    create.selectFrom(Tables.SPAZIO)
+                            .where(Tables.SPAZIO.ID_SPAZIO.eq(IDSpazio))
+            );
+
+            if (!exists) {
+                throw new IllegalArgumentException("Lo spazio indicato " + IDSpazio + " non esiste");
+            }
+
+        } catch (SQLException e) {
+            this.logger.severe("La connessione non ha funzionato");
+        }
+    }
+
+    private void checkCentroExistance(final String codProv, final String codCit, final Integer num) {
+        try (Connection conn = DBConfig.getConnection()) {
+            DSLContext create = DSL.using(conn);
+
+            boolean exists = create.fetchExists(
+                    create.selectFrom(Tables.CENTRO)
+                            .where(Tables.CENTRO.COD_PROVINCIA.eq(codProv))
+                            .and(Tables.CENTRO.COD_CITTA_.eq(codCit))
+                            .and(Tables.CENTRO.NUMERO.eq(num))
+            );
+
+            if (!exists) {
+                throw new IllegalArgumentException("Il centro indicato non esiste");
+            }
+
+        } catch (SQLException e) {
+            this.logger.severe("La connessione non ha funzionato");
+        }
+    }
+
+    private void checkRazza(final String codSpecie, final String nomeRazza) {
+        try (Connection conn = DBConfig.getConnection()) {
+            DSLContext create = DSL.using(conn);
+
+            boolean exists = create.fetchExists(
+                    create.selectFrom(Tables.RAZZA)
+                            .where(Tables.RAZZA.COD_SPECIE.eq(codSpecie))
+                            .and(Tables.RAZZA.NOME.eq(nomeRazza))
+            );
+
+            if (!exists) {
+                throw new IllegalArgumentException("La razza indicata non esiste");
+            }
+
+        } catch (SQLException e) {
+            this.logger.severe("La connessione non ha funzionato");
+        }
+
+    }
+
+    private void checkLineage(String lineage) {
+        if (!lineage.equalsIgnoreCase("Puro")
+                && !lineage.equalsIgnoreCase("Meticcio")) {
+            throw new IllegalArgumentException("Non esiste il lignaggio specificato");
+        }
+    }
+
+    private void checkOrigin(String origin) {
+        if (!origin.equalsIgnoreCase("Straniero")
+                && !origin.equalsIgnoreCase("Autoctono")) {
+            throw new IllegalArgumentException("Non esiste l'origine specificata");
+        }
+    }
+
 }
