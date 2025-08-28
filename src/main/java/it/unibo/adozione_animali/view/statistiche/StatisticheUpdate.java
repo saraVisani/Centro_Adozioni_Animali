@@ -68,7 +68,7 @@ public class StatisticheUpdate extends JPanel {
 
     // --- Metodi pubblici per aggiornare i dati delle combo ---
     public void setTipo(List<String> valori) {
-        tipo.setModel(new DefaultComboBoxModel<>(valori.toArray(new String[0])));
+        setComboBoxWithEmptyFirst(tipo, valori, "--select--");
     }
 
     // --- Getters per valori selezionati ---
@@ -77,7 +77,24 @@ public class StatisticheUpdate extends JPanel {
     }
 
     private void aggiornaStatoPulsante() {
-        inserisciBtn.setEnabled(getTipo() != null);
+        inserisciBtn.setEnabled(getTipo() != null && !getTipo().equals("--select--"));
+    }
+
+    private <T> void setComboBoxWithEmptyFirst(JComboBox<T> combo, List<T> items, T emptyItem) {
+        DefaultComboBoxModel<T> model = new DefaultComboBoxModel<>();
+
+        // Aggiungi l'elemento vuoto come primo
+        model.addElement(emptyItem);
+
+        // Aggiungi tutti gli altri elementi
+        if (items != null) {
+            for (T item : items) {
+                model.addElement(item);
+            }
+        }
+
+        combo.setModel(model);
+        combo.setEnabled(true);
     }
 
     public void showEsito(boolean esito, String text) {

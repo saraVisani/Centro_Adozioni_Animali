@@ -113,21 +113,31 @@ public class Cancellazione extends JPanel {
 
         // Listener che chiamano il controller
         provinciaBox.addActionListener(e -> {
-            if (controller != null) controller.provinciaSelezionata((String) provinciaBox.getSelectedItem());
+            if (controller != null) {
+                aggiornaStatoPulsante();
+                ItemSelezionabile selected = (ItemSelezionabile) provinciaBox.getSelectedItem();
+                controller.provinciaSelezionata(selected != null ? selected.getCodice() : null);
+            }
         });
 
         cittaBox.addActionListener(e -> {
             if (controller != null) {
-                String provincia = getProvinciaSelezionata();
-                String citta = getCittaSelezionata();
+                aggiornaStatoPulsante();
+                ItemSelezionabile selectedProvincia = (ItemSelezionabile) provinciaBox.getSelectedItem();
+                ItemSelezionabile selectedCitta = (ItemSelezionabile) cittaBox.getSelectedItem();
+                String provincia = selectedProvincia != null && !selectedProvincia.getCodice().isEmpty() ? selectedProvincia.getCodice() : null;
+                String citta = selectedCitta != null && !selectedCitta.getCodice().isEmpty() ? selectedCitta.getCodice() : null;
                 controller.cittaSelezionata(provincia, citta);
             }
         });
 
         numeroBox.addActionListener(e -> {
             if (controller != null) {
-                String provincia = getProvinciaSelezionata();
-                String citta = getCittaSelezionata();
+                aggiornaStatoPulsante();
+                ItemSelezionabile selectedProvincia = (ItemSelezionabile) provinciaBox.getSelectedItem();
+                ItemSelezionabile selectedCitta = (ItemSelezionabile) cittaBox.getSelectedItem();
+                String provincia = selectedProvincia != null && !selectedProvincia.getCodice().isEmpty() ? selectedProvincia.getCodice() : null;
+                String citta = selectedCitta != null && !selectedCitta.getCodice().isEmpty() ? selectedCitta.getCodice() : null;
                 String numero = getNumeroSelezionato();
                 controller.numeroSelezionato(provincia, citta, numero);
             }
@@ -135,19 +145,24 @@ public class Cancellazione extends JPanel {
 
         codiceBox.addActionListener(e -> {
             if (controller != null) {
-                String provincia = getProvinciaSelezionata();
-                String citta = getCittaSelezionata();
+                aggiornaStatoPulsante();
+                ItemSelezionabile selectedProvincia = (ItemSelezionabile) provinciaBox.getSelectedItem();
+                ItemSelezionabile selectedCitta = (ItemSelezionabile) cittaBox.getSelectedItem();
+                String provincia = selectedProvincia != null && !selectedProvincia.getCodice().isEmpty() ? selectedProvincia.getCodice() : null;
+                String citta = selectedCitta != null && !selectedCitta.getCodice().isEmpty() ? selectedCitta.getCodice() : null;
                 String numero = getNumeroSelezionato();
                 String codAnimale = getCodiceAnimaleSelezionato();
-                boolean nuovo = isNuovoChecked();
-                controller.animaleSelezionato(provincia, citta, numero, codAnimale, nuovo);
+                controller.animaleSelezionato(provincia, citta, numero, codAnimale, nuovoCheck.isSelected());
             }
         });
 
         tipoBox.addActionListener(e -> {
             if (controller != null) {
-                String provincia = getProvinciaSelezionata();
-                String citta = getCittaSelezionata();
+                aggiornaStatoPulsante();
+                ItemSelezionabile selectedProvincia = (ItemSelezionabile) provinciaBox.getSelectedItem();
+                ItemSelezionabile selectedCitta = (ItemSelezionabile) cittaBox.getSelectedItem();
+                String provincia = selectedProvincia != null && !selectedProvincia.getCodice().isEmpty() ? selectedProvincia.getCodice() : null;
+                String citta = selectedCitta != null && !selectedCitta.getCodice().isEmpty() ? selectedCitta.getCodice() : null;
                 String numero = getNumeroSelezionato();
                 String codAnimale = getCodiceAnimaleSelezionato();
                 String tipo = getTipoSelezionato();
@@ -155,6 +170,11 @@ public class Cancellazione extends JPanel {
             }
         });
 
+        codiceSpecList.addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) { // evita doppio evento
+                aggiornaStatoPulsante();
+            }
+        });
 
         // Pulsante inserisci
         inserisciBtn.addActionListener(e -> {
@@ -165,41 +185,37 @@ public class Cancellazione extends JPanel {
         add(inserisciBtn, BorderLayout.SOUTH);
     }
 
-    // --- Metodi per collegare il controller ---
-    public void setController(CancellazioneCaratteristicaController controller) {
+    public void setController(CancellazioneCaratteristicaController controller){
         this.controller = controller;
     }
 
-    // --- Metodi pubblici per aggiornare i dati delle combo ---
+    // --- Metodi per collegare il controller ---
     public void setProvince(List<ItemSelezionabile> province) {
-        provinciaBox.setModel(new DefaultComboBoxModel<>(province.toArray(new ItemSelezionabile[0])));
-        provinciaBox.setEnabled(true);
+        setComboBoxWithEmptyFirst(provinciaBox, province, new ItemSelezionabile("", "--select--"));
     }
 
     public void setCitta(List<ItemSelezionabile> citta) {
-        cittaBox.setModel(new DefaultComboBoxModel<>(citta.toArray(new ItemSelezionabile[0])));
-        cittaBox.setEnabled(true);
+        setComboBoxWithEmptyFirst(cittaBox, citta, new ItemSelezionabile("", "--select--"));
     }
 
     public void setNumeri(List<String> numeri) {
-        numeroBox.setModel(new DefaultComboBoxModel<>(numeri.toArray(new String[0])));
-        numeroBox.setEnabled(true);
+        setComboBoxWithEmptyFirst(numeroBox, numeri, "--select--");
     }
 
     public void setCodiciAnimale(List<String> codici) {
-        codiceBox.setModel(new DefaultComboBoxModel<>(codici.toArray(new String[0])));
-        codiceBox.setEnabled(true);
+        setComboBoxWithEmptyFirst(codiceBox, codici, "--select--");
         nuovoCheck.setEnabled(true);
     }
 
     public void setTipi(List<String> tipi) {
-        tipoBox.setModel(new DefaultComboBoxModel<>(tipi.toArray(new String[0])));
-        tipoBox.setEnabled(true);
+        setComboBoxWithEmptyFirst(tipoBox, tipi, "--select--");
     }
 
     public void setCodiciSpecifici(List<ItemSelezionabile> codici) {
         listModel.clear();
+        listModel.addElement(new ItemSelezionabile("--select--", "--select--"));
         codici.forEach(listModel::addElement);
+        codiceSpecList.setSelectedIndex(0);
         codiceSpecList.setEnabled(true);
     }
 
@@ -262,6 +278,68 @@ public class Cancellazione extends JPanel {
                 if (popup != null) popup.dispose();
             }
         });
+    }
+
+    private <T> void setComboBoxWithEmptyFirst(JComboBox<T> combo, List<T> items, T emptyItem) {
+        DefaultComboBoxModel<T> model = new DefaultComboBoxModel<>();
+
+        // Aggiungi l'elemento vuoto come primo
+        model.addElement(emptyItem);
+
+        // Aggiungi tutti gli altri elementi
+        if (items != null) {
+            for (T item : items) {
+                model.addElement(item);
+            }
+        }
+
+        combo.setModel(model);
+        combo.setEnabled(true);
+    }
+
+    private boolean isValid(ItemSelezionabile item) {
+        return item != null && item.getCodice() != null
+            && !item.getCodice().isEmpty() && !item.getCodice().equals("--select--");
+    }
+
+    private boolean isValidString(String s) {
+        return s != null && !s.isEmpty() && !s.equals("--select--");
+    }
+
+    private boolean isListValid(List<ItemSelezionabile> lista) {
+        return lista != null && !lista.isEmpty() &&
+            lista.stream().allMatch(item -> item != null
+                                            && item.getCodice() != null
+                                            && !item.getCodice().isEmpty()
+                                            && !item.getCodice().equals("--select--"));
+    }
+
+    private boolean isNumber(String s) {
+        if (s == null) return false;
+        try {
+            return Integer.parseInt(s) > 0;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    private void aggiornaStatoPulsante() {
+        ItemSelezionabile selectedProvincia = (ItemSelezionabile) provinciaBox.getSelectedItem();
+        ItemSelezionabile selectedCitta = (ItemSelezionabile) cittaBox.getSelectedItem();
+        List<ItemSelezionabile> codItemSelectable = codiceSpecList.getSelectedValuesList();
+
+        String numero = getNumeroSelezionato();
+        String codAnimale = getCodiceAnimaleSelezionato();
+        String tipo = getTipoSelezionato();
+
+        boolean control = isValid(selectedProvincia)
+            && isValid(selectedCitta)
+            && isListValid(codItemSelectable)
+            && isValidString(codAnimale)
+            && isValidString(tipo)
+            && isNumber(numero); // qui controlliamo che sia un numero valido
+
+        inserisciBtn.setEnabled(control);
     }
 
     public void showEsito(boolean esito) {

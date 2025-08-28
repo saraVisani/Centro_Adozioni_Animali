@@ -11,7 +11,7 @@ public class UpdateTipoDimensioneController {
     public UpdateTipoDimensioneController(Model model, UpdateTipoDimensione view){
         this.model = model;
         this.view = view;
-        this.view.setCodice(this.model.getSpazioDAO().getCodici());
+        this.view.setCodici(this.model.getSpazioDAO().getCodici());
     }
 
     public void codiceSelected(Integer codice) {

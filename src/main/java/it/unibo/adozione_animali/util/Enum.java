@@ -88,13 +88,17 @@ public class Enum {
             return null;
         }
 
-        public static Specie fromKey(String key) {
+        public static Specie fromKey(String input) {
+            if (input == null) return null;
+
             for (Specie s : Specie.values()) {
-                if (s.getKey().equalsIgnoreCase(key)) {
+                // Controlla sia la chiave (es. "CA") sia il nome completo (es. "CANE")
+                if (s.getKey().equalsIgnoreCase(input) || s.name().equalsIgnoreCase(input)) {
                     return s;
                 }
             }
-            return null;
+
+            return null; // nessuna corrispondenza trovata
         }
 
         public String getDisplayName() {

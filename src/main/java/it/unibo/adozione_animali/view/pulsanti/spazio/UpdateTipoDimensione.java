@@ -93,17 +93,17 @@ public class UpdateTipoDimensione extends JPanel {
 
     // --- Metodi pubblici per aggiornare i dati delle combo ---
     public void setTipo(List<ItemSelezionabile> valori) {
-        tipo.setModel(new DefaultComboBoxModel<>(valori.toArray(new ItemSelezionabile[0])));
-        tipo.setEnabled(true);
+        setComboBoxWithEmptyFirst(tipo, valori, new ItemSelezionabile("", "--select--"));
     }
 
-    public void setCodice(List<String> valori) {
-        codSpazio.setModel(new DefaultComboBoxModel<>(valori.toArray(new String[0])));
+    public void setCodici(List<String> valori) {
+        setComboBoxWithEmptyFirst(codSpazio, valori, "--select--");
     }
 
     // --- Getters per valori selezionati ---
     public String getTipo() {
-        return (String) tipo.getSelectedItem();
+        ItemSelezionabile selected = (ItemSelezionabile) tipo.getSelectedItem();
+        return selected != null ? selected.getCodice() : null;
     }
 
     public Integer getCodice() {
@@ -124,10 +124,31 @@ public class UpdateTipoDimensione extends JPanel {
 
     private void aggiornaStatoPulsante() {
         boolean completo = getTipo() != null
+                && !getTipo().equals("--select--")
+                && !getTipo().isBlank()
                 && getCodice() != null
-                && getDimensione() != null;
+                && getCodice() > 0
+                && getDimensione() != null
+                && getDimensione() > 0;
 
         inserisciBtn.setEnabled(completo);
+    }
+
+    private <T> void setComboBoxWithEmptyFirst(JComboBox<T> combo, List<T> items, T emptyItem) {
+        DefaultComboBoxModel<T> model = new DefaultComboBoxModel<>();
+
+        // Aggiungi l'elemento vuoto come primo
+        model.addElement(emptyItem);
+
+        // Aggiungi tutti gli altri elementi
+        if (items != null) {
+            for (T item : items) {
+                model.addElement(item);
+            }
+        }
+
+        combo.setModel(model);
+        combo.setEnabled(true);
     }
 
     public void showEsito(boolean esito, String titol) {

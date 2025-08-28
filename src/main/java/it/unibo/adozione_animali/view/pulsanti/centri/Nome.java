@@ -116,18 +116,15 @@ public class Nome extends JPanel {
 
     // --- Metodi pubblici per aggiornare i dati delle combo ---
     public void setProvince(List<ItemSelezionabile> province) {
-        provinciaBox.setModel(new DefaultComboBoxModel<>(province.toArray(new ItemSelezionabile[0])));
-        provinciaBox.setEnabled(true);
+        setComboBoxWithEmptyFirst(provinciaBox, province, new ItemSelezionabile("", "--select--"));
     }
 
     public void setCitta(List<ItemSelezionabile> citta) {
-        cittaBox.setModel(new DefaultComboBoxModel<>(citta.toArray(new ItemSelezionabile[0])));
-        cittaBox.setEnabled(true);
+        setComboBoxWithEmptyFirst(cittaBox, citta, new ItemSelezionabile("", "--select--"));
     }
 
     public void setNumeri(List<String> numeri) {
-        numeroBox.setModel(new DefaultComboBoxModel<>(numeri.toArray(new String[0])));
-        numeroBox.setEnabled(true);
+        setComboBoxWithEmptyFirst(numeroBox, numeri, "--select--");
     }
 
     // --- Getters per valori selezionati ---
@@ -149,13 +146,54 @@ public class Nome extends JPanel {
         return nomeField.getText();
     }
 
-    private void aggiornaStatoPulsante() {
-        boolean completo = getProvinciaSelezionata() != null
-                && getCittaSelezionata() != null
-                && getNumeroSelezionato() != null
-                && !getNome().trim().isEmpty();
+    private boolean isValid(ItemSelezionabile item) {
+        return item != null && item.getCodice() != null
+            && !item.getCodice().isEmpty() && !item.getCodice().equals("--select--");
+    }
 
-        inserisciBtn.setEnabled(completo);
+    private boolean isValidString(String s) {
+        return s != null && !s.isEmpty() && !s.equals("--select--");
+    }
+
+    private boolean isNumber(String s) {
+        if (s == null) return false;
+        try {
+            return Integer.parseInt(s) > 0;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    private void aggiornaStatoPulsante() {
+        ItemSelezionabile selectedProvincia = (ItemSelezionabile) provinciaBox.getSelectedItem();
+        ItemSelezionabile selectedCitta = (ItemSelezionabile) cittaBox.getSelectedItem();
+
+        String numero = getNumeroSelezionato();
+        String nome = getNome();
+
+        boolean control = isValid(selectedProvincia)
+            && isValid(selectedCitta)
+            && isValidString(nome)
+            && isNumber(numero); // qui controlliamo che sia un numero valido
+
+        inserisciBtn.setEnabled(control);
+    }
+
+    private <T> void setComboBoxWithEmptyFirst(JComboBox<T> combo, List<T> items, T emptyItem) {
+        DefaultComboBoxModel<T> model = new DefaultComboBoxModel<>();
+
+        // Aggiungi l'elemento vuoto come primo
+        model.addElement(emptyItem);
+
+        // Aggiungi tutti gli altri elementi
+        if (items != null) {
+            for (T item : items) {
+                model.addElement(item);
+            }
+        }
+
+        combo.setModel(model);
+        combo.setEnabled(true);
     }
 
     public void showEsito(boolean esito) {
