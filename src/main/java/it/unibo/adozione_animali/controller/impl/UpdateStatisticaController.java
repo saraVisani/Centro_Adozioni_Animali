@@ -42,18 +42,20 @@ public class UpdateStatisticaController {
         List<List<String>> nomi = setRisultati.getLeft();
         List<List<String>> valori = setRisultati.getRight();
 
-        if (nomi.size() != valori.size()) {
+        if (nomi.size() != valori.size() || nomi.size() == 0) {
             view.showEsito(false, "Errore: le matrici non hanno lo stesso numero di righe");
             return;
         }
 
         boolean esito = true;
+        String codiceStat;
+        LocalDate dataStat;
 
         if (model.getStatisticaDAO().exist(statistica.name(), anno)) {
             // Aggiorna data e cancella dati esistenti
             esito = model.getStatisticaDAO().updateDate(statistica.name(), anno, LocalDate.now());
-            String codiceStat = model.getStatisticaDAO().getCodice(statistica.name(), anno);
-            LocalDate dataStat = model.getStatisticaDAO().getData(codiceStat, anno);
+            codiceStat = model.getStatisticaDAO().getCodice(statistica.name(), anno);
+            dataStat = model.getStatisticaDAO().getData(codiceStat, anno);
             esito &= model.getDatoDAO().deleteDatoPerStatistica(codiceStat, dataStat);
 
             // Inserimento dati riga per riga
@@ -65,9 +67,9 @@ public class UpdateStatisticaController {
             }
         } else {
             // Inserisci nuova statistica
-            String codiceStat = model.getStatisticaDAO().freeCode(anno);
-            esito = model.getStatisticManager().insertStatistica(codiceStat, statistica.name(), LocalDate.now());
-            LocalDate dataStat = LocalDate.now();
+            codiceStat = model.getStatisticaDAO().freeCode(anno);
+            dataStat = LocalDate.now();
+            esito = model.getStatisticManager().insertStatistica(codiceStat, statistica.name(), dataStat);
 
             // Inserimento dati riga per riga
             for (int i = 0; i < nomi.size(); i++) {
@@ -78,7 +80,7 @@ public class UpdateStatisticaController {
             }
         }
 
-        view.showEsito(esito, statistica.getDescrizione());
+        view.showEsito(esito, model.getStatisticManager().getStatistic(codiceStat, dataStat));
     }
 
 }

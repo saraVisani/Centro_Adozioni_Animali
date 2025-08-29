@@ -21,7 +21,6 @@ public class ConcatDatoImpl implements ConcatDato {
         switch (statisticaEnum) {
             case CENTRO_PIU_ADOZIONI:
             case CLASSIFICA_CENTRI_PIU_ADOZIONI:
-            case SPECIE_PIU_ADOTTATA_PER_CENTRO:
             case CITTA_PIU_ADOZIONI:
             case PROVINCIA_PIU_ADOZIONI:
             case REGIONE_PIU_ADOZIONI:
@@ -44,8 +43,13 @@ public class ConcatDatoImpl implements ConcatDato {
                 String num = valori.get(0);
                 String valorePerc = String.format("%.2f%%", Double.parseDouble(valori.get(1)));
                 return "Numero Animali Tot: " + num + "\tPercentuale: " + valorePerc;
+            case SPECIE_PIU_ADOTTATA_PER_CENTRO:
+                Specie sp = Specie.fromKey(valori.get(0));
+                String dy = sp.getDisplayName();
+                return dy + "\tNumero Animali Tot: " + valori.get(1);
 
             case PERCENTUALE_SPECIE_ADOTTATA_PER_CENTRO:
+            case PERCENTUALE_SPECIE_PER_CENTRO:
                 Specie specie = Specie.fromKey(valori.get(0));
                 String displayName = specie.getDisplayName(); // Cane
                 String val = valori.get(1);
@@ -74,11 +78,9 @@ public class ConcatDatoImpl implements ConcatDato {
 
             case PERCENTUALE_CRONICI_PER_CENTRO:
                 return "Cronici percentuale: " + valori.get(0) + "%";
-
             case PERCENTUALE_ANIMALI_MALATI_SANI:
             case PERCENTUALE_CURABILI_NON_CURABILI:
             case PERCENTUALE_PERSONALE_FISSO_VOLONTARIO:
-            case PERCENTUALE_SPECIE_PER_CENTRO:
             case PERCENTUALE_EX_DIPENDENTI_FISSI:
             case PERCENTUALE_EX_DIPENDENTI_VOLONTARI:
             case PERCENTUALE_DIPENDENTI_RICHIEDENTI:
@@ -99,29 +101,30 @@ public class ConcatDatoImpl implements ConcatDato {
             throw new IllegalArgumentException("Statistica non riconosciuta: " + statistica);
         }
 
-        if(nome.size() > 1 || statisticaEnum == NomeStatistica.PERCENTUALE_SPECIE_PER_CENTRO) {
+        if(nome.size() > 1 ) {
             if (nome.size() < 2) {
                 throw new IllegalArgumentException("Valori insufficienti per la statistica " + statisticaEnum);
             }
             switch (statisticaEnum) {
-                    case CITTA_PIU_ADOZIONI:
-                    case CITTA_PIU_ADOZIONI_EFFETTUATE:
-                    case CLASSIFICA_CITTA_PIU_ADOZIONI:
-                    case CLASSIFICA_CITTA_PIU_ADOZIONI_EFFETTUATE:
-                        if (nome.size() < 4) {
-                            throw new IllegalArgumentException("Valori insufficienti per la statistica " + statisticaEnum);
-                        }
-                        return String.join("\t", nome.get(0), nome.get(1), nome.get(2), nome.get(3), "N Adottati");
+                case CITTA_PIU_ADOZIONI:
+                case CITTA_PIU_ADOZIONI_EFFETTUATE:
+                case CLASSIFICA_CITTA_PIU_ADOZIONI:
+                case CLASSIFICA_CITTA_PIU_ADOZIONI_EFFETTUATE:
+                    if (nome.size() < 4) {
+                        throw new IllegalArgumentException("Valori insufficienti per la statistica " + statisticaEnum);
+                    }
+                    return String.join("\t", nome.get(0), nome.get(1), nome.get(2), nome.get(3), "N Adottati");
 
-                    case PROVINCIA_PIU_ADOZIONI:
-                    case PROVINCIA_PIU_ADOZIONI_EFFETTUATE:
-                    case CLASSIFICA_PROVINCE_PIU_ADOZIONI:
-                    case CLASSIFICA_PROVINCE_PIU_ADOZIONI_EFFETTUATE:
-                    case REGIONE_PIU_ADOZIONI:
-                    case CLASSIFICA_REGIONI_PIU_ADOZIONI:
-                    case REGIONE_PIU_ADOZIONI_EFFETTUATE:
-                    case CLASSIFICA_REGIONI_PIU_ADOZIONI_EFFETTUATE:
-                        return String.join("\t", nome.get(0), nome.get(1), "N Adottati");
+                case PROVINCIA_PIU_ADOZIONI:
+                case PROVINCIA_PIU_ADOZIONI_EFFETTUATE:
+                case CLASSIFICA_PROVINCE_PIU_ADOZIONI:
+                case CLASSIFICA_PROVINCE_PIU_ADOZIONI_EFFETTUATE:
+                case REGIONE_PIU_ADOZIONI:
+                case CLASSIFICA_REGIONI_PIU_ADOZIONI:
+                case REGIONE_PIU_ADOZIONI_EFFETTUATE:
+                case CLASSIFICA_REGIONI_PIU_ADOZIONI_EFFETTUATE:
+                    return String.join("\t", nome.get(0), nome.get(1), "N Adottati");
+
                 default:
                     if (nome.size() < 4) {
                         throw new IllegalArgumentException("Valori insufficienti per la statistica " + statisticaEnum);
@@ -143,6 +146,7 @@ public class ConcatDatoImpl implements ConcatDato {
                 case PERCENTUALE_PURA_METICCIO_ADOTTATI:
                 case PERCENTUALE_DISABILI_PER_CENTRO:
                 case PERCENTUALE_CRONICI_PER_CENTRO:
+                case PERCENTUALE_SPECIE_PER_CENTRO:
                 case PERCENTUALE_STRANIERI_AUTOCTONI_PER_CENTRO:
                 case PERCENTUALE_PURA_METICCIO_PER_CENTRO:
                     return nome.get(0);

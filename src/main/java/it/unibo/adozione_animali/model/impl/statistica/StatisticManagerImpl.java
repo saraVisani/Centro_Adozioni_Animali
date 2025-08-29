@@ -2,6 +2,7 @@ package it.unibo.adozione_animali.model.impl.statistica;
 
 import java.sql.Connection;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.jooq.DSLContext;
@@ -12,6 +13,8 @@ import it.unibo.adozione_animali.model.api.statistica.StatisticManager;
 import it.unibo.adozione_animali.util.DBConfig;
 import it.unibo.adozione_animali.util.Enum.NomeStatistica;
 import nu.studer.sample.Tables;
+import nu.studer.sample.tables.records.DatoRecord;
+import nu.studer.sample.tables.records.StatisticaRecord;
 
 public class StatisticManagerImpl implements StatisticManager{
 
@@ -77,5 +80,57 @@ public class StatisticManagerImpl implements StatisticManager{
             return false;
         }
         return true;
+    }
+
+    @Override
+    public String getStatistic(String codiceStat, LocalDate dataStat) {
+        try(Connection conn = DBConfig.getConnection()){
+            DSLContext ctx = DSL.using(conn, SQLDialect.MYSQL);
+            StatisticaRecord stat = ctx.selectFrom(Tables.STATISTICA)
+                    .where(Tables.STATISTICA.CODICE.eq(codiceStat))
+                    .and(Tables.STATISTICA.DATA_STATISTICA.eq(dataStat))
+                    .fetchOne();
+
+            if (stat == null) {
+                return "Nessuna statistica trovata.";
+            }
+
+            // Recupero i dati collegati
+            List<DatoRecord> dati = ctx.selectFrom(Tables.DATO)
+                    .where(Tables.DATO.COD_STATISTICA.eq(codiceStat))
+                    .and(Tables.DATO.DATA_STATISTICA.eq(dataStat))
+                    .fetch();
+
+            StringBuilder sb = new StringBuilder("<html>");
+
+            sb.append("<b>Codice Statistica:</b> <font color='blue'>")
+            .append(stat.getCodice())
+            .append("</font><br>")
+            .append("<b>Nome Statistica:</b> <font color='green'>")
+            .append(stat.getNome())
+            .append("</font><br>")
+            .append("<b>Data Statistica:</b> <font color='red'>")
+            .append(stat.getDataStatistica().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")))
+            .append("</font><br><br>");
+
+            if (dati.size() > 1) {
+                sb.append("<b>Dati:</b><ul>");
+            } else {
+                sb.append("<b>Dato:</b><ul>");
+            }
+
+            for (DatoRecord dato : dati) {
+                sb.append("<li>")
+                .append("<b>Codice:</b> <font color='blue'>").append(dato.getCodice()).append("</font> | ")
+                .append("<b>Nome:</b> <font color='green'>").append(dato.getNome()).append("</font> | ")
+                .append("<b>Valore:</b> <font color='red'>").append(dato.getValore()).append("</font>")
+                .append("</li>");
+            }
+
+            sb.append("</ul></html>");
+            return sb.toString();
+        } catch (Exception e) {
+            return "Error nel Caricamento";
+        }
     }
 }

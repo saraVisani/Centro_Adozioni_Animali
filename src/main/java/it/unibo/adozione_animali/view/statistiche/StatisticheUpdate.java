@@ -101,7 +101,7 @@ public class StatisticheUpdate extends JPanel {
         if (esito) {
             JOptionPane.showMessageDialog(
                 this,
-                "Operazione completata con successo!",
+                "Operazione completata con successo!\n" + text,
                 "Successo",
                 JOptionPane.INFORMATION_MESSAGE
             );

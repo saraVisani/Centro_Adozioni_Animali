@@ -214,19 +214,23 @@ public class StatisticControllerHelper {
                     throw new IllegalArgumentException("Caso non implementato per statistica: " + statistica);
             }
 
+            if (usaMetodo(statistica)) {
+                return splitColumnsIntoRows(rows);
+            }
+
             for (Record record : rows) {
                 List<String> rNomi = new ArrayList<>();
                 List<String> rValori = new ArrayList<>();
 
                 if (usaNomiColonne(statistica)) {
                     for (int i = 0; i < record.size(); i++) {
-                        rNomi.add(record.field(i).getName());          // nomi dalle colonne
-                        rValori.add(String.valueOf(record.get(i)));    // valori dalle celle
+                        rNomi.add(formatColumnName(record.field(i).getName())); // nomi dalle colonne
+                        rValori.add(String.valueOf(record.get(i)));             // valori dalle celle
                     }
                 } else {
                     int idxValore = indiceValore(statistica);
                     for (int i = 0; i < record.size(); i++) {
-                        if (i == idxValore) {
+                        if (i > idxValore) {
                             rValori.add(String.valueOf(record.get(i)));
                         } else {
                             rNomi.add(String.valueOf(record.get(i)));
@@ -248,14 +252,26 @@ public class StatisticControllerHelper {
     private boolean usaNomiColonne(NomeStatistica statistica) {
         return switch (statistica) {
             case PERCENTUALE_ANIMALI_MALATI_SANI,
+                    ETA_MEDIA_ADOZIONE,
                     PERCENTUALE_CURABILI_NON_CURABILI,
                     PERCENTUALE_PERSONALE_FISSO_VOLONTARIO,
                     PERCENTUALE_EX_DIPENDENTI_FISSI,
                     PERCENTUALE_EX_DIPENDENTI_VOLONTARI,
                     PERCENTUALE_DIPENDENTI_RICHIEDENTI,
                     PERCENTUALE_PURA_METICCIO,
-                    PERCENTUALE_STRANIERI_AUTOCTONI,
-                    PERCENTUALE_RITROVAMENTO ->
+                    PERCENTUALE_STRANIERI_AUTOCTONI ->
+                true;
+            default -> false;
+        };
+    }
+
+    private boolean usaMetodo(NomeStatistica statistica) {
+        return switch (statistica) {
+            case PERCENTUALE_ANIMALI_MALATI_SANI,
+                    PERCENTUALE_CURABILI_NON_CURABILI,
+                    PERCENTUALE_PURA_METICCIO,
+                    PERCENTUALE_PERSONALE_FISSO_VOLONTARIO,
+                    PERCENTUALE_STRANIERI_AUTOCTONI ->
                 true;
             default -> false;
         };
@@ -265,29 +281,32 @@ public class StatisticControllerHelper {
         return switch (statistica) {
             case CENTRO_PIU_ADOZIONI,
                     CLASSIFICA_CENTRI_PIU_ADOZIONI,
+                    PERCENTUALE_SPECIE_ADOTTATA_PER_CENTRO,
                     CITTA_PIU_ADOZIONI,
-                    CLASSIFICA_CITTA_PIU_ADOZIONI,
-                    PROVINCIA_PIU_ADOZIONI,
-                    CLASSIFICA_PROVINCE_PIU_ADOZIONI,
-                    REGIONE_PIU_ADOZIONI,
-                    CLASSIFICA_REGIONI_PIU_ADOZIONI,
                     CITTA_PIU_ADOZIONI_EFFETTUATE,
                     CLASSIFICA_CITTA_PIU_ADOZIONI_EFFETTUATE,
+                    CLASSIFICA_CITTA_PIU_ADOZIONI -> 3; // i valori partono dalla 4 colonna
+
+            case PROVINCIA_PIU_ADOZIONI,
                     PROVINCIA_PIU_ADOZIONI_EFFETTUATE,
                     CLASSIFICA_PROVINCE_PIU_ADOZIONI_EFFETTUATE,
+                    REGIONE_PIU_ADOZIONI,
+                    CLASSIFICA_REGIONI_PIU_ADOZIONI,
                     REGIONE_PIU_ADOZIONI_EFFETTUATE,
-                    CLASSIFICA_REGIONI_PIU_ADOZIONI_EFFETTUATE -> 3; // i valori partono dalla 4 colonna
+                    SPECIE_PIU_ADOTTATA_PER_CENTRO,
+                    CLASSIFICA_PROVINCE_PIU_ADOZIONI,
+                    CLASSIFICA_REGIONI_PIU_ADOZIONI_EFFETTUATE -> 1;
 
-            case SPECIE_PIU_ADOTTATA_PER_CENTRO -> 4; // i valori partono dalla 5 colonna
-            case PERCENTUALE_SPECIE_ADOTTATA_PER_CENTRO -> 5;
-            case PERCENTUALE_SPECIE_PER_CENTRO -> 2;
             case SPECIE_PIU_ADOTTATA,
                     CLASSIFICA_SPECIE_PIU_ADOTTATE,
                     PERCENTUALE_TIPOLOGIE_ANIMALI,
                     PERCENTUALE_PURA_METICCIO_ADOTTATI,
                     PERCENTUALE_PURA_METICCIO_PER_CENTRO,
+                    PERCENTUALE_STRANIERI_AUTOCTONI_PER_CENTRO,
+                    PERCENTUALE_SPECIE_PER_CENTRO,
                     PERCENTUALE_DISABILI_PER_CENTRO,
-                    PERCENTUALE_CRONICI_PER_CENTRO -> 1; // i valori partono dalla 2 colonna
+                    PERCENTUALE_CRONICI_PER_CENTRO,
+                    PERCENTUALE_RITROVAMENTO -> 0; // i valori partono dalla 2 colonna
 
             // quelli che usano tutte colonne come valori
             case PERCENTUALE_ANIMALI_MALATI_SANI,
@@ -298,11 +317,50 @@ public class StatisticControllerHelper {
                     PERCENTUALE_EX_DIPENDENTI_VOLONTARI,
                     PERCENTUALE_DIPENDENTI_RICHIEDENTI,
                     PERCENTUALE_PURA_METICCIO,
-                    PERCENTUALE_STRANIERI_AUTOCTONI,
-                    PERCENTUALE_RITROVAMENTO -> 0;
+                    PERCENTUALE_STRANIERI_AUTOCTONI
+                    -> 0;
 
             default -> throw new IllegalArgumentException("Indice valore non definito per: " + statistica);
         };
+    }
+
+    private String formatColumnName(String columnName) {
+        if (columnName == null || columnName.isEmpty()) return columnName;
+
+        // Sostituisci _ con spazio e dividi in parole
+        String[] parts = columnName.split("_");
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < parts.length; i++) {
+            String part = parts[i].toLowerCase(); // tutto minuscolo
+            sb.append(Character.toUpperCase(part.charAt(0))) // prima lettera maiuscola
+            .append(part.substring(1));
+            if (i < parts.length - 1) sb.append(" ");
+        }
+
+        return sb.toString();
+    }
+
+    private Pair<List<List<String>>, List<List<String>>> splitColumnsIntoRows(Result<Record> rows) {
+        List<List<String>> nomi = new ArrayList<>();
+        List<List<String>> valori = new ArrayList<>();
+
+        for (Record record : rows) {
+            for (int i = 0; i < record.size(); i++) {
+                List<String> rNomi = new ArrayList<>();
+                List<String> rValori = new ArrayList<>();
+
+                // nome colonna
+                rNomi.add(formatColumnName(record.field(i).getName()));
+                // valore cella
+                rValori.add(String.valueOf(record.get(i)));
+
+                nomi.add(rNomi);
+                valori.add(rValori);
+            }
+        }
+
+        return new Pair<>(nomi, valori);
     }
 
 }

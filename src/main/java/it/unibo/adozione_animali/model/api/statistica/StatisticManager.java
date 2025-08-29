@@ -7,4 +7,6 @@ public interface StatisticManager {
     boolean insertStatistica(String codice, String nome, LocalDate data);
 
     boolean insertDato(String codice, List<String> nome, List<String> valore, String statistica, LocalDate data);
+
+    String getStatistic(String codiceStat, LocalDate dataStat);
 }
