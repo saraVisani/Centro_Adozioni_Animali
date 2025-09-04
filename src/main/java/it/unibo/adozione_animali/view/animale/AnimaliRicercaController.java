@@ -244,9 +244,7 @@ public class AnimaliRicercaController {
                 }
                 if(ckPesoX){
                     Float spPesoX = view.getValueSpPesoX();
-                    System.out.println("enter");
                     if (spPesoX != null) {
-                        System.out.println("enter 2");
                         BigDecimal pesoMax = BigDecimal.valueOf(spPesoX);
                         query.where(Tables.ANIMALE.PESO.le(pesoMax));
                     }
