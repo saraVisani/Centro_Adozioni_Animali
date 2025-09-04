@@ -312,11 +312,11 @@ public class AnimaliRicerca extends JPanel {
 
     public Float getValueSpPesoX() {
         try {
-            var num = (Float) spPesoX.getValue();
-            if(num <= 0){
-                return null;
-            }
-            return num;
+            Number num = (Number) spPesoX.getValue(); // Number gestisce sia Float che Double
+            if (num == null) return null;
+            float f = num.floatValue();
+            if (f <= 0) return null;
+            return f;
         } catch (Exception e) {
             return null;
         }
@@ -324,11 +324,11 @@ public class AnimaliRicerca extends JPanel {
 
     public Float getValueSpPesoN() {
         try {
-            var num = (Float) spPesoN.getValue();
-            if(num <= 0){
-                return null;
-            }
-            return num;
+            var num = (Number) spPesoN.getValue();
+            if (num == null) return null;
+            float f = num.floatValue();
+            if (f <= 0) return null;
+            return f;
         } catch (Exception e) {
             return null;
         }
@@ -336,11 +336,11 @@ public class AnimaliRicerca extends JPanel {
 
     public Float getValueSpAltX() {
         try {
-            var num = (Float) spAltX.getValue();
-            if(num <= 0){
-                return null;
-            }
-            return num;
+            var num = (Number) spAltX.getValue();
+            if (num == null) return null;
+            float f = num.floatValue();
+            if (f <= 0) return null;
+            return f;
         } catch (Exception e) {
             return null;
         }
@@ -348,11 +348,11 @@ public class AnimaliRicerca extends JPanel {
 
     public Float getValueSpAltN() {
         try {
-            var num = (Float) spAltN.getValue();
-            if(num <= 0){
-                return null;
-            }
-            return num;
+            var num = (Number) spAltN.getValue();
+            if (num == null) return null;
+            float f = num.floatValue();
+            if (f <= 0) return null;
+            return f;
         } catch (Exception e) {
             return null;
         }
