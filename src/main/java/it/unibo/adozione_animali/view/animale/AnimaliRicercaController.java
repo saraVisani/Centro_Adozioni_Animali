@@ -6,7 +6,6 @@ import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
-import org.jooq.Condition;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
@@ -16,6 +15,7 @@ import java.awt.Component;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
@@ -95,7 +95,7 @@ public class AnimaliRicercaController {
 
     public void specieSelezionata(String comboSpecie) {
         if(comboSpecie != null){
-            view.setRazza(model.getRazzaDAO().getRazzaBySpecie(comboSpecie));
+            view.setRazza(model.getRazzaDAO().getRazzaBySpecie(Enum.Specie.keyFromName(comboSpecie)));
         }
     }
 
@@ -205,13 +205,25 @@ public class AnimaliRicercaController {
                     query.where(Tables.ANIMALE.STATO_RITROVAMENTO.equalIgnoreCase(ritrovamento));
                 }
                 if (specie != null && !specie.isEmpty() && !specie.equals("--select--")) {
-                    query.where(Tables.ANIMALE.COD_SPECIE.equalIgnoreCase(specie));
+                    query.where(Tables.ANIMALE.COD_SPECIE.equalIgnoreCase(Enum.Specie.keyFromName(specie)));
                 }
                 if(razza != null && !razza.isBlank() && !razza.equals("--select--")){
                     query.where(Tables.ANIMALE.NOME_RAZZA.equalIgnoreCase(razza));
                 }
                 if (stato != null && !stato.isEmpty() && !stato.equals("--select--")) {
-                    query.where(Tables.ANIMALE.STATO_ATTUALE.equalIgnoreCase(stato));
+                    if(stato.equalsIgnoreCase(Enum.StatoAnimale.CRONICO.name())||stato.equalsIgnoreCase(Enum.StatoAnimale.DISABILE.name())){
+                        query.where(Tables.ANIMALE.STATO_ATTUALE.equalIgnoreCase(stato));
+                    }else if(stato.equalsIgnoreCase(Enum.StatoAnimale.MALATO.name())){
+                        query.where(Tables.ANIMALE.IDONIETA_ANIMALE.eq((byte) 0));
+                    }else if(Enum.StatoAnimale.isValid(stato)){
+                        if(Enum.StatoAnimale.fromDisplayName(stato).equals(Enum.StatoAnimale.MAL_CRO)){
+                            query.where(Tables.ANIMALE.IDONIETA_ANIMALE.eq((byte) 0))
+                                    .and(Tables.ANIMALE.STATO_ATTUALE.eq(Enum.StatoAnimale.CRONICO.name()));
+                        }else{
+                            query.where(Tables.ANIMALE.IDONIETA_ANIMALE.eq((byte) 0))
+                                    .and(Tables.ANIMALE.STATO_ATTUALE.eq(Enum.StatoAnimale.DISABILE.name()));
+                        }
+                    }
                 }
                 if (nome != null && !nome.isEmpty()) {
                     if(nome.equalsIgnoreCase("N/D")||nome.equalsIgnoreCase("N\\D")
@@ -247,15 +259,15 @@ public class AnimaliRicercaController {
                 if(ckAltX){
                     Float spAltX=view.getValueSpAltX();
                     if (spAltX != null) {
-                        BigDecimal pesoMax = BigDecimal.valueOf(spAltX);
-                        query.where(Tables.ANIMALE.ALTEZZA.le(pesoMax));
+                        BigDecimal altMax = BigDecimal.valueOf(spAltX);
+                        query.where(Tables.ANIMALE.ALTEZZA.le(altMax));
                     }
                 }
                 if(ckAltN){
                     Float spAltN=view.getValueSpAltN();
                     if (spAltN != null) {
-                        BigDecimal pesoMin = BigDecimal.valueOf(spAltN);
-                        query.where(Tables.ANIMALE.ALTEZZA.ge(pesoMin));
+                        BigDecimal altMin = BigDecimal.valueOf(spAltN);
+                        query.where(Tables.ANIMALE.ALTEZZA.ge(altMin));
                     }
                 }
                 if(ckAdozione){
@@ -264,7 +276,7 @@ public class AnimaliRicercaController {
                     query.where(Tables.ANIMALE.DATA_ADOZIONE.isNull());
                 }
 
-                if(cf != null && !cf.isBlank() && !cf.equals("--select--")){
+                /*if(cf != null && !cf.isBlank() && !cf.equals("--select--")){
                     var spazioIds = ctx.select(Tables.SPAZIO_PERSONA.ID_SPAZIO)
                                     .from(Tables.SPAZIO_PERSONA)
                                     .where(Tables.SPAZIO_PERSONA.CF.eq(cf))
@@ -299,13 +311,62 @@ public class AnimaliRicercaController {
                         finalCondition = condition;
                     }
                     query.where(finalCondition);
-                }
+                }*/
             }
 
             // Ordinamento: nuove prime
             query.orderBy(Tables.ANIMALE.DATA_INSERIMENTO.desc(), Tables.ANIMALE.NOME.asc());
 
             var result = query.fetch();
+
+            List<Record> filtered = new ArrayList<>();
+
+            if (cf != null && !cf.isBlank() && !cf.equals("--select--")) {
+                // prendo gli spazi della persona
+                var spazioIds = ctx.select(Tables.SPAZIO_PERSONA.ID_SPAZIO)
+                        .from(Tables.SPAZIO_PERSONA)
+                        .where(Tables.SPAZIO_PERSONA.CF.eq(cf))
+                        .and(Tables.SPAZIO_PERSONA.COD_PROVINCIA.eq(provinciaPer))
+                        .and(Tables.SPAZIO_PERSONA.COD_CITTA_.eq(cittaPer))
+                        .and(Tables.SPAZIO_PERSONA.NUMERO.eq(numeroPer))
+                        .fetchInto(Long.class);
+
+                if (!spazioIds.isEmpty()) {
+                    for (Record record : result) {
+                        boolean compatibile = false;
+
+                        for (Long idSpazio : spazioIds) {
+                            Integer res = ctx.select(
+                                    DSL.function(
+                                            "animale_compatibile_spazio",
+                                            Integer.class,
+                                            DSL.val(record.get(Tables.ANIMALE.COD_PROVINCIA)),
+                                            DSL.val(record.get(Tables.ANIMALE.COD_CITTA_)),
+                                            DSL.val(record.get(Tables.ANIMALE.NUMERO)),
+                                            DSL.val(record.get(Tables.ANIMALE.COD_ANIMALE)),
+                                            DSL.val(cf),
+                                            DSL.val(idSpazio),
+                                            DSL.val(provinciaPer),
+                                            DSL.val(cittaPer),
+                                            DSL.val(numeroPer),
+                                            DSL.val(1)
+                                    )
+                            ).fetchOneInto(Integer.class);
+
+                            if (res != null && res == 1) {
+                                compatibile = true;
+                                break;
+                            }
+                        }
+
+                        if (compatibile) {
+                            filtered.add(record);
+                        }
+                    }
+                }
+            } else {
+                filtered = result.stream().toList();
+            }
 
             if (!result.isEmpty()) {
                 // colonne dinamiche

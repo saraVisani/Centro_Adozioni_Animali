@@ -1,14 +1,15 @@
 package it.unibo.adozione_animali.view.animale;
 
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 
 import java.util.List;
 import it.unibo.adozione_animali.util.ItemSelezionabile;
 
 import java.awt.*;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 
 public class AnimaliRicerca extends JPanel {
 
@@ -62,14 +63,17 @@ public class AnimaliRicerca extends JPanel {
         comboStato = new JComboBox<>();
         txtEtaMax = new JTextField(4);
         txtEtaMin = new JTextField(4);
-        DocumentListener etaListener = new DocumentListener() {
-            @Override public void insertUpdate(DocumentEvent e) { validaEta(txtEtaMin, txtEtaMax); }
-            @Override public void removeUpdate(DocumentEvent e) { validaEta(txtEtaMin, txtEtaMax); }
-            @Override public void changedUpdate(DocumentEvent e) { validaEta(txtEtaMin, txtEtaMax); }
+
+        // Focus listener per la validazione definitiva
+        FocusListener etaFocusListener = new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                validaEtaFinale(txtEtaMin, txtEtaMax);
+            }
         };
 
-        txtEtaMin.getDocument().addDocumentListener(etaListener);
-        txtEtaMax.getDocument().addDocumentListener(etaListener);
+        txtEtaMin.addFocusListener(etaFocusListener);
+        txtEtaMax.addFocusListener(etaFocusListener);
         ckPesoX = new JCheckBox();
         ckPesoX.addActionListener(e -> spPesoX.setEnabled(this.getCkPesoX()));
         ckPesoN = new JCheckBox();
@@ -535,28 +539,31 @@ public class AnimaliRicerca extends JPanel {
         }
     }
 
+    // Metodo per leggere valori senza limitazioni temporanee
     private int parseEtaSafe(JTextField field, int defaultValue) {
         try {
             String text = field.getText().trim();
             if (text.isEmpty()) return defaultValue;
-            int val = Integer.parseInt(text);
-            if (val < 0) return 0;
-            if (val > 150) return 150;
-            return val;
+            return Integer.parseInt(text);
         } catch (NumberFormatException e) {
             return defaultValue;
         }
     }
 
-    private void validaEta(JTextField txtEtaMin, JTextField txtEtaMax) {
+    // Metodo per correggere i valori solo al focus lost
+    private void validaEtaFinale(JTextField txtEtaMin, JTextField txtEtaMax) {
         int min = parseEtaSafe(txtEtaMin, 0);
         int max = parseEtaSafe(txtEtaMax, 150);
 
+        // Garantisce che max sia sempre maggiore di min
         if (min >= max) {
             max = Math.min(min + 1, 150);
         }
 
-        // aggiorna i campi con i valori corretti
+        // Applica limiti definitivi 0-150
+        min = Math.max(0, Math.min(min, 150));
+        max = Math.max(0, Math.min(max, 150));
+
         txtEtaMin.setText(String.valueOf(min));
         txtEtaMax.setText(String.valueOf(max));
     }

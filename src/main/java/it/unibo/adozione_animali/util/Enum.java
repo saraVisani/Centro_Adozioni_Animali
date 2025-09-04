@@ -37,6 +37,11 @@ public class Enum {
             return fromKey(key) != null;
         }
 
+        public static boolean isValid(String value) {
+            if (value == null) return false;
+            return fromKey(value) != null || fromDisplayName(value) != null;
+        }
+
         public static List<String> getDisplayNames() {
             return Arrays.stream(values())
                         .map(StatoAnimale::getDisplayName)
