@@ -171,8 +171,9 @@ public class AnimaliRicerca extends JPanel {
 
         add(filterPanel, BorderLayout.NORTH);
 
-        cf.addActionListener(e -> {this.controller.cfSelezionato(getCf());
-        btnCerca.setEnabled(false);});
+        cf.addActionListener(e -> {btnCerca.setEnabled(false);
+            this.controller.cfSelezionato(getCf());
+        });
 
         // JTable
         table = new JTable();
@@ -587,5 +588,16 @@ public class AnimaliRicerca extends JPanel {
         if(valMin > max) spinnerMin.setValue(max);
         if(valMax < min) spinnerMax.setValue(min);
         if(valMax > max) spinnerMax.setValue(max);
+    }
+
+    public void setSelectPersona() {
+        JComboBox<?>[] comboBoxes = {
+            provinciaPer, cittaPer, numeroPer
+        };
+        for (JComboBox<?> box : comboBoxes) {
+            box.setSelectedIndex(-1);
+            box.setEnabled(false);
+        }
+        btnCerca.setEnabled(true);
     }
 }

@@ -119,6 +119,8 @@ public class AnimaliRicercaController {
     public void cfSelezionato(String cf) {
         if(!(cf.isBlank() || cf.equals("--select--"))){
             view.setProvinciaPer(model.getIndirizzoDAO().getProvince(cf));
+        }else if(cf.equals("--select--")){
+            view.setSelectPersona();
         }
     }
 
@@ -368,7 +370,7 @@ public class AnimaliRicercaController {
                 filtered = result.stream().toList();
             }
 
-            if (!result.isEmpty()) {
+            if (!filtered.isEmpty()) {
                 // colonne dinamiche
                 for (var field : Tables.ANIMALE.fields()) {
                     columnNames.add(field.getName());
