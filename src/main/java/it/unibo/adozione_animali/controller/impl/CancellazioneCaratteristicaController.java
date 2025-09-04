@@ -19,18 +19,18 @@ public class CancellazioneCaratteristicaController {
 
     private void inizializza() {
         // Popola le province all’avvio
-        view.setProvince(model.getProvinciaDAO().getProvince());
+        view.setProvince(model.getCentroDAO().getProvince());
     }
 
     public void provinciaSelezionata(String provinciaCodice) {
         if (provinciaCodice != null) {
-            view.setCitta(model.getCittaDAO().getCittaByProvincia(provinciaCodice));
+            view.setCitta(model.getCentroDAO().getCittaByProvincia(provinciaCodice));
         }
     }
 
     public void cittaSelezionata(String provinciaCodice, String cittaCodice) {
         if (provinciaCodice != null && cittaCodice != null) {
-            List<String> numeri = model.getIndirizzoDAO().getNumeriByCitta(provinciaCodice, cittaCodice);
+            List<String> numeri = model.getCentroDAO().getNumeriByCitta(provinciaCodice, cittaCodice);
             view.setNumeri(numeri);
         }
     }

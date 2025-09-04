@@ -185,4 +185,75 @@ public class RazzaDAO implements Razza {
         }
     }
 
+    public List<String> getRazzaBySpecie(String comboSpecie) {
+        try (Connection conn = DBConfig.getConnection()) {
+            DSLContext ctx = DSL.using(conn);
+
+            return ctx.select(Tables.RAZZA.NOME)
+                    .from(Tables.RAZZA)
+                    .where(Tables.RAZZA.COD_SPECIE.eq(comboSpecie))
+                    .orderBy(Tables.RAZZA.NOME.asc())
+                    .fetchInto(String.class);
+
+        } catch (SQLException e) {
+            logger.severe("La connessione non ha funzionato: " + e.getMessage());
+            return List.of(); // ritorna lista vuota in caso di errore
+        }
+    }
+
+    public List<BigDecimal> getPesiAltezza(String specie, String razza) {
+        try (Connection conn = DBConfig.getConnection()) {
+            DSLContext ctx = DSL.using(conn);
+
+            // Recupera il lignaggio della razza
+            String lignaggio = ctx.select(Tables.RAZZA.LIGNAGGIO)
+                                .from(Tables.RAZZA)
+                                .where(Tables.RAZZA.COD_SPECIE.eq(specie))
+                                .and(Tables.RAZZA.NOME.eq(razza))
+                                .fetchOne(Tables.RAZZA.LIGNAGGIO);
+
+            if ("Puro".equalsIgnoreCase(lignaggio)) {
+                var record = ctx.select(Tables.RAZZA.PESO_MAX, Tables.RAZZA.PESO_MIN,
+                                        Tables.RAZZA.ALT_MAX, Tables.RAZZA.ALT_MIN)
+                                .from(Tables.RAZZA)
+                                .where(Tables.RAZZA.COD_SPECIE.eq(specie))
+                                .and(Tables.RAZZA.NOME.eq(razza))
+                                .fetchOne();
+
+                if (record != null) {
+                    return List.of(
+                        record.get(Tables.RAZZA.PESO_MAX),
+                        record.get(Tables.RAZZA.PESO_MIN),
+                        record.get(Tables.RAZZA.ALT_MAX),
+                        record.get(Tables.RAZZA.ALT_MIN)
+                    );
+                }
+            } else if ("Meticcio".equalsIgnoreCase(lignaggio)) {
+                var record = ctx.select(
+                                    DSL.max(Tables.RAZZA.PESO_MAX),
+                                    DSL.min(Tables.RAZZA.PESO_MIN),
+                                    DSL.max(Tables.RAZZA.ALT_MAX),
+                                    DSL.min(Tables.RAZZA.ALT_MIN)
+                                )
+                                .from(Tables.RAZZA)
+                                .where(Tables.RAZZA.COD_SPECIE.eq(specie))
+                                .fetchOne();
+
+                if (record != null) {
+                    return List.of(
+                        record.get(0, BigDecimal.class),
+                        record.get(1, BigDecimal.class),
+                        record.get(2, BigDecimal.class),
+                        record.get(3, BigDecimal.class)
+                    );
+                }
+            }
+
+            return List.of(); // Nessun record trovato
+        } catch (SQLException e) {
+            logger.severe("La connessione non ha funzionato: " + e.getMessage());
+            return List.of();
+        }
+    }
+
 }

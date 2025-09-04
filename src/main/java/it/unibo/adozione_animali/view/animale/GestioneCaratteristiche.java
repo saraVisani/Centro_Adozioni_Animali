@@ -90,15 +90,6 @@ public class GestioneCaratteristiche extends JPanel{
     public Cancellazione getCancellazioneView() {
         return canc;
     }
-
-    // Test standalone
-    public static void main(String[] args) {
-        JFrame f = new JFrame("Gestione Centri");
-        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        f.setSize(600, 400);
-        f.add(new GestioneCaratteristiche());
-        f.setVisible(true);
-    }
 }
 
 

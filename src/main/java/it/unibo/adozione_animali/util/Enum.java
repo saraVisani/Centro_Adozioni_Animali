@@ -1,13 +1,18 @@
 package it.unibo.adozione_animali.util;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Enum {
 
     public enum StatoAnimale {
         DISABILE,
-        CRONICO;
+        CRONICO,
+        MALATO,
+        MAL_DIS,
+        MAL_CRO;
 
         /** Restituisce l'enum dato il nome, oppure null se non valido */
         public static StatoAnimale fromKey(String key) {
@@ -19,9 +24,67 @@ public class Enum {
             }
         }
 
+        public static StatoAnimale fromDisplayName(String displayName) {
+            if (displayName == null) return null;
+            return Arrays.stream(values())
+                        .filter(e -> e.getDisplayName().equalsIgnoreCase(displayName))
+                        .findFirst()
+                        .orElse(null);
+        }
+
         /** Controlla se la stringa corrisponde a un valore valido */
         public static boolean isValidKey(String key) {
             return fromKey(key) != null;
+        }
+
+        public static List<String> getDisplayNames() {
+            return Arrays.stream(values())
+                        .map(StatoAnimale::getDisplayName)
+                        .toList();
+        }
+
+        public String getDisplayName() {
+            String[] parts = this.name().split("_");
+            for (int i = 0; i < parts.length; i++) {
+                parts[i] = switch (parts[i].toLowerCase()) {
+                    case "cro" -> "Cronico";
+                    case "mal" -> "Malato";
+                    case "dis" -> "Disabile";
+                    default -> parts[i].substring(0, 1).toUpperCase() + parts[i].substring(1).toLowerCase();
+                };
+            }
+            return String.join("/", parts);
+        }
+    }
+
+    public enum TipoRitrovamento{
+        NATO,
+        PORTATO,
+        STRADA;
+
+        public static TipoRitrovamento fromKey(String key) {
+            if (key == null) return null;
+            try {
+                return TipoRitrovamento.valueOf(key.toUpperCase()); // safe anche se scrivi "cronico"
+            } catch (IllegalArgumentException e) {
+                return null;
+            }
+        }
+
+        /** Controlla se la stringa corrisponde a un valore valido */
+        public static boolean isValidKey(String key) {
+            return fromKey(key) != null;
+        }
+
+        public static List<String> getDisplayNames() {
+            return Arrays.stream(values())
+                        .map(TipoRitrovamento::getDisplayName)
+                        .toList();
+        }
+
+        public String getDisplayName() {
+            String lower = this.name().toLowerCase();
+            return Character.toUpperCase(lower.charAt(0)) + lower.substring(1);
         }
     }
 

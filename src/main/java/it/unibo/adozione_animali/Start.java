@@ -1,6 +1,8 @@
 package it.unibo.adozione_animali;
 
 import it.unibo.adozione_animali.view.MainMenu;
+import it.unibo.adozione_animali.view.animale.AnimaliRicercaController;
+
 import org.jooq.DSLContext;
 import org.jooq.impl.DSL;
 import org.jooq.SQLDialect;
@@ -55,6 +57,7 @@ public class Start {
         view.getSpaziPanel().getUpdateTipoDimensionePanel().setController(new UpdateTipoDimensioneController(model, view.getSpaziPanel().getUpdateTipoDimensionePanel()));
         new StatisticheRicercaController(view.getRicercaStatPanel());
         view.getAggiornaPanel().setController(new UpdateStatisticaController(model, view.getAggiornaPanel()));
+        view.getRicercaPanel().setController(new AnimaliRicercaController(model, view.getRicercaPanel()));
 
     }
 }

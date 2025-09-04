@@ -12,6 +12,7 @@ import org.jooq.impl.DSL;
 import it.unibo.adozione_animali.model.api.animale.Centro;
 import it.unibo.adozione_animali.model.impl.indirizzo.IndirizzoDAO;
 import it.unibo.adozione_animali.util.DBConfig;
+import it.unibo.adozione_animali.util.ItemSelezionabile;
 import nu.studer.sample.Tables;
 import nu.studer.sample.routines.RiallocaSingoloAnimale;
 import nu.studer.sample.routines.RiallocaSingoloLavoratore;
@@ -339,6 +340,59 @@ public class CentroDAO implements Centro{
         } catch (Exception e) {
             e.printStackTrace();
             return false;
+        }
+    }
+
+    public List<ItemSelezionabile> getProvince() {
+        try (Connection conn = DBConfig.getConnection()) {
+            DSLContext ctx = DSL.using(conn, SQLDialect.MYSQL);
+
+            return ctx.selectDistinct(Tables.PROVINCIA.COD_PROVINCIA, Tables.PROVINCIA.NOME)
+                    .from(Tables.PROVINCIA)
+                    .join(Tables.CENTRO)
+                    .on(Tables.PROVINCIA.COD_PROVINCIA.eq(Tables.CENTRO.COD_PROVINCIA))
+                    .orderBy(Tables.PROVINCIA.NOME)
+                    .fetch()
+                    .map(record -> new ItemSelezionabile(record.get(Tables.PROVINCIA.COD_PROVINCIA),
+                                                        record.get(Tables.PROVINCIA.NOME)));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Collections.emptyList();
+        }
+    }
+
+    public List<ItemSelezionabile> getCittaByProvincia(String provinciaCodice) {
+        try (Connection conn = DBConfig.getConnection()) {
+            DSLContext ctx = DSL.using(conn, SQLDialect.MYSQL);
+
+            return ctx.selectDistinct(Tables.CITTA_.COD_CITTA_, Tables.CITTA_.NOME)
+                    .from(Tables.CITTA_)
+                    .join(Tables.CENTRO)
+                    .on(Tables.CITTA_.COD_CITTA_.eq(Tables.CENTRO.COD_CITTA_)
+                        .and(Tables.CENTRO.COD_PROVINCIA.eq(provinciaCodice)))
+                    .orderBy(Tables.CITTA_.NOME)
+                    .fetch()
+                    .map(record -> new ItemSelezionabile(record.get(Tables.CITTA_.COD_CITTA_),
+                                                        record.get(Tables.CITTA_.NOME)));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Collections.emptyList();
+        }
+    }
+
+    public List<String> getNumeriByCitta(String provinciaCodice, String cittaCodice) {
+        try (Connection conn = DBConfig.getConnection()) {
+            DSLContext ctx = DSL.using(conn, SQLDialect.MYSQL);
+
+            return ctx.select(Tables.CENTRO.NUMERO)
+                    .from(Tables.CENTRO)
+                    .where(Tables.CENTRO.COD_PROVINCIA.eq(provinciaCodice)
+                        .and(Tables.CENTRO.COD_CITTA_.eq(cittaCodice)))
+                    .orderBy(Tables.CENTRO.NUMERO)
+                    .fetchInto(String.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Collections.emptyList();
         }
     }
 }
