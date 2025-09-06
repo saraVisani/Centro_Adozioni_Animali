@@ -216,13 +216,13 @@ public class AnimaliRicercaController {
                     if(stato.equalsIgnoreCase(Enum.StatoAnimale.CRONICO.name())||stato.equalsIgnoreCase(Enum.StatoAnimale.DISABILE.name())){
                         query.where(Tables.ANIMALE.STATO_ATTUALE.equalIgnoreCase(stato));
                     }else if(stato.equalsIgnoreCase(Enum.StatoAnimale.MALATO.name())){
-                        query.where(Tables.ANIMALE.IDONIETA_ANIMALE.eq((byte) 0));
+                        query.where(Tables.ANIMALE.IDONEITA_ANIMALE.eq((byte) 0));
                     }else if(Enum.StatoAnimale.isValid(stato)){
                         if(Enum.StatoAnimale.fromDisplayName(stato).equals(Enum.StatoAnimale.MAL_CRO)){
-                            query.where(Tables.ANIMALE.IDONIETA_ANIMALE.eq((byte) 0))
+                            query.where(Tables.ANIMALE.IDONEITA_ANIMALE.eq((byte) 0))
                                     .and(Tables.ANIMALE.STATO_ATTUALE.eq(Enum.StatoAnimale.CRONICO.name()));
                         }else{
-                            query.where(Tables.ANIMALE.IDONIETA_ANIMALE.eq((byte) 0))
+                            query.where(Tables.ANIMALE.IDONEITA_ANIMALE.eq((byte) 0))
                                     .and(Tables.ANIMALE.STATO_ATTUALE.eq(Enum.StatoAnimale.DISABILE.name()));
                         }
                     }
