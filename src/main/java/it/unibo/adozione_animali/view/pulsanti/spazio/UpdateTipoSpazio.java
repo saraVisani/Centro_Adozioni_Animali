@@ -59,12 +59,12 @@ public class UpdateTipoSpazio extends JPanel {
         tablePanel.add(tipo, gbc);
 
         // Listener combo che chiamano il controller
-        tipo.addActionListener(e -> {
+        codSpazio.addActionListener(e -> {
             if (controller != null) controller.codiceSelected(getCodice());
             aggiornaStatoPulsante();});
 
         // JTextField nome
-        codSpazio.addActionListener(e -> aggiornaStatoPulsante());
+        tipo.addActionListener(e -> aggiornaStatoPulsante());
 
         inserisciBtn.addActionListener(e -> {
             if (controller != null) controller.salvaAggiornamento();

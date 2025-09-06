@@ -146,6 +146,7 @@ public class SpazioDAO implements Spazio{
 
             if (tipoAssociato == null) {
                 // Se non c’è spazio con quel codice → restituisco tutti i tipi
+
                 return Arrays.stream(TipoSpazio.values())
                             .map(Enum::name)
                             .toList();

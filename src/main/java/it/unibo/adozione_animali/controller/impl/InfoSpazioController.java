@@ -1,9 +1,11 @@
 package it.unibo.adozione_animali.controller.impl;
 
+import java.awt.Component;
 import java.sql.Connection;
 import java.util.Vector;
 
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 
@@ -11,7 +13,6 @@ import org.jooq.DSLContext;
 import org.jooq.Field;
 import org.jooq.impl.DSL;
 
-import it.unibo.adozione_animali.model.impl.Model;
 import it.unibo.adozione_animali.util.CenterRenderer;
 import it.unibo.adozione_animali.util.DBConfig;
 import it.unibo.adozione_animali.util.DateRenderer;

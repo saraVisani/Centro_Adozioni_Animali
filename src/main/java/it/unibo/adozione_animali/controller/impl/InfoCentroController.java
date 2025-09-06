@@ -33,7 +33,8 @@ public class InfoCentroController {
         try (Connection conn = DBConfig.getConnection()) {
             DSLContext ctx = DSL.using(conn);
 
-            var result = ctx.select(Tables.CENTRO, Tables.SPECIE.NOME_SPECIE)
+            var result = ctx.select(Tables.CENTRO.COD_PROVINCIA,Tables.CENTRO.COD_CITTA_,Tables.CENTRO.NUMERO,
+                                    Tables.CENTRO.NOME,Tables.CENTRO.CAPIENZA, Tables.SPECIE.NOME_SPECIE)
                             .from(Tables.CENTRO)
                             .join(Tables.TIPOLOGIA)
                             .on(Tables.CENTRO.COD_PROVINCIA.eq(Tables.TIPOLOGIA.COD_PROVINCIA))

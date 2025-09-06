@@ -194,12 +194,22 @@ public class Enum {
         // Restituisce l'enum corrispondente alla stringa, o null se non esiste
         public static TipoSpazio fromString(String s) {
             if (s == null) return null;
-            for (TipoSpazio t : values()) {
-                if (t.name().equalsIgnoreCase(s)) {
-                    return t;
-                }
+
+            s = s.trim().toLowerCase();
+
+            switch (s) {
+                case "int":
+                case "interno":
+                    return INTERNO;
+                case "est":
+                case "esterno":
+                    return ESTERNO;
+                case "gab":
+                case "gabbia":
+                    return GABBIA;
+                default:
+                    return null;
             }
-            return null;
         }
     }
 
