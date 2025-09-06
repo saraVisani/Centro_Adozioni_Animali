@@ -1,4 +1,4 @@
-package it.unibo.adozione_animali.view.animale;
+package it.unibo.adozione_animali.controller.impl;
 
 import it.unibo.adozione_animali.model.impl.Model;
 import nu.studer.sample.Tables;
@@ -24,6 +24,7 @@ import it.unibo.adozione_animali.util.DBConfig;
 import it.unibo.adozione_animali.util.DateRenderer;
 import it.unibo.adozione_animali.util.Enum;
 import it.unibo.adozione_animali.util.Enum.Specie;
+import it.unibo.adozione_animali.view.animale.AnimaliRicerca;
 
 public class AnimaliRicercaController {
 
@@ -277,43 +278,6 @@ public class AnimaliRicercaController {
                 }else{
                     query.where(Tables.ANIMALE.DATA_ADOZIONE.isNull());
                 }
-
-                /*if(cf != null && !cf.isBlank() && !cf.equals("--select--")){
-                    var spazioIds = ctx.select(Tables.SPAZIO_PERSONA.ID_SPAZIO)
-                                    .from(Tables.SPAZIO_PERSONA)
-                                    .where(Tables.SPAZIO_PERSONA.CF.eq(cf))
-                                    .and(Tables.SPAZIO_PERSONA.COD_PROVINCIA.eq(provinciaPer))
-                                    .and(Tables.SPAZIO_PERSONA.COD_CITTA_.eq(cittaPer))
-                                    .and(Tables.SPAZIO_PERSONA.NUMERO.eq(numeroPer))
-                                    .fetchInto(Long.class);
-
-                    Condition finalCondition = DSL.falseCondition();
-
-                    if(!spazioIds.isEmpty()){
-
-                        Condition condition = DSL.falseCondition(); // parte neutra
-                        for(Long idSpazio : spazioIds){
-                            condition = condition.or(
-                                DSL.function(
-                                    "animale_compatibile_spazio",
-                                    Integer.class,
-                                    Tables.ANIMALE.COD_PROVINCIA,
-                                    Tables.ANIMALE.COD_CITTA_,
-                                    Tables.ANIMALE.NUMERO,
-                                    Tables.ANIMALE.COD_ANIMALE,
-                                    DSL.val(cf),
-                                    DSL.val(idSpazio),
-                                    DSL.val(provinciaPer),
-                                    DSL.val(cittaPer),
-                                    DSL.val(numeroPer),
-                                    DSL.val(1)
-                                ).eq(1)
-                            );
-                        }
-                        finalCondition = condition;
-                    }
-                    query.where(finalCondition);
-                }*/
             }
 
             // Ordinamento: nuove prime
@@ -332,8 +296,9 @@ public class AnimaliRicercaController {
                         .and(Tables.SPAZIO_PERSONA.COD_CITTA_.eq(cittaPer))
                         .and(Tables.SPAZIO_PERSONA.NUMERO.eq(numeroPer))
                         .fetchInto(Long.class);
-
+                System.out.println("Enter");
                 if (!spazioIds.isEmpty()) {
+                    System.out.println("not Empty");
                     for (Record record : result) {
                         boolean compatibile = false;
 
@@ -356,12 +321,14 @@ public class AnimaliRicercaController {
                             ).fetchOneInto(Integer.class);
 
                             if (res != null && res == 1) {
+                                System.out.println("true");
                                 compatibile = true;
                                 break;
                             }
                         }
 
                         if (compatibile) {
+                            System.out.println("copy");
                             filtered.add(record);
                         }
                     }
@@ -376,7 +343,7 @@ public class AnimaliRicercaController {
                     columnNames.add(field.getName());
                 }
 
-                for (Record record : result) {
+                for (Record record : filtered) {
                     Vector<Object> row = new Vector<>();
                     for (var field : Tables.ANIMALE.fields()) {
                         Object value = record.get(field);

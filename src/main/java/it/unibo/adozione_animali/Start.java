@@ -1,7 +1,6 @@
 package it.unibo.adozione_animali;
 
 import it.unibo.adozione_animali.view.MainMenu;
-import it.unibo.adozione_animali.view.animale.AnimaliRicercaController;
 
 import org.jooq.DSLContext;
 import org.jooq.impl.DSL;
@@ -9,10 +8,13 @@ import org.jooq.SQLDialect;
 import it.unibo.adozione_animali.controller.impl.AddCentroController;
 import it.unibo.adozione_animali.controller.impl.AggiornaNomeCentroController;
 import it.unibo.adozione_animali.controller.impl.AggiornamentoCaratteristicaController;
+import it.unibo.adozione_animali.controller.impl.AnimaliRicercaController;
 import it.unibo.adozione_animali.controller.impl.CancellaSpazioController;
 import it.unibo.adozione_animali.controller.impl.CancellazioneCaratteristicaController;
 import it.unibo.adozione_animali.controller.impl.DeleteCentroController;
 import it.unibo.adozione_animali.controller.impl.DeleteSpecieCentroController;
+import it.unibo.adozione_animali.controller.impl.InfoCentroController;
+import it.unibo.adozione_animali.controller.impl.InfoSpazioController;
 import it.unibo.adozione_animali.controller.impl.InserimentoCaratteristicaController;
 import it.unibo.adozione_animali.controller.impl.InserimentoSpazioController;
 import it.unibo.adozione_animali.controller.impl.InserimentoSpecieCentroController;
@@ -44,12 +46,14 @@ public class Start {
         view.getGestioneCarPanel().getInserimentoView().setController(new InserimentoCaratteristicaController(model, view.getGestioneCarPanel().getInserimentoView()));
         view.getGestioneCarPanel().getCancellazioneView().setController(new CancellazioneCaratteristicaController(model, view.getGestioneCarPanel().getCancellazioneView()));
         view.getGestioneCarPanel().getAggiornamentoView().setController(new AggiornamentoCaratteristicaController(model, view.getGestioneCarPanel().getAggiornamentoView()));
+        new InfoCentroController(view.getCentriPanel().getInfoPanel());
         view.getCentriPanel().getAddPanel().setController(new AddCentroController(model, view.getCentriPanel().getAddPanel()));
         view.getCentriPanel().getAddSpeciePanel().setController(new InserimentoSpecieCentroController(model, view.getCentriPanel().getAddSpeciePanel()));
         view.getCentriPanel().getCapienzaPanel().setController(new UpdateCapienzaController(model, view.getCentriPanel().getCapienzaPanel()));
         view.getCentriPanel().getDeletePanel().setController(new DeleteCentroController(model, view.getCentriPanel().getDeletePanel()));
         view.getCentriPanel().getDeleteSpeciePanel().setController(new DeleteSpecieCentroController(model, view.getCentriPanel().getDeleteSpeciePanel()));
         view.getCentriPanel().getNomePanel().setController(new AggiornaNomeCentroController(model, view.getCentriPanel().getNomePanel()));
+        new InfoSpazioController(view.getSpaziPanel().getInfoPanel());
         view.getSpaziPanel().getAddPanel().setController(new InserimentoSpazioController(model, view.getSpaziPanel().getAddPanel()));
         view.getSpaziPanel().getDeletePanel().setController(new CancellaSpazioController(model, view.getSpaziPanel().getDeletePanel()));
         view.getSpaziPanel().getUpdateDimensionePanel().setController(new UpdateDimensioneSpazioController(model, view.getSpaziPanel().getUpdateDimensionePanel()));

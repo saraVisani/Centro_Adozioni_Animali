@@ -4,6 +4,8 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
 import java.util.List;
+
+import it.unibo.adozione_animali.controller.impl.AnimaliRicercaController;
 import it.unibo.adozione_animali.util.ItemSelezionabile;
 
 import java.awt.*;

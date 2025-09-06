@@ -127,7 +127,7 @@ public class UpdateTipoDimensione extends JPanel {
                 && !getTipo().equals("--select--")
                 && !getTipo().isBlank()
                 && getCodice() != null
-                && getCodice() > 0
+                && getCodice() >= 0
                 && getDimensione() != null
                 && getDimensione() > 0;
 

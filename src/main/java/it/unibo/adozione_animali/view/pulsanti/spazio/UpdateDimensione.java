@@ -103,7 +103,7 @@ public class UpdateDimensione extends JPanel {
 
     private void aggiornaStatoPulsante() {
         boolean completo = getCodice() != null
-                && getCodice() > 0
+                && getCodice() >= 0
                 && getDimensione() != null
                 && getDimensione() > 0;
 

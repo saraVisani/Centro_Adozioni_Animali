@@ -107,7 +107,7 @@ public class UpdateTipoSpazio extends JPanel {
                 && !getTipo().equals("--select--")
                 && !getTipo().isBlank()
                 && getCodice() != null
-                && getCodice() > 0;
+                && getCodice() >= 0;
 
         inserisciBtn.setEnabled(completo);
     }
