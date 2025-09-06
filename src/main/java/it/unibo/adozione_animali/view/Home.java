@@ -1,6 +1,4 @@
-package it.unibo.adozione_animali.view.pulsanti;
-
-import it.unibo.adozione_animali.view.ImageViewerPanel;
+package it.unibo.adozione_animali.view;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -29,7 +27,8 @@ public class Home extends JPanel{
         JTextArea text = new JTextArea("Questa applicazione è stata realizzata con lo scopo " +
                 "di facilitare la gestione dei centri di adozione da parte del" +
                 " suo personale. Viene reso possibile l'inserimento, la cancellazione, l'aggionamento, " +
-                "la ricerca e la visualizzazione di vari elementi legati ai centri. " + "Seleziona nella barra nel menù l'opzione desiderata e inizia il lavoro!\n\n\n");
+                "la ricerca e la visualizzazione di vari elementi legati ai centri. " + "Seleziona nella barra del menù" +
+                " l'opzione desiderata e inizia il lavoro!\n\n\n");
 
         text.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createEtchedBorder(),
