@@ -15,6 +15,7 @@ public class MainMenu {
 
     private Home homePanel;
     private AnimaliGenerali infoPanel;
+    private InserisciAnimale inserisciAnimalePanel;
     private AnimaliRicerca ricercaPanel;
     private StatisticheUpdate aggiornaPanel;
     private FascicoloPanel fascicoloPanel;
@@ -29,6 +30,25 @@ public class MainMenu {
     private RichiedentiGenerali infoRichiedentiPanel;
     private Centri centriPanel;
     private Spazio spaziPanel;
+    private JPanel cards;
+
+    private JButton homeButton;
+    private JMenuItem centri;
+    private JMenuItem spazi;
+    private JMenuItem infoGenerali;
+    private JMenuItem inserireAnimale;
+    private JMenuItem ricercaAnimali;
+    private JMenuItem aggiornaStatistiche;
+    private JMenuItem fascicoloSanitario;
+    private JMenuItem gestioneCaratteristiche;
+    private JMenuItem gestioneComponenti;
+    private JMenuItem gestioneRazzeSpecifiche;
+    private JMenuItem gestioneRichieste;
+    private JMenuItem gestioneTurniTask;
+    private JMenuItem personaleInfo;
+    private JMenuItem razzaInfo;
+    private JMenuItem ricercaStatistiche;
+    private JMenuItem richiedentiInfo;
 
     public MainMenu() {
         JFrame frame = new JFrame("Gestione Centri Adozione");
@@ -40,7 +60,7 @@ public class MainMenu {
         JPanel topPanel = new JPanel();
         topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.X_AXIS)); // allinea a sinistra
 
-        JButton homeButton = new JButton("Home");
+        homeButton = new JButton("Home");
         topPanel.add(homeButton);
 
         // Menu a tendina
@@ -52,22 +72,24 @@ public class MainMenu {
         JMenu razzaMenu = new JMenu("Razze");
         JMenu statisticheMenu = new JMenu("Statistiche");
 
-        JMenuItem centri = new JMenuItem("Centri");
-        JMenuItem spazi = new JMenuItem("Spazi");
-        JMenuItem infoGenerali = new JMenuItem("Informazioni Generali Animali");
-        JMenuItem ricercaAnimali = new JMenuItem("Ricerca Animali");
-        JMenuItem aggiornaStatistiche = new JMenuItem("Aggiorna Statistiche");
-        JMenuItem fascicoloSanitario = new JMenuItem("Fascicolo Sanitario");
-        JMenuItem gestioneCaratteristiche = new JMenuItem("Gestione Caratteristiche");
-        JMenuItem gestioneComponenti = new JMenuItem("Gestione Componenti");
-        JMenuItem gestioneRazzeSpecifiche = new JMenuItem("Gestione Specifiche di Razza");
-        JMenuItem gestioneRichieste = new JMenuItem("Gestione Richieste");
-        JMenuItem gestioneTurniTask = new JMenuItem("Gestione Turni e Task");
-        JMenuItem personaleInfo = new JMenuItem("Personale Informazioni Generali");
-        JMenuItem razzaInfo = new JMenuItem("Informazioni Generali Razza");
-        JMenuItem ricercaStatistiche = new JMenuItem("Ricerca Statistiche");
-        JMenuItem richiedentiInfo = new JMenuItem("Informazioni Generali Richiedenti");
+        centri = new JMenuItem("Centri");
+        spazi = new JMenuItem("Spazi");
+        infoGenerali = new JMenuItem("Informazioni Generali Animali");
+        inserireAnimale = new JMenuItem("Inserire Animale");
+        ricercaAnimali = new JMenuItem("Ricerca Animali");
+        aggiornaStatistiche = new JMenuItem("Aggiorna Statistiche");
+        fascicoloSanitario = new JMenuItem("Fascicolo Sanitario");
+        gestioneCaratteristiche = new JMenuItem("Gestione Caratteristiche");
+        gestioneComponenti = new JMenuItem("Gestione Componenti");
+        gestioneRazzeSpecifiche = new JMenuItem("Gestione Specifiche di Razza");
+        gestioneRichieste = new JMenuItem("Gestione Richieste");
+        gestioneTurniTask = new JMenuItem("Gestione Turni e Task");
+        personaleInfo = new JMenuItem("Personale Informazioni Generali");
+        razzaInfo = new JMenuItem("Informazioni Generali Razza");
+        ricercaStatistiche = new JMenuItem("Ricerca Statistiche");
+        richiedentiInfo = new JMenuItem("Informazioni Generali Richiedenti");
         animaliMenu.add(infoGenerali);
+        animaliMenu.add(inserireAnimale);
         animaliMenu.add(ricercaAnimali);
         animaliMenu.add(gestioneCaratteristiche);
         animaliMenu.add(gestioneComponenti);
@@ -83,7 +105,6 @@ public class MainMenu {
         centroMenu.add(centri);
         spazioMenu.add(spazi);
 
-
         JMenuBar menuBar = new JMenuBar();
         menuBar.add(centroMenu);
         menuBar.add(spazioMenu);
@@ -95,13 +116,16 @@ public class MainMenu {
         topPanel.add(menuBar); // aggiunge menu accanto a Home
 
         // Pannello centrale con CardLayout
-        JPanel cards = new JPanel(new CardLayout());
+        cards = new JPanel(new CardLayout());
         homePanel = new Home();
         infoPanel = new AnimaliGenerali();
+        inserisciAnimalePanel = new InserisciAnimale();
+        inserisciAnimalePanel.setMainMenu(this);
         ricercaPanel = new AnimaliRicerca();
         aggiornaPanel = new StatisticheUpdate();
         fascicoloPanel = new FascicoloPanel();
         gestioneCarPanel = new GestioneCaratteristiche();
+        gestioneCarPanel.getInserimentoView().setMainMenu(this);
         gestioneCompPanel = new GestioneComponentiPanel();
         gestioneRazzeSpecPanel = new GestioneSpecifiche();
         gestioneRichPanel = new GestioneRichiestePanel();
@@ -115,6 +139,7 @@ public class MainMenu {
 
         cards.add(homePanel, "home");
         cards.add(infoPanel, "info");
+        cards.add(inserisciAnimalePanel, "inserisci");
         cards.add(ricercaPanel, "ricerca");
         cards.add(aggiornaPanel, "aggiornamento");
         cards.add(fascicoloPanel, "fascicolo");
@@ -130,7 +155,6 @@ public class MainMenu {
         cards.add(centriPanel, "centri");
         cards.add(spaziPanel, "spazi");
 
-
         // Eventi
         homeButton.addActionListener(e -> {
             CardLayout cl = (CardLayout) (cards.getLayout());
@@ -140,6 +164,11 @@ public class MainMenu {
         infoGenerali.addActionListener(e -> {
             CardLayout cl = (CardLayout) (cards.getLayout());
             cl.show(cards, "info");
+        });
+
+        inserireAnimale.addActionListener(e -> {
+            CardLayout cl = (CardLayout) (cards.getLayout());
+            cl.show(cards, "inserisci");
         });
 
         ricercaAnimali.addActionListener(e -> {
@@ -227,6 +256,10 @@ public class MainMenu {
         return infoPanel;
     }
 
+    public InserisciAnimale getInserisciAnimale() {
+        return inserisciAnimalePanel;
+    }
+
     public AnimaliRicerca getRicercaPanel() {
         return ricercaPanel;
     }
@@ -281,6 +314,34 @@ public class MainMenu {
 
     public Spazio getSpaziPanel() {
         return spaziPanel;
+    }
+
+    public void showGestioneCarInserimento() {
+        CardLayout cl = (CardLayout) (cards.getLayout());
+        cl.show(cards, "gestioneCa");
+        gestioneCarPanel.getInserimentoView().setVisible(true);
+    }
+
+    public void setMenuEnabled(boolean enable) {
+        homeButton.setEnabled(enable);
+
+        centri.setEnabled(enable);
+        spazi.setEnabled(enable);
+
+        infoGenerali.setEnabled(enable);
+        inserireAnimale.setEnabled(enable);
+        ricercaAnimali.setEnabled(enable);
+        aggiornaStatistiche.setEnabled(enable);
+        fascicoloSanitario.setEnabled(enable);
+        gestioneCaratteristiche.setEnabled(enable);
+        gestioneComponenti.setEnabled(enable);
+        gestioneRazzeSpecifiche.setEnabled(enable);
+        gestioneRichieste.setEnabled(enable);
+        gestioneTurniTask.setEnabled(enable);
+        personaleInfo.setEnabled(enable);
+        razzaInfo.setEnabled(enable);
+        ricercaStatistiche.setEnabled(enable);
+        richiedentiInfo.setEnabled(enable);
     }
 
 }

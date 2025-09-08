@@ -17,9 +17,9 @@ public class Info extends JPanel {
 
         // Label descrizione fissa
         JLabel descriptionLabel = new JLabel(
-            "<html>La tabella mostra gli spazi disponibili o richiesti.<br>" +
-            "Ogni spazio ha un codice identificativo (ID_SPAZIO), un tipo (INTERNO, ESTERNO o INTERNO/ESTERNO) e una dimensione minima.<br>" +
-            "Gli spazi possono rappresentare quelli reali posseduti da una persona o lo spazio minimo richiesto da una razza.</html>"
+            "<html>La tabella mostra i centri disponibili e le specie che possono ospitare.<br>" +
+            "Ogni centro è identificato da provincia, città e numero civico, e ha un nome e una capienza massima.<br>" +
+            "La tipologia collega i centri alle specie, mentre la tabella specie elenca tutte le specie gestite dal sistema.</html>"
         );
         descriptionLabel.setOpaque(true);
         descriptionLabel.setBackground(ColorUtils.fromHex("6B82FF"));

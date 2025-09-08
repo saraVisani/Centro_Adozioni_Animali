@@ -101,7 +101,7 @@ public class AnimaliRicercaController {
     }
 
     public void razzaSelezionata(String specie, String razza) {
-            if(specie != null && razza != null){
+        if(specie != null && razza != null){
             // ottieni limiti dal model
             List<BigDecimal> limiti = model.getRazzaDAO().getPesiAltezza(specie, razza);
             if(limiti != null && limiti.size() == 4){

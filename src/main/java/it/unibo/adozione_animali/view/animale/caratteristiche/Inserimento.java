@@ -4,6 +4,7 @@ import javax.swing.*;
 
 import it.unibo.adozione_animali.util.ColorUtils;
 import it.unibo.adozione_animali.util.ItemSelezionabile;
+import it.unibo.adozione_animali.view.MainMenu;
 import it.unibo.adozione_animali.controller.impl.InserimentoCaratteristicaController;
 import java.awt.*;
 import java.awt.event.*;
@@ -22,6 +23,7 @@ public class Inserimento extends JPanel {
     private JButton inserisciBtn;
 
     private InserimentoCaratteristicaController controller; // riferimento al controller
+    private MainMenu mainMenu;
 
     public Inserimento() {
         setBackground(ColorUtils.fromHex("6B82FF"));
@@ -178,6 +180,10 @@ public class Inserimento extends JPanel {
     // --- Metodi per collegare il controller ---
     public void setController(InserimentoCaratteristicaController controller) {
         this.controller = controller;
+    }
+
+    public void setMainMenu(MainMenu mainMenu) {
+        this.mainMenu = mainMenu;
     }
 
     // --- Metodi pubblici per aggiornare i dati delle combo ---
@@ -340,6 +346,7 @@ public class Inserimento extends JPanel {
                 "Successo",
                 JOptionPane.INFORMATION_MESSAGE
             );
+            mainMenu.setMenuEnabled(true);
         } else {
             JOptionPane.showMessageDialog(
                 this,

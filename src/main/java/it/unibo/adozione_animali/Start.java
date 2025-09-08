@@ -1,6 +1,7 @@
 package it.unibo.adozione_animali;
 
 import it.unibo.adozione_animali.view.MainMenu;
+import it.unibo.adozione_animali.view.animale.AnimaliInserimentoController;
 
 import org.jooq.DSLContext;
 import org.jooq.impl.DSL;
@@ -13,6 +14,7 @@ import it.unibo.adozione_animali.controller.impl.CancellaSpazioController;
 import it.unibo.adozione_animali.controller.impl.CancellazioneCaratteristicaController;
 import it.unibo.adozione_animali.controller.impl.DeleteCentroController;
 import it.unibo.adozione_animali.controller.impl.DeleteSpecieCentroController;
+import it.unibo.adozione_animali.controller.impl.InfoAnimaliController;
 import it.unibo.adozione_animali.controller.impl.InfoCentroController;
 import it.unibo.adozione_animali.controller.impl.InfoSpazioController;
 import it.unibo.adozione_animali.controller.impl.InserimentoCaratteristicaController;
@@ -43,6 +45,8 @@ public class Start {
 
         Model model = new Model();
         MainMenu view = new MainMenu();
+        new InfoAnimaliController(view.getInfoPanel());
+        view.getInserisciAnimale().setController(new AnimaliInserimentoController(model, view.getInserisciAnimale()));
         view.getGestioneCarPanel().getInserimentoView().setController(new InserimentoCaratteristicaController(model, view.getGestioneCarPanel().getInserimentoView()));
         view.getGestioneCarPanel().getCancellazioneView().setController(new CancellazioneCaratteristicaController(model, view.getGestioneCarPanel().getCancellazioneView()));
         view.getGestioneCarPanel().getAggiornamentoView().setController(new AggiornamentoCaratteristicaController(model, view.getGestioneCarPanel().getAggiornamentoView()));
