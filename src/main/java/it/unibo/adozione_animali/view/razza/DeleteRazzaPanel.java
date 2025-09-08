@@ -1,11 +1,9 @@
 package it.unibo.adozione_animali.view.razza;
 
 import it.unibo.adozione_animali.model.impl.RazzaDAO;
-import org.jooq.exception.DataAccessException;
 
 import javax.swing.*;
 import java.awt.*;
-import java.sql.SQLException;
 
 public class DeleteRazzaPanel extends JPanel {
 
