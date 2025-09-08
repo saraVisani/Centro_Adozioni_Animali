@@ -15,10 +15,8 @@ public class IndirizziPanel extends JPanel{
     private JComboBox<ItemSelezionabile> regione;
     private JComboBox<ItemSelezionabile> provinciaBox;
     private JComboBox<ItemSelezionabile> cittaBox;
-    private JComboBox<String> numeroBox;
     private JCheckBox inserireProvincia;
     private JCheckBox inserireCitta;
-    private JCheckBox inserireNumero;
 
     private JComboBox<String> cf;
 
@@ -57,7 +55,7 @@ public class IndirizziPanel extends JPanel{
         inserireCitta.addActionListener(e -> this.controller.inserimentoCitta());
         cittaBox = new JComboBox<>();
         cittaBox.setEnabled(false);
-        cittaBox.addActionListener(e -> this.controller.cittaSelezionata(this.getProvinciaSelezionata(), this.getCittaSelezionata()));
+        cittaBox.addActionListener(e -> aggiornabutton());
         cittaNuovo = new JTextField(30);
         cittaNuovo.setEnabled(false);
         addUpdateListener(cittaNuovo);
@@ -66,17 +64,10 @@ public class IndirizziPanel extends JPanel{
         nomeCitta.setEnabled(false);
         addUpdateListener(nomeCitta);
 
-        inserireNumero = new JCheckBox();
-        inserireNumero.addActionListener(e -> this.controller.inserimentoNumero());
-        numeroBox = new JComboBox<>();
-        numeroBox.setEnabled(false);
-        numeroBox.addActionListener(e -> this.aggiornabutton());
         numeroNuovo = new JTextField(5);
-        numeroNuovo.setEnabled(false);
         addUpdateListener(numeroNuovo);
 
         indirizzo = new JTextField(30);
-        indirizzo.setEnabled(false);
         addUpdateListener(indirizzo);
         cf = new JComboBox<>();
 
@@ -92,8 +83,6 @@ public class IndirizziPanel extends JPanel{
             {"Inserisci Nuova Città", cittaNuovo},
             {"Nome Città", nomeCitta},
 
-            {"Nuovo Numero Civico", inserireNumero},
-            {"Seleziona Numero Civico", numeroBox},
             {"Inserisci Nuovo Numero Civico", numeroNuovo},
             {"Via", indirizzo},
             {"Identificativo Persona", cf},
@@ -150,41 +139,41 @@ public class IndirizziPanel extends JPanel{
 
     private void aggiornabutton() {
         boolean result;
-        if(getInserireProvincia() && getInserireCitta() && getInserireNumero()){
+        if(getInserireProvincia() && getInserireCitta()){
             result = isValidCod(getNuovaProvincia()) && isValidCod(getNuovaCitta()) && isNumber(getNuovoNumero())
                 && isValidString(getNomeProvinciaString()) && isValidString(getNomeCittaString()) && isValidString(getNomeVia())
                 && isValid((ItemSelezionabile)regione.getSelectedItem());
 
-        }else if(!(getInserireProvincia() && getInserireCitta() && getInserireNumero())){
+        }else if(!(getInserireProvincia() && getInserireCitta())){
             result = isValid((ItemSelezionabile)provinciaBox.getSelectedItem()) && isValid((ItemSelezionabile)cittaBox.getSelectedItem())
-                && isNumber(getNumeroSelezionato()) && isValidString(getNomeVia());
+                && isNumber(getNuovoNumero()) && isValidString(getNomeVia());
 
-        }else if(getInserireProvincia() && !(getInserireCitta() && getInserireNumero())){
+        }else if(getInserireProvincia() && !(getInserireCitta())){
             result = isValidCod(getNuovaProvincia()) && isValidString(getNomeProvinciaString()) && isValid((ItemSelezionabile)regione.getSelectedItem());
-            if(isValidString(getNomeVia()) || isValid((ItemSelezionabile)cittaBox.getSelectedItem()) || isNumber(getNumeroSelezionato())){
-                result = result && isValidString(getNomeVia()) && isValid((ItemSelezionabile)cittaBox.getSelectedItem()) && isNumber(getNumeroSelezionato());
+            if(isValidString(getNomeVia()) || isValid((ItemSelezionabile)cittaBox.getSelectedItem()) || isNumber(getNuovoNumero())){
+                result = result && isValidString(getNomeVia()) && isValid((ItemSelezionabile)cittaBox.getSelectedItem()) && isNumber(getNuovoNumero());
             }
 
-        }else if(getInserireProvincia() && getInserireCitta() && !(getInserireNumero())){
+        }else if(getInserireProvincia() && getInserireCitta()){
             result = isValidCod(getNuovaProvincia()) && isValidString(getNomeProvinciaString()) && isValid((ItemSelezionabile)regione.getSelectedItem())
                 && isValidCod(getNuovaCitta()) && isValidString(getNomeCittaString());
-            if(isValidString(getNomeVia()) || isNumber(getNumeroSelezionato())){
-                result = result && isValidString(getNomeVia()) && isNumber(getNumeroSelezionato());
+            if(isValidString(getNomeVia()) || isNumber(getNuovoNumero())){
+                result = result && isValidString(getNomeVia()) && isNumber(getNuovoNumero());
             }
 
-        }else if(!(getInserireProvincia()) && getInserireCitta() && !(getInserireNumero())){
+        }else if(!(getInserireProvincia()) && getInserireCitta()){
             result = isValid((ItemSelezionabile)provinciaBox.getSelectedItem())
                 && isValidCod(getNuovaCitta()) && isValidString(getNomeCittaString());
-            if(isValidString(getNomeVia()) || isNumber(getNumeroSelezionato())){
-                result = result && isValidString(getNomeVia()) && isNumber(getNumeroSelezionato());
+            if(isValidString(getNomeVia()) || isNumber(getNuovoNumero())){
+                result = result && isValidString(getNomeVia()) && isNumber(getNuovoNumero());
             }
 
-        }else if(!(getInserireProvincia()) && getInserireCitta() && getInserireNumero()){
+        }else if(!(getInserireProvincia()) && getInserireCitta()){
             result = isValid((ItemSelezionabile)provinciaBox.getSelectedItem())
                 && isValidCod(getNuovaCitta()) && isValidString(getNomeCittaString())
                 && isNumber(getNuovoNumero()) && isValidString(getNomeVia());
 
-        }else if(getInserireProvincia() && !(getInserireCitta()) && getInserireNumero()){
+        }else if(getInserireProvincia() && !(getInserireCitta())){
             result = isValidCod(getNuovaProvincia()) && isValidString(getNomeProvinciaString()) && isValid((ItemSelezionabile)regione.getSelectedItem())
                 && isNumber(getNuovoNumero()) && isValidString(getNomeVia()) && isValid((ItemSelezionabile)cittaBox.getSelectedItem());
 
@@ -210,10 +199,6 @@ public class IndirizziPanel extends JPanel{
 
     public void setCitta(List<ItemSelezionabile> citta) {
         setComboBoxWithEmptyFirst(cittaBox, citta, new ItemSelezionabile("", "--select--"));
-    }
-
-    public void setNumeri(List<String> numeri) {
-        setComboBoxWithEmptyFirst(numeroBox, numeri, "--select--");
     }
 
     public void setCf(List<String> cf) {
@@ -251,15 +236,6 @@ public class IndirizziPanel extends JPanel{
         return nomeCitta.getText();
     }
 
-    public String getNumeroSelezionato() {
-        try {
-            Integer.parseInt((String) numeroBox.getSelectedItem());
-            return (String) numeroBox.getSelectedItem();
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
     public String getNuovoNumero() {
         return numeroNuovo.getText();
     }
@@ -274,10 +250,6 @@ public class IndirizziPanel extends JPanel{
 
     public boolean getInserireCitta() {
         return inserireCitta.isSelected();
-    }
-
-    public boolean getInserireNumero() {
-        return inserireNumero.isSelected();
     }
 
     public String getCf() {
@@ -306,10 +278,6 @@ public class IndirizziPanel extends JPanel{
 
     public JComboBox<ItemSelezionabile> getCittaBox() {
         return cittaBox;
-    }
-
-    public JComboBox<String> getNumeroBox() {
-        return numeroBox;
     }
 
     public JTextField getNomeProvincia() {
@@ -358,5 +326,23 @@ public class IndirizziPanel extends JPanel{
                 aggiornabutton();
             }
         });
+    }
+
+    public void showEsito(boolean esito, String text) {
+        if (esito) {
+            JOptionPane.showMessageDialog(
+                this,
+                "Operazione completata con successo!\n" + text,
+                "Successo",
+                JOptionPane.INFORMATION_MESSAGE
+            );
+        } else {
+            JOptionPane.showMessageDialog(
+                this,
+                "Si è verificato un errore durante l'operazione.",
+                "Errore",
+                JOptionPane.ERROR_MESSAGE
+            );
+        }
     }
 }

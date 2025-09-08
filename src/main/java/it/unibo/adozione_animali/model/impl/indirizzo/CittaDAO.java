@@ -1,6 +1,7 @@
 package it.unibo.adozione_animali.model.impl.indirizzo;
 
 import java.sql.Connection;
+import java.util.Arrays;
 import java.util.List;
 
 import org.jooq.DSLContext;
@@ -104,6 +105,43 @@ public class CittaDAO implements Citta {
             e.printStackTrace();
             return List.of(); // Return empty list if there is an error
         }
+    }
+
+    public String getCitta(String provincia, String citta) {
+        try (Connection conn = DBConfig.getConnection()) {
+            DSLContext ctx = DSL.using(conn, SQLDialect.MYSQL);
+
+            var record = ctx.selectFrom(Tables.CITTA_)
+                    .where(Tables.CITTA_.COD_PROVINCIA.eq(provincia)
+                        .and(Tables.CITTA_.COD_CITTA_.eq(citta)))
+                    .fetchOne();
+
+            if (record == null) return "N/D";
+
+            return Arrays.stream(record.fields())
+                    .map(f -> {
+                        String header = formatHeader(f.getName());
+                        Object value = record.get(f);
+                        String val = (value == null) ? "N/D" : value.toString();
+                        return header + ": " + val;
+                    })
+                    .reduce((a, b) -> a + " | " + b)
+                    .orElse("N/D");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "N/D";
+        }
+    }
+
+    private String formatHeader(String name) {
+        String[] parts = name.split("_");
+        for (int i = 0; i < parts.length; i++) {
+            if (parts[i].length() > 0) {
+                parts[i] = parts[i].substring(0, 1).toUpperCase() + parts[i].substring(1).toLowerCase();
+            }
+        }
+        return String.join(" ", parts);
     }
 
 }

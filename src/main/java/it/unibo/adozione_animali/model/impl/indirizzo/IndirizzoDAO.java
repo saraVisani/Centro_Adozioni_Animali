@@ -1,5 +1,6 @@
 package it.unibo.adozione_animali.model.impl.indirizzo;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -228,6 +229,45 @@ public class IndirizzoDAO implements Indirizzo {
             e.printStackTrace();
             return List.of();
         }
+    }
+
+    public String getIndirizzo(String provincia, String citta, Integer numero) {
+        try (Connection conn = DBConfig.getConnection()) {
+            DSLContext ctx = DSL.using(conn, SQLDialect.MYSQL);
+
+            var record = ctx.selectFrom(Tables.INDIRIZZO)
+                    .where(Tables.INDIRIZZO.COD_PROVINCIA.eq(provincia)
+                            .and(Tables.INDIRIZZO.COD_CITTA_.eq(citta))
+                            .and(Tables.INDIRIZZO.NUMERO.eq(numero)))
+                    .fetchOne();
+
+            if (record == null) return "N/D";
+
+            // Trasforma i record in lista di stringhe Header: Valore e unisce in una riga
+            return Arrays.stream(record.fields())
+                    .map(f -> {
+                        String header = formatHeader(f.getName());
+                        Object value = record.get(f);
+                        String val = (value == null) ? "N/D" : value.toString();
+                        return header + ": " + val;
+                    })
+                    .reduce((a, b) -> a + " | " + b) // separatore tra campi
+                    .orElse("N/D");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "N/D";
+        }
+    }
+
+    private String formatHeader(String name) {
+        String[] parts = name.split("_");
+        for (int i = 0; i < parts.length; i++) {
+            if (parts[i].length() > 0) {
+                parts[i] = parts[i].substring(0, 1).toUpperCase() + parts[i].substring(1).toLowerCase();
+            }
+        }
+        return String.join(" ", parts);
     }
 
 }
