@@ -1,6 +1,7 @@
 package it.unibo.adozione_animali.model.impl.caratteristica;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
 import org.jooq.DSLContext;
@@ -38,11 +39,13 @@ public class SpecificaRazzaDAO implements SpecificaRazza {
         try (Connection conn = DBConfig.getConnection()) {
             DSLContext ctx = DSL.using(conn, SQLDialect.MYSQL);
 
+            this.checkSpecificaSpecie(codice);
+
             int righeCancellate = ctx.deleteFrom(Tables.SPECIFICA_RAZZA)
                 .where(Tables.SPECIFICA_RAZZA.CODICE.eq(codice))
                 .execute();
             return righeCancellate > 0;
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
@@ -81,6 +84,23 @@ public class SpecificaRazzaDAO implements SpecificaRazza {
         } catch (Exception e) {
             e.printStackTrace();
             return List.of(); // Return empty list if there is an error
+        }
+    }
+
+    private void checkSpecificaSpecie(String codSpecifica) {
+        try (Connection conn = DBConfig.getConnection()) {
+            DSLContext ctx = DSL.using(conn, SQLDialect.MYSQL);
+
+            boolean exists = ctx.fetchExists(
+                    ctx.selectFrom(Tables.SPECIFICA_RAZZA)
+                            .where(Tables.SPECIFICA_RAZZA.CODICE.eq(codSpecifica)));
+
+            if (!exists) {
+                throw new IllegalArgumentException();
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
