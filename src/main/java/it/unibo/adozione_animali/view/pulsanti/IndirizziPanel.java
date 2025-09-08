@@ -89,35 +89,32 @@ public class IndirizziPanel extends JPanel{
             {"Identificativo Persona", cf},
         };
 
-        int cols = 5;
+        int cols = 4;
+        int index = 0;
         for (int i = 0; i < rows.length; i++) {
-            // blocco corrente (etichette+valori)
-            int block = i / cols;
-            int rowEtichette = block * 2;
-            int rowValori = rowEtichette + 1;
-
-            // decidi dinamicamente le colonne per questo blocco
-            int colsForBlock = (block == 1) ? 4 : 5; // il blocco 1 (Città) ha solo 4 colonne
-
-            int col = i % colsForBlock;
+            int row = (index / cols) * 2;
+            int col = index % cols;
 
             // Etichetta
             gbc.gridx = col;
-            gbc.gridy = rowEtichette;
+            gbc.gridy = row;
             filterPanel.add(new JLabel((String) rows[i][0]), gbc);
 
             // Componente
-            gbc.gridy = rowValori;
+            gbc.gridy = row + 1;
             filterPanel.add((Component) rows[i][1], gbc);
+
+            index++;
         }
+
 
         btnCerca = new JButton();
         btnCerca.setEnabled(false);
         btnCerca.addActionListener(e -> this.controller.salvaInserimento());
-        gbc.gridx = 2;
-        gbc.gridy = 8;
-        gbc.gridwidth = 9;
-        gbc.gridheight = 4;
+        gbc.gridx = 9;
+        gbc.gridy = 10;
+        gbc.gridwidth = 1;
+        gbc.gridheight = 1;
         gbc.anchor = GridBagConstraints.CENTER;
         filterPanel.add(btnCerca, gbc);
 
