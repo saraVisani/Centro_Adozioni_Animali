@@ -10,6 +10,7 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 
+import it.unibo.adozione_animali.controller.impl.AnimaliInserimentoController;
 import it.unibo.adozione_animali.util.ItemSelezionabile;
 import it.unibo.adozione_animali.view.MainMenu;
 
@@ -157,7 +158,7 @@ public class InserisciAnimale extends JPanel{
     private boolean isNumber(String s) {
         if (s == null) return false;
         try {
-            return Integer.parseInt(s) > 0;
+            return Integer.parseInt(s) >= 0;
         } catch (NumberFormatException e) {
             return false;
         }

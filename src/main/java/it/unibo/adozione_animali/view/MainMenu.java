@@ -28,11 +28,13 @@ public class MainMenu {
     private RazzaGenerali infoRazzaPanel;
     private StatisticheRicerca ricercaStatPanel;
     private RichiedentiGenerali infoRichiedentiPanel;
+    private IndirizziPanel indirizziPanel;
     private Centri centriPanel;
     private Spazio spaziPanel;
     private JPanel cards;
 
     private JButton homeButton;
+    private JMenuItem indirizzi;
     private JMenuItem centri;
     private JMenuItem spazi;
     private JMenuItem infoGenerali;
@@ -65,6 +67,7 @@ public class MainMenu {
 
         // Menu a tendina
         JMenu animaliMenu = new JMenu("Animali");
+        JMenu indirizziMenu = new JMenu("Indirizzi");
         JMenu centroMenu = new JMenu("Centri");
         JMenu spazioMenu = new JMenu("Spazi");
         JMenu richiedentiMenu = new JMenu("Richiedenti");
@@ -72,6 +75,7 @@ public class MainMenu {
         JMenu razzaMenu = new JMenu("Razze");
         JMenu statisticheMenu = new JMenu("Statistiche");
 
+        indirizzi = new JMenuItem("Indirizzi");
         centri = new JMenuItem("Centri");
         spazi = new JMenuItem("Spazi");
         infoGenerali = new JMenuItem("Informazioni Generali Animali");
@@ -102,10 +106,12 @@ public class MainMenu {
         personaleMenu.add(gestioneTurniTask);
         statisticheMenu.add(aggiornaStatistiche);
         statisticheMenu.add(ricercaStatistiche);
+        indirizziMenu.add(indirizzi);
         centroMenu.add(centri);
         spazioMenu.add(spazi);
 
         JMenuBar menuBar = new JMenuBar();
+        menuBar.add(indirizziMenu);
         menuBar.add(centroMenu);
         menuBar.add(spazioMenu);
         menuBar.add(animaliMenu);
@@ -134,6 +140,7 @@ public class MainMenu {
         infoRazzaPanel = new RazzaGenerali();
         ricercaStatPanel = new StatisticheRicerca();
         infoRichiedentiPanel = new RichiedentiGenerali();
+        indirizziPanel = new IndirizziPanel();
         centriPanel = new Centri();
         spaziPanel = new Spazio();
 
@@ -152,6 +159,7 @@ public class MainMenu {
         cards.add(infoRazzaPanel, "infoRa");
         cards.add(ricercaStatPanel, "ricercaS");
         cards.add(infoRichiedentiPanel, "infoR");
+        cards.add(indirizziPanel, "indirizzi");
         cards.add(centriPanel, "centri");
         cards.add(spaziPanel, "spazi");
 
@@ -241,6 +249,11 @@ public class MainMenu {
             cl.show(cards, "spazi");
         });
 
+        indirizzi.addActionListener(e -> {
+            CardLayout cl = (CardLayout) (cards.getLayout());
+            cl.show(cards, "indirizzi");
+        });
+
         frame.setLayout(new BorderLayout());
         frame.add(topPanel, BorderLayout.NORTH);
         frame.add(cards, BorderLayout.CENTER);
@@ -327,6 +340,7 @@ public class MainMenu {
 
         centri.setEnabled(enable);
         spazi.setEnabled(enable);
+        indirizzi.setEnabled(enable);
 
         infoGenerali.setEnabled(enable);
         inserireAnimale.setEnabled(enable);
