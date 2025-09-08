@@ -1,6 +1,7 @@
 package it.unibo.adozione_animali.view.animale;
 
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 
 import it.unibo.adozione_animali.view.animale.caratteristiche.Aggiornamento;
 import it.unibo.adozione_animali.view.animale.caratteristiche.Cancellazione;
@@ -19,6 +20,15 @@ public class GestioneCaratteristiche extends JPanel{
 
     public GestioneCaratteristiche() {
         setLayout(new BorderLayout());
+        setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createTitledBorder(
+                        BorderFactory.createEtchedBorder(),
+                        "Gestione Caratteristiche",
+                        TitledBorder.CENTER,
+                        TitledBorder.TOP
+                ),
+                BorderFactory.createEmptyBorder(25, 10, 10, 10)
+        ));
 
         // --- Colonna sinistra ---
         JPanel leftPanel = new JPanel();

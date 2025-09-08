@@ -1,6 +1,7 @@
 package it.unibo.adozione_animali.view.animale;
 
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
@@ -13,6 +14,15 @@ public class AnimaliGenerali extends JPanel {
 
     public AnimaliGenerali() {
         setLayout(new BorderLayout());
+        setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createTitledBorder(
+                        BorderFactory.createEtchedBorder(),
+                        "Informazioni Generali Animali",
+                        TitledBorder.CENTER,
+                        TitledBorder.TOP
+                ),
+                BorderFactory.createEmptyBorder(25, 10, 10, 10)
+        ));
 
         // Label descrizione fissa
         JLabel descriptionLabel = new JLabel(

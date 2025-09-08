@@ -75,7 +75,7 @@ public class MainMenu {
         centri = new JMenuItem("Centri");
         spazi = new JMenuItem("Spazi");
         infoGenerali = new JMenuItem("Informazioni Generali Animali");
-        inserireAnimale = new JMenuItem("Inserire Animale");
+        inserireAnimale = new JMenuItem("Inserimento Animale");
         ricercaAnimali = new JMenuItem("Ricerca Animali");
         aggiornaStatistiche = new JMenuItem("Aggiorna Statistiche");
         fascicoloSanitario = new JMenuItem("Fascicolo Sanitario");

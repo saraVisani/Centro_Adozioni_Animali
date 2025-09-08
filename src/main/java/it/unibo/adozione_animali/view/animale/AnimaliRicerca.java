@@ -1,6 +1,7 @@
 package it.unibo.adozione_animali.view.animale;
 
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
 import java.util.List;
@@ -37,6 +38,15 @@ public class AnimaliRicerca extends JPanel {
 
     public AnimaliRicerca() {
         setLayout(new BorderLayout());
+        setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createTitledBorder(
+                        BorderFactory.createEtchedBorder(),
+                        "Ricerca Animali",
+                        TitledBorder.CENTER,
+                        TitledBorder.TOP
+                ),
+                BorderFactory.createEmptyBorder(25, 10, 10, 10)
+        ));
 
         // Pannello filtri
         JPanel filterPanel = new JPanel(new GridBagLayout());

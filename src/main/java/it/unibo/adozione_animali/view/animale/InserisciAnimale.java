@@ -7,16 +7,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JSpinner;
-import javax.swing.JTextField;
-import javax.swing.SpinnerDateModel;
-import javax.swing.SpinnerNumberModel;
+import javax.swing.*;
+import javax.swing.border.TitledBorder;
 
 import it.unibo.adozione_animali.util.ItemSelezionabile;
 import it.unibo.adozione_animali.view.MainMenu;
@@ -44,6 +36,15 @@ public class InserisciAnimale extends JPanel{
     public InserisciAnimale(){
 
         setLayout(new BorderLayout());
+        setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createTitledBorder(
+                        BorderFactory.createEtchedBorder(),
+                        "Inserimento Animale",
+                        TitledBorder.CENTER,
+                        TitledBorder.TOP
+                ),
+                BorderFactory.createEmptyBorder(25, 10, 10, 10)
+        ));
 
         // Pannello filtri
         JPanel filterPanel = new JPanel(new GridBagLayout());

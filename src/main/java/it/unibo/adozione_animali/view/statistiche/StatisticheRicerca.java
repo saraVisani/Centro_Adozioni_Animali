@@ -1,6 +1,7 @@
 package it.unibo.adozione_animali.view.statistiche;
 
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 import java.util.List;
 import java.awt.*;
 import java.time.LocalDate;
@@ -30,6 +31,15 @@ public class StatisticheRicerca extends JPanel {
 
     public StatisticheRicerca() {
         setLayout(new BorderLayout(10, 10));
+        setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createTitledBorder(
+                        BorderFactory.createEtchedBorder(),
+                        "Ricerca Statistiche",
+                        TitledBorder.CENTER,
+                        TitledBorder.TOP
+                ),
+                BorderFactory.createEmptyBorder(25, 10, 10, 10)
+        ));
 
         // --- Pannello di ricerca ---
         JPanel searchPanel = new JPanel(new GridBagLayout());

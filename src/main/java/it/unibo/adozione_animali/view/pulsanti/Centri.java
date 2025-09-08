@@ -1,6 +1,7 @@
 package it.unibo.adozione_animali.view.pulsanti;
 
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 
 import it.unibo.adozione_animali.view.pulsanti.centri.*;
 
@@ -21,6 +22,15 @@ public class Centri extends JPanel{
 
 	public Centri() {
         setLayout(new BorderLayout());
+        setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createTitledBorder(
+                        BorderFactory.createEtchedBorder(),
+                        "Centri",
+                        TitledBorder.CENTER,
+                        TitledBorder.TOP
+                ),
+                BorderFactory.createEmptyBorder(25, 10, 10, 10)
+        ));
 
         // --- Colonna sinistra ---
         JPanel leftPanel = new JPanel();

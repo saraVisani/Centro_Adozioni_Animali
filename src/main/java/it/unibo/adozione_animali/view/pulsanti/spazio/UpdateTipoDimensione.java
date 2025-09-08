@@ -19,7 +19,7 @@ public class UpdateTipoDimensione extends JPanel {
     public UpdateTipoDimensione() {
         setLayout(new BorderLayout(10, 10));
 
-        JLabel title = new JLabel("Inserimento Caratteristiche");
+        JLabel title = new JLabel("Update Tipo e Dimensione Spazio");
         title.setFont(new Font("Arial", Font.BOLD, 18));
         title.setHorizontalAlignment(SwingConstants.CENTER);
         add(title, BorderLayout.NORTH);

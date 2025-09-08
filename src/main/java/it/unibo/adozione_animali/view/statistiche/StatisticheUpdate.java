@@ -3,6 +3,7 @@ package it.unibo.adozione_animali.view.statistiche;
 import java.awt.*;
 import java.util.List;
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 
 import it.unibo.adozione_animali.controller.impl.UpdateStatisticaController;
 import it.unibo.adozione_animali.util.ColorUtils;
@@ -14,11 +15,15 @@ public class StatisticheUpdate extends JPanel {
 
     public StatisticheUpdate() {
         setLayout(new BorderLayout(10, 10));
-
-        JLabel title = new JLabel("Inserimento Caratteristiche");
-        title.setFont(new Font("Arial", Font.BOLD, 18));
-        title.setHorizontalAlignment(SwingConstants.CENTER);
-        add(title, BorderLayout.NORTH);
+        setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createTitledBorder(
+                        BorderFactory.createEtchedBorder(),
+                        "Aggiornamento Statistiche",
+                        TitledBorder.CENTER,
+                        TitledBorder.TOP
+                ),
+                BorderFactory.createEmptyBorder(25, 10, 10, 10)
+        ));
 
         JPanel tablePanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();

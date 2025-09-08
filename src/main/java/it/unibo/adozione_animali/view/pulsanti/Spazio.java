@@ -1,6 +1,7 @@
 package it.unibo.adozione_animali.view.pulsanti;
 
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 
 import it.unibo.adozione_animali.view.pulsanti.spazio.*;
 import it.unibo.adozione_animali.view.pulsanti.spazio.DeleteSpazio;
@@ -22,6 +23,15 @@ public class Spazio extends JPanel{
     public Spazio() {
 
         setLayout(new BorderLayout());
+        setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createTitledBorder(
+                        BorderFactory.createEtchedBorder(),
+                        "Spazi",
+                        TitledBorder.CENTER,
+                        TitledBorder.TOP
+                ),
+                BorderFactory.createEmptyBorder(25, 10, 10, 10)
+        ));
 
         // --- Colonna sinistra ---
         JPanel leftPanel = new JPanel();

@@ -23,7 +23,7 @@ public class DeleteSpecie extends JPanel{
     public DeleteSpecie() {
         setLayout(new BorderLayout(10, 10));
 
-        JLabel title = new JLabel("Inserimento Caratteristiche");
+        JLabel title = new JLabel("Elimina Specie dal Centro");
         title.setFont(new Font("Arial", Font.BOLD, 18));
         title.setHorizontalAlignment(SwingConstants.CENTER);
         add(title, BorderLayout.NORTH);
