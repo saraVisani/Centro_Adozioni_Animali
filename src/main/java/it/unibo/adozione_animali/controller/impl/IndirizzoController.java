@@ -1,4 +1,4 @@
-package it.unibo.adozione_animali.view.pulsanti;
+package it.unibo.adozione_animali.controller.impl;
 
 import java.sql.Connection;
 import java.util.List;
@@ -11,6 +11,7 @@ import org.jooq.impl.DSL;
 import it.unibo.adozione_animali.model.impl.Model;
 import it.unibo.adozione_animali.util.DBConfig;
 import it.unibo.adozione_animali.util.ItemSelezionabile;
+import it.unibo.adozione_animali.view.pulsanti.IndirizziPanel;
 import nu.studer.sample.Tables;
 
 public class IndirizzoController {

@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.swing.*;
 
+import it.unibo.adozione_animali.controller.impl.IndirizzoController;
 import it.unibo.adozione_animali.util.ItemSelezionabile;
 
 public class IndirizziPanel extends JPanel{
