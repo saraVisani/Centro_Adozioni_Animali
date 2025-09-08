@@ -198,7 +198,7 @@ public class MainMenu {
 
         gestioneRazzeSpecifiche.addActionListener(e -> {
             CardLayout cl = (CardLayout) (cards.getLayout());
-            cl.show(cards, "gestioneS");
+            cl.show(cards, "gestioneRa");
         });
 
         richiedentiInfo.addActionListener(e -> {
