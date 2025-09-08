@@ -114,6 +114,14 @@ public class IndirizziPanel extends JPanel{
         btnCerca = new JButton();
         btnCerca.setEnabled(false);
         btnCerca.addActionListener(e -> this.controller.salvaInserimento());
+        gbc.gridx = 2;
+        gbc.gridy = 8;
+        gbc.gridwidth = 9;
+        gbc.gridheight = 4;
+        gbc.anchor = GridBagConstraints.CENTER;
+        filterPanel.add(btnCerca, gbc);
+
+        add(filterPanel, BorderLayout.NORTH);
     }
 
     private boolean isValid(ItemSelezionabile item) {
