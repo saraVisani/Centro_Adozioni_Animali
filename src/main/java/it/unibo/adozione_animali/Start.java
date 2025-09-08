@@ -1,7 +1,6 @@
 package it.unibo.adozione_animali;
 
 import it.unibo.adozione_animali.view.MainMenu;
-import it.unibo.adozione_animali.view.animale.AnimaliInserimentoController;
 
 import org.jooq.DSLContext;
 import org.jooq.impl.DSL;
@@ -9,6 +8,7 @@ import org.jooq.SQLDialect;
 import it.unibo.adozione_animali.controller.impl.AddCentroController;
 import it.unibo.adozione_animali.controller.impl.AggiornaNomeCentroController;
 import it.unibo.adozione_animali.controller.impl.AggiornamentoCaratteristicaController;
+import it.unibo.adozione_animali.controller.impl.AnimaliInserimentoController;
 import it.unibo.adozione_animali.controller.impl.AnimaliRicercaController;
 import it.unibo.adozione_animali.controller.impl.CancellaSpazioController;
 import it.unibo.adozione_animali.controller.impl.CancellazioneCaratteristicaController;

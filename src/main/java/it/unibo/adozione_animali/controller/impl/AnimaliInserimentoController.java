@@ -1,4 +1,4 @@
-package it.unibo.adozione_animali.view.animale;
+package it.unibo.adozione_animali.controller.impl;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -11,6 +11,7 @@ import javax.swing.SpinnerNumberModel;
 
 import it.unibo.adozione_animali.model.impl.Model;
 import it.unibo.adozione_animali.util.Enum.*;
+import it.unibo.adozione_animali.view.animale.InserisciAnimale;
 
 public class AnimaliInserimentoController {
 
