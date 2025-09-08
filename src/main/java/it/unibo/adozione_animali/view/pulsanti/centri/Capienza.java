@@ -19,7 +19,6 @@ public class Capienza extends JPanel {
     private UpdateCapienzaController controller;
 
     public Capienza() {
-        setBackground(ColorUtils.fromHex("6B82FF"));
         setLayout(new BorderLayout(10, 10));
 
         JLabel title = new JLabel("Inserimento Caratteristiche");
@@ -28,7 +27,6 @@ public class Capienza extends JPanel {
         add(title, BorderLayout.NORTH);
 
         JPanel tablePanel = new JPanel(new GridBagLayout());
-        tablePanel.setBackground(ColorUtils.fromHex("6B82FF"));
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -40,7 +38,6 @@ public class Capienza extends JPanel {
         for (int i = 0; i < headers.length; i++) {
             gbc.gridx = i;
             JLabel lbl = new JLabel(headers[i]);
-            lbl.setForeground(Color.WHITE);
             lbl.setFont(new Font("Arial", Font.BOLD, 14));
             tablePanel.add(lbl, gbc);
         }

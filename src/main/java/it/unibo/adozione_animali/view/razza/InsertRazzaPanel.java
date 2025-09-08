@@ -1,14 +1,10 @@
 package it.unibo.adozione_animali.view.razza;
 
 import it.unibo.adozione_animali.model.impl.RazzaDAO;
-import it.unibo.adozione_animali.model.impl.TurnoLavorativoDAO;
-import org.jooq.exception.DataAccessException;
 
 import javax.swing.*;
 import java.awt.*;
 import java.math.BigDecimal;
-import java.sql.SQLException;
-import java.time.LocalDate;
 
 public class InsertRazzaPanel extends JPanel {
 

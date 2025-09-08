@@ -1,13 +1,14 @@
 package it.unibo.adozione_animali.view.razza;
 
 import it.unibo.adozione_animali.model.impl.RazzaDAO;
+import it.unibo.adozione_animali.model.impl.caratteristica.SpecificaRazzaDAO;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class DeleteRazzaPanel extends JPanel {
+public class DeleteSpecificaPanel extends JPanel {
 
-    public DeleteRazzaPanel() {
+    public DeleteSpecificaPanel() {
         setLayout(new BorderLayout());
 
         JPanel removePanel = new JPanel(new BorderLayout());
@@ -23,48 +24,38 @@ public class DeleteRazzaPanel extends JPanel {
 
         JButton cancella = new JButton("Elimina");
 
-        JTextField codSpecieF = new JTextField();
-        JTextField nomeRazzaF = new JTextField();
-        JLabel codSpecieL = new JLabel("Codice Specie");
-        JLabel nomeRazzaL = new JLabel("Nome Razza");
+        JTextField codSpecificaF = new JTextField();
+        JLabel codSpecificaL = new JLabel("Codice Specifica");
 
         removeLayout.setAutoCreateContainerGaps(true);
         removeLayout.setAutoCreateGaps(true);
         removeLayout.setHorizontalGroup(
                 removeLayout.createSequentialGroup()
+                        .addComponent(codSpecificaL)
                         .addGroup(removeLayout.createParallelGroup()
-                                .addComponent(codSpecieL)
-                                .addComponent(nomeRazzaL)
-                        )
-                        .addGroup(removeLayout.createParallelGroup()
-                                .addComponent(codSpecieF)
-                                .addComponent(nomeRazzaF)
-
+                                .addComponent(codSpecificaF)
                                 .addComponent(cancella)
                         )
         );
         removeLayout.setVerticalGroup(
                 removeLayout.createSequentialGroup()
                         .addGroup(removeLayout.createParallelGroup()
-                                .addComponent(codSpecieL)
-                                .addComponent(codSpecieF)
-                        )
-                        .addGroup(removeLayout.createParallelGroup()
-                                .addComponent(nomeRazzaL)
-                                .addComponent(nomeRazzaF)
+                                .addComponent(codSpecificaL)
+                                .addComponent(codSpecificaF)
                         )
                         .addComponent(cancella)
         );
 
-        removePanelGen.add(codSpecieL);
-        removePanelGen.add(codSpecieF);
-        removePanelGen.add(nomeRazzaL);
-        removePanelGen.add(nomeRazzaF);
+        removePanelGen.add(codSpecificaL);
+        removePanelGen.add(codSpecificaF);
         removePanelGen.add(cancella);
 
         cancella.addActionListener(e -> {
             try {
-                new RazzaDAO().deleteRazza(codSpecieF.getText(), nomeRazzaF.getText());
+                if (codSpecificaF.getText().isEmpty()) {
+                    throw new IllegalArgumentException();
+                }
+                new SpecificaRazzaDAO().deleteSpecificaRazza(codSpecificaF.getText().trim());
                 JOptionPane.showMessageDialog(this, "L'eliminazione è avvenuta correttamente");
             } catch (Exception numb) {
                 JOptionPane.showMessageDialog(this, "Errore nell'inserimento." +

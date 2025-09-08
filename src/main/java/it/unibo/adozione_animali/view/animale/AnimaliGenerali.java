@@ -13,7 +13,6 @@ public class AnimaliGenerali extends JPanel {
 
     public AnimaliGenerali() {
         setLayout(new BorderLayout());
-        setBackground(ColorUtils.fromHex("6B82FF"));
 
         // Label descrizione fissa
         JLabel descriptionLabel = new JLabel(
@@ -23,8 +22,6 @@ public class AnimaliGenerali extends JPanel {
             "Sono presenti anche dati descrittivi come specie, razza, origine, lignaggio e requisiti minimi di spazio.</html>"
         );
         descriptionLabel.setOpaque(true);
-        descriptionLabel.setBackground(ColorUtils.fromHex("6B82FF"));
-        descriptionLabel.setForeground(Color.WHITE);
         descriptionLabel.setHorizontalAlignment(SwingConstants.CENTER);
         descriptionLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         add(descriptionLabel, BorderLayout.NORTH);

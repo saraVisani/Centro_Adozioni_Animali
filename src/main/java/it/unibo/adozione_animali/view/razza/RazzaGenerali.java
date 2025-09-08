@@ -1,9 +1,5 @@
 package it.unibo.adozione_animali.view.razza;
 
-import it.unibo.adozione_animali.view.personale.InsertTurnoPanel;
-import it.unibo.adozione_animali.view.personale.RemoveTurnoPanel;
-import it.unibo.adozione_animali.view.personale.ShowTurniLavorativi;
-
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
