@@ -14,6 +14,7 @@ import it.unibo.adozione_animali.controller.impl.CancellaSpazioController;
 import it.unibo.adozione_animali.controller.impl.CancellazioneCaratteristicaController;
 import it.unibo.adozione_animali.controller.impl.DeleteCentroController;
 import it.unibo.adozione_animali.controller.impl.DeleteSpecieCentroController;
+import it.unibo.adozione_animali.controller.impl.IndirizzoController;
 import it.unibo.adozione_animali.controller.impl.InfoAnimaliController;
 import it.unibo.adozione_animali.controller.impl.InfoCentroController;
 import it.unibo.adozione_animali.controller.impl.InfoSpazioController;
@@ -66,6 +67,7 @@ public class Start {
         new StatisticheRicercaController(view.getRicercaStatPanel());
         view.getAggiornaPanel().setController(new UpdateStatisticaController(model, view.getAggiornaPanel()));
         view.getRicercaPanel().setController(new AnimaliRicercaController(model, view.getRicercaPanel()));
+        view.getIndirizziPanel().setController(new IndirizzoController(view.getIndirizziPanel(), model));
 
     }
 }

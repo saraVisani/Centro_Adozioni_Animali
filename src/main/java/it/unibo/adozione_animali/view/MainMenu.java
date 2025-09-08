@@ -281,6 +281,10 @@ public class MainMenu {
         return aggiornaPanel;
     }
 
+    public IndirizziPanel getIndirizziPanel() {
+        return indirizziPanel;
+    }
+
     public FascicoloPanel getFascicoloPanel() {
         return fascicoloPanel;
     }
