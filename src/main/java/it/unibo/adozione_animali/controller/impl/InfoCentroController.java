@@ -81,8 +81,6 @@ public class InfoCentroController {
             public Component getTableCellRendererComponent(JTable table, Object value,
                     boolean isSelected, boolean hasFocus, int row, int column) {
                 super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                setBackground(row % 2 == 0 ? Color.WHITE : new Color(230, 230, 255));
-                setForeground(Color.BLACK);
                 setHorizontalAlignment(CENTER);
                 return this;
             }

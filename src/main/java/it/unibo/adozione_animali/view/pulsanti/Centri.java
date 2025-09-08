@@ -25,12 +25,10 @@ public class Centri extends JPanel{
         // --- Colonna sinistra ---
         JPanel leftPanel = new JPanel();
         leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
-        leftPanel.setBackground(Color.BLACK);
         leftPanel.setPreferredSize(new Dimension(200, 0));
 
         JLabel title = new JLabel("Operazioni");
-        title.setFont(new Font("Arial", Font.BOLD, 25));
-        title.setForeground(Color.WHITE); // testo bianco
+        title.setFont(new Font("Arial", Font.BOLD, 25));// testo bianco
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
         title.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
         leftPanel.add(title);
@@ -84,8 +82,6 @@ public class Centri extends JPanel{
         btn.setAlignmentX(Component.CENTER_ALIGNMENT);
         btn.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40)); // larghezza completa, altezza fissa
         btn.setFont(new Font("Arial", Font.BOLD, 16));
-        btn.setForeground(Color.WHITE);
-        btn.setBackground(Color.BLACK);
         btn.setFocusPainted(false); // rimuove il bordo di focus blu
         btn.setBorderPainted(false); // rimuove il bordo standard
         btn.setOpaque(true);

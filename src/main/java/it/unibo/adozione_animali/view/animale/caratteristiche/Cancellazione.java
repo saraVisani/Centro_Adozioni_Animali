@@ -24,7 +24,6 @@ public class Cancellazione extends JPanel {
     private CancellazioneCaratteristicaController controller; // riferimento al controller
 
     public Cancellazione() {
-        setBackground(ColorUtils.fromHex("6B82FF"));
         setLayout(new BorderLayout(10, 10));
 
         JLabel title = new JLabel("Cancellazione Caratteristiche");
@@ -33,7 +32,6 @@ public class Cancellazione extends JPanel {
         add(title, BorderLayout.NORTH);
 
         JPanel tablePanel = new JPanel(new GridBagLayout());
-        tablePanel.setBackground(ColorUtils.fromHex("6B82FF"));
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5,5,5,5);
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -45,7 +43,6 @@ public class Cancellazione extends JPanel {
         for (int i = 0; i < headers.length; i++) {
             gbc.gridx = i;
             JLabel lbl = new JLabel(headers[i]);
-            lbl.setForeground(Color.WHITE);
             lbl.setFont(new Font("Arial", Font.BOLD, 14));
             tablePanel.add(lbl, gbc);
 
@@ -264,7 +261,6 @@ public class Cancellazione extends JPanel {
                 popup = new JWindow();
                 JLabel content = new JLabel("<html><div style='width:250px; font-size:14px;'>" + testo + "</div></html>");
                 content.setOpaque(true);
-                content.setBackground(new Color(255, 255, 200));
                 content.setBorder(BorderFactory.createLineBorder(Color.BLACK));
                 popup.getContentPane().add(content);
                 popup.pack();

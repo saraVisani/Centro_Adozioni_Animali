@@ -13,7 +13,6 @@ public class Info extends JPanel {
 
     public Info() {
         setLayout(new BorderLayout());
-        setBackground(ColorUtils.fromHex("6B82FF"));
 
         // Label descrizione fissa
         JLabel descriptionLabel = new JLabel(
@@ -22,8 +21,6 @@ public class Info extends JPanel {
             "Gli spazi possono rappresentare quelli reali posseduti da una persona o lo spazio minimo richiesto da una razza.</html>"
         );
         descriptionLabel.setOpaque(true);
-        descriptionLabel.setBackground(ColorUtils.fromHex("6B82FF"));
-        descriptionLabel.setForeground(Color.WHITE);
         descriptionLabel.setHorizontalAlignment(SwingConstants.CENTER);
         descriptionLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         add(descriptionLabel, BorderLayout.NORTH);
